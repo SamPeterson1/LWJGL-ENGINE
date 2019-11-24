@@ -2,7 +2,7 @@
 
 out vec4 fragColor;
 in vec2 passTextCoords;
-in vec3 f;
+in vec3 faceNormal;
 in vec3 toLight;
 
 uniform sampler2D sampler;
@@ -11,7 +11,7 @@ uniform vec3 color;
 
 void main(void) {
 	
-	vec3 unitNormal = normalize(f);
+	vec3 unitNormal = normalize(faceNormal);
 	vec3 unitLightVector = normalize(toLight);
 	
 	float nDot1 = dot(unitNormal, unitLightVector);

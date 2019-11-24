@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform4f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import org.lwjgl.opengl.GL20;
 import files.TextFile;
 import math.Matrix;
 import math.Vector3f;
+import math.Vector4f;
 
 public abstract class Shader {
 	
@@ -105,6 +107,10 @@ public abstract class Shader {
 	
 	public void setUniform3f(String name, Vector3f value) {
 		glUniform3f(this.uniforms.get(name), value.getX(), value.getY(), value.getZ());
+	}
+	
+	public void setUniform4f(String name, Vector4f value) {
+		glUniform4f(this.uniforms.get(name), value.getX(), value.getY(), value.getZ(), value.getW());
 	}
 	
 	public abstract void bindAllAttributes();
