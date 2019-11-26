@@ -13,12 +13,20 @@ public class GameElement {
 	public GameElement(Mesh mesh) {
 		this.mesh = mesh;
 		this.transform = new Transform();
-		this.transform.setScale(new Vector3f(0.1f, 0.1f, 0.1f));
+	}
+	
+	public GameElement() {
+		this.mesh = null;
+		this.transform = new Transform();
+	}
+	
+	public void setMesh(Mesh mesh) {
+		this.mesh = mesh;
 	}
 	
 	public void update() {
 		
-		this.transform.rotateY((2));
+		this.transform.rotateY(1);
 		//this.transform.rotateX((a ? -1 : 4));
 		//a = !a;
 	}

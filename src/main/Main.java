@@ -1,7 +1,12 @@
 package main;
 
+import GUI.Font;
+import GUI.TextRenderer;
+import GUI.TextMesh;
+import GUI.TextMeshGenerator;
 import camera.Camera;
 import camera.CameraSpecs;
+import files.FontFile;
 import files.OBJFile;
 import math.Vector3f;
 import models.GameElement;
@@ -12,6 +17,7 @@ import rendering.Light;
 import rendering.ModelBatch;
 import rendering.Time;
 import shaders.BasicShader;
+import shaders.TextShader;
 
 public class Main {
 	
@@ -21,13 +27,13 @@ public class Main {
 		
 		OBJFile test = new OBJFile("src/assets/dragon.obj");
 		Mesh foot = test.read();
-		Light light = new Light(new Vector3f(1, 1, 0), new Vector3f(0, 0, 10f));
+		Light light = new Light(new Vector3f(1, 1, 0), new Vector3f(100f, 0, 100f));
 		
 		BasicShader shader = new BasicShader();
 
 		CameraSpecs specs = new CameraSpecs();
 		specs.setAspect(1440f/1080f);
-		specs.setFov(50f);
+		specs.setFov(70f);
 		specs.setzFar(1000f);
 		specs.setzNear(0.01f);
 		
@@ -35,158 +41,16 @@ public class Main {
 		shader.create();
 		Renderer renderer = new Renderer(shader, cam, light);
 		
-		Mesh model = new Mesh(new float[] {
-				-0.5f, 0.5f, 0.5f,
-	            // V1
-	            -0.5f, -0.5f, 0.5f,
-	            // V2
-	            0.5f, -0.5f, 0.5f,
-	            // V3
-	            0.5f, 0.5f, 0.5f,
-	            // V4
-	            -0.5f, 0.5f, -0.5f,
-	            // V5
-	            0.5f, 0.5f, -0.5f,
-	            // V6
-	            -0.5f, -0.5f, -0.5f,
-	            // V7
-	            0.5f, -0.5f, -0.5f,
-	            // For text coords in top face
-	            // V8: V4 repeated
-	            -0.5f, 0.5f, -0.5f,
-	            // V9: V5 repeated
-	            0.5f, 0.5f, -0.5f,
-	            // V10: V0 repeated
-	            -0.5f, 0.5f, 0.5f,
-	            // V11: V3 repeated
-	            0.5f, 0.5f, 0.5f,
-	            // For text coords in right face
-	            // V12: V3 repeated
-	            0.5f, 0.5f, 0.5f,
-	            // V13: V2 repeated
-	            0.5f, -0.5f, 0.5f,
-	            // For text coords in left face
-	            // V14: V0 repeated
-	            -0.5f, 0.5f, 0.5f,
-	            // V15: V1 repeated
-	            -0.5f, -0.5f, 0.5f,
-	            // For text coords in bottom face
-	            // V16: V6 repeated
-	            -0.5f, -0.5f, -0.5f,
-	            // V17: V7 repeated
-	            0.5f, -0.5f, -0.5f,
-	            // V18: V1 repeated
-	            -0.5f, -0.5f, 0.5f,
-	            // V19: V2 repeated
-	            0.5f, -0.5f, 0.5f
-		},
-		new int[] {
-				// Front face
-	            0, 1, 3, 3, 1, 2,
-	            // Top Face
-	            4, 10, 11, 9, 8, 11,
-	            // Right face
-	            12, 13, 7, 5, 12, 7,
-	            // Left face
-	            14, 15, 6, 4, 14, 6,
-	            // Bottom face
-	            16, 18, 19, 17, 16, 19,
-	            // Back face
-	            4, 6, 7, 5, 4, 7,
-		}, new Vector3f(1f, 0f, 1f));
-		
-		/*
-		Mesh model2 = new Mesh(new float[] {
-				-0.5f, 0.5f, 0.5f,
-	            // V1
-	            -0.5f, -0.5f, 0.5f,
-	            // V2
-	            0.5f, -0.5f, 0.5f,
-	            // V3
-	            0.5f, 0.5f, 0.5f,
-	            // V4
-	            -0.5f, 0.5f, -0.5f,
-	            // V5
-	            0.5f, 0.5f, -0.5f,
-	            // V6
-	            -0.5f, -0.5f, -0.5f,
-	            // V7
-	            0.5f, -0.5f, -0.5f,
-	            // For text coords in top face
-	            // V8: V4 repeated
-	            -0.5f, 0.5f, -0.5f,
-	            // V9: V5 repeated
-	            0.5f, 0.5f, -0.5f,
-	            // V10: V0 repeated
-	            -0.5f, 0.5f, 0.5f,
-	            // V11: V3 repeated
-	            0.5f, 0.5f, 0.5f,
-	            // For text coords in right face
-	            // V12: V3 repeated
-	            0.5f, 0.5f, 0.5f,
-	            // V13: V2 repeated
-	            0.5f, -0.5f, 0.5f,
-	            // For text coords in left face
-	            // V14: V0 repeated
-	            -0.5f, 0.5f, 0.5f,
-	            // V15: V1 repeated
-	            -0.5f, -0.5f, 0.5f,
-	            // For text coords in bottom face
-	            // V16: V6 repeated
-	            -0.5f, -0.5f, -0.5f,
-	            // V17: V7 repeated
-	            0.5f, -0.5f, -0.5f,
-	            // V18: V1 repeated
-	            -0.5f, -0.5f, 0.5f,
-	            // V19: V2 repeated
-	            0.5f, -0.5f, 0.5f
-		},
-		new float[] {
-				 0.0f, 0.0f,
-		            0.0f, 1f,
-		            1f, 1f,
-		            1f, 0.0f,
-		            0.0f, 0.0f,
-		            1f, 0.0f,
-		            0.0f, 1f,
-		            1f, 1f,
-		            // For text coords in top face
-		            0.0f, 1f,
-		            1f, 1f,
-		            0.0f, 2.0f,
-		            1f, 2.0f,
-		            // For text coords in right face
-		            0.0f, 0.0f,
-		            0.0f, 1f,
-		            // For text coords in left face
-		            1f, 0.0f,
-		            1f, 1f,
-		            // For text coords in bottom face
-		            1f, 0.0f,
-		            2.0f, 0.0f,
-		            1f, 1f,
-		            2.0f, 1f	
-		},
-		new int[] {
-				// Front face
-	            0, 1, 3, 3, 1, 2,
-	            // Top Face
-	            8, 10, 11, 9, 8, 11,
-	            // Right face
-	            12, 13, 7, 5, 12, 7,
-	            // Left face
-	            14, 15, 6, 4, 14, 6,
-	            // Bottom face
-	            16, 18, 19, 17, 16, 19,
-	            // Back face
-	            4, 6, 7, 5, 4, 7,
-		}, "/assets/booLoos2.png");
-		*/
-		
 		Time.setCap(100);
 		
-		//GameElement element1 = new GameElement(model);
-		GameElement element2 = new GameElement(foot);
+		GameElement element1 = new GameElement(foot);
+		//GameElement element2 = new GameElement(TerrainGenerator.generateMesh());
+		TextMeshGenerator textGen = new TextMeshGenerator("src/assets/TestFont.fnt");
+		TextMesh meshh = textGen.genMesh("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 0, 200, 0.2f);
+			
+		TextShader textShader = new TextShader();
+		textShader.create();
+		TextRenderer textRenderer = new TextRenderer(textShader);
 		
 		//element1.getTransform().setTranslationZ(-2f);
 		//element2.getMesh().setColor(new Vector3f(1f, 0.5f, 0.2f));
@@ -194,18 +58,23 @@ public class Main {
 		//element1.getTransform().setTranslationX(-0.7f);
 		//element2.getTransform().setTranslationX(0.7f);
 		
-		ModelBatch batch = new ModelBatch(element2);
+		element1.getTransform().setTranslationY(-8f);
+		element1.getTransform().setTranslationX(20f);
+		element1.getTransform().setTranslationZ(-5f);
+		
+		ModelBatch batch = new ModelBatch(element1);
 		
 		while(!GLFWWindow.closed()) {
 			Time.beginFrame();
 			GLFWWindow.update();
+			//renderer.renderTexturedModel(model2);
 			renderer.renderElements(batch);
+			textRenderer.renderText(meshh);
 			GLFWWindow.swapBuffer();
 			Time.waitForNextFrame();
 		}
 		
 		shader.remove();
-		model.remove();
 	}
 
 }

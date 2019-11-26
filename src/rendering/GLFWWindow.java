@@ -3,6 +3,7 @@ package rendering;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 import java.nio.DoubleBuffer;
 
@@ -15,8 +16,13 @@ import org.lwjgl.opengl.GL11;
 public class GLFWWindow {
 
 	private static long window;
+	private static int width;
+	private static int height;
 	
 	public static void init(int width, int height, String title) {
+		
+		GLFWWindow.width = width;
+		GLFWWindow.height = height;
 		
 		if(!GLFW.glfwInit()) {
 			System.err.println("Couldn't initialize GLFW window");
@@ -37,7 +43,16 @@ public class GLFWWindow {
 		
 		GLFW.glfwSetWindowPos(window, (videoMode.width() - width)/2, (videoMode.height() - height)/2);
 		GLFW.glfwShowWindow(window);	
-		glEnable(GL_DEPTH_TEST);
+		GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
+		glEnable(GL_MULTISAMPLE); 
+	}
+	
+	public static int getWidth() {
+		return GLFWWindow.width;
+	}
+	
+	public static int getHeight() {
+		return GLFWWindow.height;
 	}
 	
 	public static void update() {

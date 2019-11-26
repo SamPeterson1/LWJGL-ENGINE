@@ -68,8 +68,6 @@ public class OBJFile implements File {
 			
 			String[] tokens = line.split(" ");
 			
-			System.out.println(line);
-			
 			String[] vert1 = tokens[1].split("/");
 			String[] vert2 = tokens[2].split("/");
 			String[] vert3 = tokens[3].split("/");

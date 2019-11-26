@@ -1,5 +1,8 @@
 package models;
 
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glEnable;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -46,6 +49,7 @@ public class Renderer {
 	}
 	
 	private void begin(Model model) {
+		glEnable(GL_DEPTH_TEST);
 		GL30.glBindVertexArray(model.getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);

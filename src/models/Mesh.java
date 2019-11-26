@@ -35,10 +35,11 @@ public class Mesh extends Model{
         //material = new Texture(file);
     }
     
-    public Mesh(float[] vertices, int[] indices, Vector3f color) {
+    public Mesh(float[] vertices, float[] normals, int[] indices, Vector3f color) {
     	vertexArrayID = super.createVAO();
     	indicesBufferID = super.bindIndicesBuffer(indices);
         vertexBufferID = super.storeData(0, 3, vertices);
+        normalsBufferID = super.storeData(2, 3, normals);
         vertexCount = indices.length;
         GL30.glBindVertexArray(0);
         this.color = color;
