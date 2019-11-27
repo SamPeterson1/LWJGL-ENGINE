@@ -36,4 +36,5 @@ void main(void) {
 		fragColor = texture(sampler, passTextCoords) * vec4(diffuse, 1.0);
 	else
 		fragColor = vec4(diffuse, 1.0) * vec4(color, 1.0) + vec4(finalSpecular, 1.0);
+
 }

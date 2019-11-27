@@ -2,42 +2,41 @@ package models;
 
 import files.OBJFile;
 import math.Vector3f;
+import rendering.Material;
 
-public class ColoredMesh implements Mesh {
-	
-	private Model model;
-	private Vector3f color;
-	private float shineDamper = 10;
-	private float reflectivity = 1f;
+public class ColoredMesh extends Mesh {
 	
 	public ColoredMesh(String objFilePath, Vector3f color) {
 		
+		super(Mesh.UNTEXTURED);
+		
 		OBJFile objFile = new OBJFile(objFilePath);
-		this.model = objFile.read();
-		this.color = color;
+		super.setModel(objFile.read());
+		Material material = new Material();
+		material.setColor(color);
+		super.setMaterial(material);
 		
 	}
 	
-	@Override
-	public Model getModel() {
-		return this.model;
+	public void setReflectivity(float reflectivity) {
+		super.material.setReflectivity(reflectivity);
 	}
 	
-	public Vector3f getColor() {
-		return this.color;
+	public void setShineDamping(float shineDamping) {
+		super.material.setShineDamping(shineDamping);
 	}
-
-	@Override
-	public int getType() {
-		return Mesh.UNTEXTURED;
+	
+	
+	public Vector3f getColor() {
+		return this.material.getColor();
 	}
 
 	public float getShineDamper() {
-		return shineDamper;
+		return this.material.getShineDamping();
 	}
 
 	public float getReflectivity() {
-		return reflectivity;
+		return this.getShineDamper();
 	}
 
 }

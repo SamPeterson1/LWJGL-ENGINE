@@ -1,34 +1,24 @@
 package models;
 
 import files.OBJFile;
+import rendering.Material;
 import rendering.Texture;
 
-public class TexturedMesh implements Mesh {
-	
-	private Model model;
-	private Texture texture;
+public class TexturedMesh extends Mesh {
 	
 	public TexturedMesh(String objFilePath, String textureFilePath) {
 		
-		this.texture = new Texture(textureFilePath);
-		OBJFile objFile = new OBJFile(objFilePath);
-		this.model = objFile.read();
-		this.texture = new Texture(textureFilePath);
+		super(Mesh.TEXTURED);
 		
-	}
-	
-	@Override
-	public Model getModel() {
-		return this.model;
+		OBJFile objFile = new OBJFile(objFilePath);
+		super.setModel(objFile.read());
+		Material material = new Material();
+		material.setTexture(new Texture(textureFilePath));
+		super.setMaterial(material);
 	}
 	
 	public Texture getTexture() {
-		return this.texture;
-	}
-
-	@Override
-	public int getType() {
-		return Mesh.TEXTURED;
+		return this.material.getTexture();
 	}
 	
 }

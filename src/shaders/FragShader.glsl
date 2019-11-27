@@ -22,7 +22,7 @@ void main(void) {
 	vec3 unitCamVector = normalize(toCamera);
 	
 	float nDot1 = dot(unitNormal, unitLightVector);
-	float brightness = max(nDot1, 0.0);
+	float brightness = max(nDot1, 0.2);
 	vec3 diffuse = brightness * lightColor;
 	
 	vec3 lightDirection = -unitLightVector;
@@ -31,7 +31,6 @@ void main(void) {
 	specular = max(specular, 0.0);
 	float dampedSpecular = pow(specular, shineDamping);
 	vec3 finalSpecular = dampedSpecular * lightColor * reflectivity;
-	
 	
 	if(textured == 1)
 		fragColor = texture(sampler, passTextCoords) * vec4(diffuse, 1.0);

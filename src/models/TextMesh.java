@@ -2,43 +2,41 @@ package models;
 
 import GUI.TextMeshGenerator;
 import math.Vector3f;
+import rendering.Material;
 import rendering.Texture;
 
-public class TextMesh implements Mesh {
+public class TextMesh extends Mesh {
 
 	private TextMeshGenerator meshGenerator;
-	private Vector3f color;
 	private String text;
-	private Model model;
-	private Texture texture;
 	private int x;
 	private int y;
 	private float relativeSize;
 	
 	public TextMesh(String text, int x, int y, float relativeSize, Vector3f color, String fontFile) {
 		
-		this.color = color;
+		super(Mesh.TEXT);
+		
 		this.x = x;
 		this.y = y;
 		this.text = text;
 		this.relativeSize = relativeSize;
-		this.texture = new Texture("/assets/TestFont.png");
 		this.meshGenerator = new TextMeshGenerator(fontFile);
 		this.model = this.meshGenerator.genMesh(this);
+		super.setModel(model);
+		Material material = new Material();
+		material.setColor(color);
+		material.setTexture(new Texture("/assets/TestFont.png"));
+		super.setMaterial(material);
 		
 	}
-	
-	@Override
-	public Model getModel() {
-		return this.model;
-	}
-	
+
 	public Vector3f getColor() {
-		return this.color;
+		return this.material.getColor();
 	}
 	
 	public Texture getTexture() {
-		return this.texture;
+		return this.material.getTexture();
 	}
 	
 	public int getX() {
@@ -57,9 +55,11 @@ public class TextMesh implements Mesh {
 		return this.text;
 	}
 
+
 	@Override
-	public int getType() {
-		return Mesh.TEXT;
+	public void update() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

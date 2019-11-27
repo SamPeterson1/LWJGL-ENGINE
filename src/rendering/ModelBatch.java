@@ -2,36 +2,36 @@ package rendering;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import models.Entity;
+import models.Mesh;
 
 public class ModelBatch {
 	
-	private HashMap<Integer, ArrayList<GameElement>> elementsMap = new HashMap<>();
-	private ArrayList<GameElement> elementsList = new ArrayList<>();
 	
-	public ModelBatch(GameElement...elements) {
-		for(GameElement element: elements) {
-			this.addElement(element);
-			this.elementsList.add(element);
+	private Map<Mesh, List<Entity>> entities = new HashMap<>();
+	
+	public ModelBatch(Entity...entities) {
+		for(Entity entity: entities) {
+			this.addEntity(entity);
 		}
 	}
 	
-	public void addElement(GameElement element) {
-		int type = element.getMesh().getType();
-		if(!this.elementsMap.containsKey(type)) {
-			ArrayList<GameElement> typeElements = new ArrayList<>();
-			typeElements.add(element);
-			this.elementsMap.put(type, typeElements);
+	public void addEntity(Entity e) {
+		if(this.entities.containsKey(e.getMesh())) {
+			this.entities.get(e.getMesh()).add(e);
 		} else {
-			this.elementsMap.get(type).add(element);
+			List<Entity> entitiesOfType = new ArrayList<>();
+			entitiesOfType.add(e);
+			this.entities.put(e.getMesh(), entitiesOfType);
 		}
 	}
-
-	public ArrayList<GameElement> getElementsOfType(int type) {
-		return this.elementsMap.get(type);
-	}
 	
-	public ArrayList<GameElement> getAllElements() {
-		return this.elementsList;
+	public Map<Mesh, List<Entity>> getEntities() {
+		System.out.println(this.entities.keySet().size());
+		return this.entities;
 	}
 	
 }

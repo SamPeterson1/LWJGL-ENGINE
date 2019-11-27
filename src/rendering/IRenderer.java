@@ -1,13 +1,14 @@
 package rendering;
 
-import java.util.ArrayList;
-
+import math.Matrix;
 import models.Mesh;
-import shaders.Shader;
 
 public interface IRenderer {
 	
-	int getType();
-	void render(ArrayList<Mesh> mesh);
-	Shader getShader();
+	void begin();
+	void end();
+	void loadMesh(Mesh mesh);
+	void unloadMesh();
+	void setTransformationMatrix(Matrix matrix);
+	
 }
