@@ -1,17 +1,14 @@
 package main;
 
-import GUI.Font;
 import GUI.TextRenderer;
-import GUI.TextMesh;
-import GUI.TextMeshGenerator;
 import camera.Camera;
 import camera.CameraSpecs;
-import files.FontFile;
-import files.OBJFile;
 import math.Vector3f;
+import models.ColoredMesh;
 import models.GameElement;
-import models.Mesh;
 import models.Renderer;
+import models.TextMesh;
+import models.TexturedMesh;
 import rendering.GLFWWindow;
 import rendering.Light;
 import rendering.ModelBatch;
@@ -24,10 +21,8 @@ public class Main {
 	public static void main(String[] args) {
 		
 		GLFWWindow.init(1440, 1080, "Test");
-		
-		OBJFile test = new OBJFile("src/assets/dragon.obj");
-		Mesh foot = test.read();
-		Light light = new Light(new Vector3f(1, 1, 0), new Vector3f(100f, 0, 100f));
+
+		Light light = new Light(new Vector3f(1f, 1f, 1f), new Vector3f(100f, 0, 100f));
 		
 		BasicShader shader = new BasicShader();
 
@@ -42,34 +37,28 @@ public class Main {
 		Renderer renderer = new Renderer(shader, cam, light);
 		
 		Time.setCap(100);
-		
-		GameElement element1 = new GameElement(foot);
-		//GameElement element2 = new GameElement(TerrainGenerator.generateMesh());
-		TextMeshGenerator textGen = new TextMeshGenerator("src/assets/TestFont.fnt");
-		TextMesh meshh = textGen.genMesh("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 0, 200, 0.2f);
-			
+ 
+		GameElement element1 = new GameElement(new TexturedMesh("src/assets/stall.obj", "/assets/stallTexture.png"));
+		GameElement element2 = new GameElement(new ColoredMesh("src/assets/dragon.obj", new Vector3f(1f, 0f, 0f)));
+		GameElement element3= new GameElement(new ColoredMesh("src/assets/dragon.obj", new Vector3f(0f, 1f, 0f)));
+		element2.getTransform().setTranslationZ(-5);
+		element2.getTransform().setRotationY(90);
+		element2.getTransform().setScale(new Vector3f(0.5f, 0.5f, 0.5f));
+		element3.getTransform().setScale(new Vector3f(0.5f, 0.5f, 0.5f));
+		element3.getTransform().setTranslationZ(3);
+
+		TextMesh mesh = new TextMesh("testing123", 50, 50, 0.3f, new Vector3f(1f, 0f, 0f), "src/assets/TestFont.fnt");
 		TextShader textShader = new TextShader();
 		textShader.create();
 		TextRenderer textRenderer = new TextRenderer(textShader);
 		
-		//element1.getTransform().setTranslationZ(-2f);
-		//element2.getMesh().setColor(new Vector3f(1f, 0.5f, 0.2f));
-		//element2.getTransform().setTranslationZ(-2f);
-		//element1.getTransform().setTranslationX(-0.7f);
-		//element2.getTransform().setTranslationX(0.7f);
-		
-		element1.getTransform().setTranslationY(-8f);
-		element1.getTransform().setTranslationX(20f);
-		element1.getTransform().setTranslationZ(-5f);
-		
-		ModelBatch batch = new ModelBatch(element1);
+		ModelBatch batch = new ModelBatch(element1, element2, element3);
 		
 		while(!GLFWWindow.closed()) {
 			Time.beginFrame();
 			GLFWWindow.update();
-			//renderer.renderTexturedModel(model2);
 			renderer.renderElements(batch);
-			textRenderer.renderText(meshh);
+			textRenderer.renderText(mesh);
 			GLFWWindow.swapBuffer();
 			Time.waitForNextFrame();
 		}

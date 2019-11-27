@@ -3,10 +3,11 @@ package models;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL15;
 
-public class RawModel extends Model {
+public class RawModel_Unused extends ModelLoader {
+	
     private int vertexArrayID, vertexBufferID, indicesBufferID, vertexCount;
     
-    public RawModel(float[] vertices, int[] indices) {
+    public RawModel_Unused(float[] vertices, int[] indices) {
     	vertexArrayID = super.createVAO();
     	indicesBufferID = super.bindIndicesBuffer(indices);
         vertexBufferID = super.storeData(0, 3, vertices);

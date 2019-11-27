@@ -1,43 +1,56 @@
 package models;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.util.HashMap;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public abstract class Model {
-	protected int createVAO() {
-        int vertexArrayID = GL30.glGenVertexArrays();
-        GL30.glBindVertexArray(vertexArrayID);
-        return vertexArrayID;
-    }
-     
-    protected int storeData(int attributeNumber, int coordSize, float[] data) {
-    	FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
-        buffer.put(data);
-        buffer.flip();
-        int bufferID = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, bufferID);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-        GL20.glVertexAttribPointer(attributeNumber, coordSize, GL11.GL_FLOAT, false, 0, 0);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        return bufferID;
-    }
-     
-    protected int bindIndicesBuffer(int[] indices) {
-    	IntBuffer buffer = BufferUtils.createIntBuffer(indices.length);
-        buffer.put(indices);
-        buffer.flip();
-        int indicesBufferID = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBufferID);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        return indicesBufferID;
-    }
-    
-    public abstract int getVAO_ID();
+public class Model {
+	
+	private HashMap<Integer, Integer> ids = new HashMap<>();
+	private int vertexCount;
+	
+	public static final int VAO = 0;
+	public static final int VBO = 1;
+	public static final int IBO = 2;
+	public static final int TBO = 3;
+	public static final int NBO = 4;
+	
+	public void setVertexCount(int vertexCount) {
+		this.vertexCount = vertexCount;
+	}
+	
+	public int getVertexCount() {
+		return this.vertexCount;
+	}
+	
+	public void setVAO_ID(int vaoID) {
+		this.ids.put(Model.VAO, vaoID);
+	}
+	
+	public int getVAO_ID() {
+		return this.ids.get(Model.VAO);
+	}
+	
+	public void setBuffer(int bufferID, int type) {
+		this.ids.put(type, bufferID);
+	}
+	
+	public void remove() {
+		
+		if(this.ids.containsKey(Model.VAO))
+			GL30.glDeleteVertexArrays(this.ids.get(Model.VAO));
+		
+		this.deleteBuffer(Model.VBO);
+		this.deleteBuffer(Model.TBO);
+		this.deleteBuffer(Model.IBO);
+		this.deleteBuffer(Model.NBO);
+		
+	}
+	
+	private void deleteBuffer(int type) {
+		if(this.ids.containsKey(type))
+			GL15.glDeleteBuffers(this.ids.get(type));
+	}
+	
 }

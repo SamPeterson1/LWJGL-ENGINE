@@ -1,23 +1,13 @@
 package rendering;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.GL_UNPACK_ALIGNMENT;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glDeleteTextures;
-import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glPixelStorei;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
-import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 import java.nio.ByteBuffer;
@@ -35,7 +25,7 @@ public class Texture {
 		PNGFile file = new PNGFile(path);
 		ByteBuffer image = file.read();
 
-	    int id = glGenTextures();
+	    this.id = glGenTextures();
 	    glBindTexture(GL_TEXTURE_2D, id);
 
 	    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
@@ -47,11 +37,8 @@ public class Texture {
 	    
 	}
 	
-	public int getID() {
-		return this.id;
+	public void bind() {
+		glBindTexture(GL_TEXTURE_2D, this.id);
 	}
 	
-	public void remove() {
-		glDeleteTextures(this.id);
-	}
 }

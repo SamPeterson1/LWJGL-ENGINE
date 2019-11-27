@@ -14,16 +14,21 @@ public class TextShader extends Shader {
 	@Override
 	public void bindAllAttributes() {
 		super.bindAttribute(0, "position");
-		super.bindAttribute(1, "textCoords");
+		super.bindAttribute(1, "tesa xtCoords");
 	}
 
 	@Override
 	public void createUniforms() {
 		super.createUniform("color");
+		super.createUniform("sampler");
 	}
 	
 	public void setTextColor(Vector3f color) {
 		super.setUniform3f("color", color);
+	}
+	
+	public void setSampler(int index) {
+		super.setUniformi("sampler", index);
 	}
 
 }

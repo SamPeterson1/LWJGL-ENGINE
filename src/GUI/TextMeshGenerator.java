@@ -1,7 +1,9 @@
 package GUI;
 
 import files.FontFile;
-import math.Vector3f;
+import models.Model;
+import models.ModelLoader;
+import models.TextMesh;
 import rendering.GLFWWindow;
 
 public class TextMeshGenerator {
@@ -21,7 +23,12 @@ public class TextMeshGenerator {
 		
 	}
 	
-	public TextMesh genMesh(String text, int x, int y, float size) {
+	public Model genMesh(TextMesh mesh) {
+		
+		String text = mesh.getText();
+		int x = mesh.getX();
+		int y = mesh.getY();
+		float size = mesh.getRelativeSize();
 		
 		float[] vertices = new float[text.length()*12];
 		float[] textCoords = new float[text.length()*8];
@@ -39,22 +46,18 @@ public class TextMeshGenerator {
 			//v1
 			vertices[vtPointer++] = (x + cursor + f.getData(c, Font.XOFF)*size)/(this.windowWidth/2f) - 1;
 			vertices[vtPointer++] = (y + f.getData(c, Font.YOFF)*size)/(this.windowHeight/2f) - 1;
-			vertices[vtPointer++] = 0;
 			
 			//v2
 			vertices[vtPointer++] = (x + cursor + f.getData(c, Font.XOFF)*size + f.getData(c, Font.WIDTH)*size)/(this.windowWidth/2f) - 1;
 			vertices[vtPointer++] = (y + f.getData(c, Font.YOFF)*size)/(this.windowHeight/2f) - 1;
-			vertices[vtPointer++] = 0;
 			
 			//v3
 			vertices[vtPointer++] = (x + cursor + f.getData(c, Font.XOFF)*size + f.getData(c, Font.WIDTH)*size)/(this.windowWidth/2f) - 1;
 			vertices[vtPointer++] = (y + f.getData(c, Font.YOFF)*size + f.getData(c, Font.HEIGHT)*size)/(this.windowHeight/2f) - 1;
-			vertices[vtPointer++] = 0;
 			
 			//v4
 			vertices[vtPointer++] = (x + cursor + f.getData(c, Font.XOFF)*size)/(this.windowWidth/2f) - 1;
 			vertices[vtPointer++] = (y + f.getData(c, Font.YOFF)*size + f.getData(c, Font.HEIGHT)*size)/(this.windowHeight/2f) - 1;
-			vertices[vtPointer++] = 0;
 			
 			cursor += f.getData(c, Font.ADV) * size;
 			
@@ -85,7 +88,7 @@ public class TextMeshGenerator {
 			loops ++;
 		}
 		
-		return new TextMesh(vertices, textCoords, indices, new Vector3f(0f, 0f, 0f), f.getTexAtlas());
+		return ModelLoader.load2DModel(vertices, textCoords, indices);
 		
 	}
 	

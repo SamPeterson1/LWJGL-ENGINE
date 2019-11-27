@@ -32,6 +32,8 @@ public class FontFile implements File {
 				}
 				System.out.println("");
 				font.addChar(c, data);
+			} else if(tokens[0].equals("page")) {
+				font.setAtlas(tokens[2].split("=")[1]);
 			}
 		}
 		

@@ -5,7 +5,8 @@ import java.util.List;
 
 import math.Vector2f;
 import math.Vector3f;
-import models.Mesh;
+import models.Model;
+import models.ModelLoader;
 
 public class OBJFile implements File {
 
@@ -26,7 +27,7 @@ public class OBJFile implements File {
 	}
 	
 	@Override
-	public Mesh read() {
+	public Model read() {
 		
 		List<Vector3f> vertices = new ArrayList<Vector3f>();
 		List<Vector2f> textures = new ArrayList<Vector2f>();
@@ -94,7 +95,7 @@ public class OBJFile implements File {
 			indicesArray[i] = indices.get(i);
 		}
 		
-		return new Mesh(vertsArray, textureArray, normalsArray, indicesArray, "/assets/stallTexture.png");
+		return ModelLoader.load3DModel(vertsArray, textureArray, normalsArray, indicesArray);
 	}
 	
 	private void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures, 

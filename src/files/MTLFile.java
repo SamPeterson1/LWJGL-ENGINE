@@ -1,7 +1,5 @@
 package files;
 
-import rendering.Texture;
-
 public class MTLFile implements File {
 	
 	String mtlName;

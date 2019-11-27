@@ -17,8 +17,8 @@ public class BasicShader extends Shader {
 	@Override
 	public void bindAllAttributes() {
 		super.bindAttribute(0, "vertices");
-		super.bindAttribute(1, "textCoords");
-		super.bindAttribute(2, "normals");
+		super.bindAttribute(1, "normals");
+		super.bindAttribute(2, "textCoords");
 	}
 
 	@Override
@@ -30,8 +30,13 @@ public class BasicShader extends Shader {
 		super.createUniform("color");
 		super.createUniform("lightPosition");
 		super.createUniform("lightColor");
+		super.createUniform("sampler");
 	}
 
+	public void setSampler(int index) {
+		super.setUniformi("sampler", index);
+	}
+	
 	public void setTextured(boolean textured) {
 		super.setUniformi("textured", textured ? 1 : 0);
 	}

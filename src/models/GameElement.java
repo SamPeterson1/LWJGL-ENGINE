@@ -2,13 +2,11 @@ package models;
 
 import math.Matrix;
 import math.Transform;
-import math.Vector3f;
 
 public class GameElement {
 	
 	private Mesh mesh;
 	private Transform transform;
-	private static boolean a;
 	
 	public GameElement(Mesh mesh) {
 		this.mesh = mesh;
@@ -25,10 +23,7 @@ public class GameElement {
 	}
 	
 	public void update() {
-		
-		this.transform.rotateY(1);
-		//this.transform.rotateX((a ? -1 : 4));
-		//a = !a;
+
 	}
 	
 	public Matrix getTransformationMatrix() {
@@ -39,8 +34,16 @@ public class GameElement {
 		return this.transform;
 	}
 	
+	public boolean isTextured() {
+		return this.mesh instanceof TexturedMesh;
+	}
+	
 	public Mesh getMesh() {
 		return this.mesh;
+	}
+	
+	public Model getModel() {
+		return this.mesh.getModel();
 	}
 	
 }

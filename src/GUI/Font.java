@@ -1,9 +1,6 @@
 package GUI;
 
-import java.nio.ByteBuffer;
 import java.util.HashMap;
-
-import files.PNGFile;
 
 public class Font {
 	
