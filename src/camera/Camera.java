@@ -2,8 +2,9 @@ package camera;
 
 import math.Matrix;
 import math.Transform;
-import models.GameElement;
+import math.Vector3f;
 import rendering.GLFWWindow;
+import rendering.GameElement;
 
 public class Camera {
 	
@@ -16,6 +17,10 @@ public class Camera {
 		this.transform = new Transform();
 		GLFWWindow.disableCursor();
 		this.controller = new KeyboardCamController();
+	}
+	
+	public Vector3f getPosition() {
+		return this.transform.getPos();
 	}
 	
 	public void update() {

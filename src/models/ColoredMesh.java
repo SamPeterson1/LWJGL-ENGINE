@@ -7,6 +7,8 @@ public class ColoredMesh implements Mesh {
 	
 	private Model model;
 	private Vector3f color;
+	private float shineDamper = 10;
+	private float reflectivity = 1f;
 	
 	public ColoredMesh(String objFilePath, Vector3f color) {
 		
@@ -30,5 +32,12 @@ public class ColoredMesh implements Mesh {
 		return Mesh.UNTEXTURED;
 	}
 
-	
+	public float getShineDamper() {
+		return shineDamper;
+	}
+
+	public float getReflectivity() {
+		return reflectivity;
+	}
+
 }

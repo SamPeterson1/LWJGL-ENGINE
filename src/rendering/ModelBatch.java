@@ -3,34 +3,35 @@ package rendering;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import models.GameElement;
-
 public class ModelBatch {
 	
-	private HashMap<Integer, ArrayList<GameElement>> elements = new HashMap<>();
+	private HashMap<Integer, ArrayList<GameElement>> elementsMap = new HashMap<>();
+	private ArrayList<GameElement> elementsList = new ArrayList<>();
+	
 	public ModelBatch(GameElement...elements) {
 		for(GameElement element: elements) {
 			this.addElement(element);
+			this.elementsList.add(element);
 		}
 	}
 	
 	public void addElement(GameElement element) {
 		int type = element.getMesh().getType();
-		if(!this.elements.containsKey(type)) {
+		if(!this.elementsMap.containsKey(type)) {
 			ArrayList<GameElement> typeElements = new ArrayList<>();
 			typeElements.add(element);
-			this.elements.put(type, typeElements);
+			this.elementsMap.put(type, typeElements);
 		} else {
-			this.elements.get(type).add(element);
+			this.elementsMap.get(type).add(element);
 		}
 	}
 
 	public ArrayList<GameElement> getElementsOfType(int type) {
-		return this.elements.get(type);
+		return this.elementsMap.get(type);
 	}
 	
-	public HashMap<Integer, ArrayList<GameElement>> getAllElements() {
-		return this.elements;
+	public ArrayList<GameElement> getAllElements() {
+		return this.elementsList;
 	}
 	
 }

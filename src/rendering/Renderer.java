@@ -1,4 +1,4 @@
-package models;
+package rendering;
 
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glEnable;
@@ -10,8 +10,10 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import camera.Camera;
-import rendering.Light;
-import rendering.ModelBatch;
+import models.ColoredMesh;
+import models.Mesh;
+import models.Model;
+import models.TexturedMesh;
 import shaders.BasicShader;
 
 public class Renderer {
@@ -46,6 +48,7 @@ public class Renderer {
 		cam.update();	
 		this.shader.bind();
 		
+
 		for(GameElement element: batch.getElementsOfType(Mesh.TEXTURED)) {
 			
 			TexturedMesh model = (TexturedMesh) element.getMesh();
@@ -62,7 +65,7 @@ public class Renderer {
 			GL11.glDrawElements(GL11.GL_TRIANGLES, element.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			this.end();
 		}
-		
+
 		for(GameElement element: batch.getElementsOfType(Mesh.UNTEXTURED)) {
 			
 			ColoredMesh model = (ColoredMesh) element.getMesh();
@@ -70,6 +73,7 @@ public class Renderer {
 			element.update();
 			this.begin(element.getModel());
 			this.shader.loadLight(light);
+			this.shader.setMaterialReflectivity(model.getReflectivity(), model.getShineDamper());
 			this.shader.setTextured(false);
 			this.shader.setProjectionMatrix(cam.perspective());
 			this.shader.setColor(model.getColor());

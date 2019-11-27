@@ -1,4 +1,4 @@
-package GUI;
+package rendering;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;

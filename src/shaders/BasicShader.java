@@ -31,6 +31,13 @@ public class BasicShader extends Shader {
 		super.createUniform("lightPosition");
 		super.createUniform("lightColor");
 		super.createUniform("sampler");
+		super.createUniform("reflectivity");
+		super.createUniform("shineDamping");
+	}
+
+	public void setMaterialReflectivity(float reflectivity, float shineDamper) {
+		super.setUniform("reflectivity", reflectivity);
+		super.setUniform("shineDamping", shineDamper);
 	}
 
 	public void setSampler(int index) {

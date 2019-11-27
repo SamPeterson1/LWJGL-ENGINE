@@ -1,7 +1,10 @@
-package models;
+package rendering;
 
 import math.Matrix;
 import math.Transform;
+import models.Mesh;
+import models.Model;
+import models.TexturedMesh;
 
 public class GameElement {
 	

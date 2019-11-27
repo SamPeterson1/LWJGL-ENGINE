@@ -6,6 +6,7 @@ uniform vec3 lightPosition;
 in vec2 textCoords;
 out vec2 passTextCoords;
 out vec3 faceNormal;
+out vec3 toCamera;
 out vec3 toLight;
 
 uniform mat4 p;
@@ -20,5 +21,6 @@ void main(void) {
 	
 	faceNormal = vec3(t * vec4(normals, 0.0));
 	toLight = lightPosition - worldPosition.xyz;
+	toCamera = (inverse(v) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 	
 }

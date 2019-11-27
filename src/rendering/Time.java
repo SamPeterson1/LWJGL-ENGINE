@@ -25,14 +25,14 @@ public class Time {
 	public static void waitForNextFrame() {
 		if(getDeltaTime() > maxDeltaTime) {
 			Time.deltaTime = getDeltaTime();
-			//System.out.println(1/Time.deltaTime);
+			System.out.println(1/Time.deltaTime);
 			return;
 		}
 		while(getDeltaTime() < maxDeltaTime && !GLFWWindow.closed()) {
 			GLFWWindow.update();
 		}
 		Time.deltaTime = getDeltaTime();
-		System.out.println(1/Time.deltaTime);
+		System.out.println(1/Time.deltaTime + " foo ");
 	}
 	
 }
