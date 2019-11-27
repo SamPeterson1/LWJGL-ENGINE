@@ -3,6 +3,7 @@ package rendering;
 import static org.lwjgl.opengl.GL11.GL_BACK;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.glCullFace;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.List;
@@ -32,13 +33,20 @@ public class MasterRenderer {
 		glCullFace(GL_BACK);
 	}
 	
+	public static void setDoCull(boolean cull) {
+		if(cull) {
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_BACK);
+		} else {
+			glDisable(GL_CULL_FACE);
+		}
+	}
+	
 	public void render(ModelBatch batch) {
-		
-		this.activeRenderer.begin();
 		
 		Map<Mesh, List<Entity>> meshesMap = batch.getEntities();
 		this.cam.update();
-		
+		this.activeRenderer.begin();
 		for(Mesh mesh: meshesMap.keySet()) {
 			this.activeRenderer.unloadMesh();
 			List<Entity> entities = meshesMap.get(mesh);

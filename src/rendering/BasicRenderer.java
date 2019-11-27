@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL30;
 
 import camera.Camera;
 import math.Matrix;
+import math.Vector3f;
 import models.Mesh;
 import models.TexturedMesh;
 import shaders.BasicShader;
@@ -31,17 +32,16 @@ public class BasicRenderer implements IRenderer {
 	
 	@Override
 	public void begin() {
-		System.out.println("BEGIN");
 		this.shader.bind();
 		glEnable(GL_DEPTH_TEST);
 		this.shader.loadLight(light);
 		this.shader.setViewMatrix(cam.viewMatrix());
 		this.shader.setProjectionMatrix(cam.perspective());
+		this.shader.setSkyColor(new Vector3f(0f, 1f, 1f));
 	}
 
 	@Override
 	public void end() {
-		System.out.println("FOOY");
 		this.shader.unbind();
 	}
 
@@ -63,7 +63,6 @@ public class BasicRenderer implements IRenderer {
 	}
 	
 	private void loadColoredMesh(Mesh mesh) {
-		System.out.println("Colored mesh loaded");
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
@@ -74,12 +73,15 @@ public class BasicRenderer implements IRenderer {
 	}
 	
 	private void loadTexturedMesh(Mesh mesh) {
-		System.out.println("Textured mesh loaded");
+		TexturedMesh texturedMesh = (TexturedMesh) mesh;
+		MasterRenderer.setDoCull((texturedMesh).cullFace());
+		
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
 		this.shader.setTextured(true);
+		this.shader.setUseFakeLighting(texturedMesh.usesFakeLighting());
 		glActiveTexture(GL_TEXTURE0);
 		mesh.getMaterial().getTexture().bind();
 		this.shader.setSampler(GL_TEXTURE0);

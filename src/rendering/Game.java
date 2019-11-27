@@ -27,7 +27,7 @@ public class Game {
 		
 		GLFWWindow.init(1440, 1080, "Test");
 
-		light = new Light(new Vector3f(1f, 1f, 1f), new Vector3f(200f, 200f, 100f));
+		light = new Light(new Vector3f(1f, 1f, 1f), new Vector3f(-1000f, 1000f, 100f));
 
 		CameraSpecs specs = new CameraSpecs();
 		specs.setAspect((float)GLFWWindow.getWidth()/(float)GLFWWindow.getHeight());
@@ -64,7 +64,42 @@ public class Game {
 		textShader.create();
 		textRenderer = new TextRenderer(textShader);
 		
+		TexturedMesh tree = new TexturedMesh("src/assets/tree.obj", "/assets/tree.png");
+		TexturedMesh fern = new TexturedMesh("src/assets/fern.obj", "/assets/fern.png");
+		TexturedMesh grass = new TexturedMesh("src/assets/grassModel.obj", "/assets/grassTexture.png");
+		
+		fern.setCullFace(false);
+		grass.setCullFace(false);
+		grass.setUseFakeLighting(true);
+		
 		batch = new ModelBatch(terrain, element1, element2, element3);
+		
+		for(int i = 0; i < 800; i ++) {
+			float x = (float) (Math.random() * 800);
+			float z = (float) (Math.random() * 800);
+			Entity treeEntity = new Entity(tree);
+			treeEntity.getTransform().setTranslation(new Vector3f(x, 0, z));
+			treeEntity.getTransform().setScale(new Vector3f(2, 2, 2));
+			batch.addEntity(treeEntity);
+			
+			x = (float) (Math.random() * 800);
+			z = (float) (Math.random() * 800);
+			Entity grassEntity = new Entity(grass);
+			grassEntity.getTransform().setTranslation(new Vector3f(x, 0, z));
+			batch.addEntity(grassEntity);
+			
+			x = (float) (Math.random() * 800);
+			z = (float) (Math.random() * 800);
+			Entity grassEntity2 = new Entity(grass);
+			grassEntity2.getTransform().setTranslation(new Vector3f(x, 0, z));
+			batch.addEntity(grassEntity2);
+			
+			x = (float) (Math.random() * 800);
+			z = (float) (Math.random() * 800);
+			Entity fernEntity = new Entity(fern);
+			fernEntity.getTransform().setTranslation(new Vector3f(x, 0, z));
+			batch.addEntity(fernEntity);
+		}
 		
 	}
 	

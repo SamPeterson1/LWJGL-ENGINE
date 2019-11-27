@@ -9,7 +9,7 @@ import rendering.Time;
 
 public class KeyboardCamController implements CameraController {
 	
-	private float speed = 50f;
+	private float speed = 20f;
 	private float xSense = 0.05f;
 	private float ySense = 0.05f;
 	

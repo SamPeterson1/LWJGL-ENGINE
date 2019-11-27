@@ -33,8 +33,19 @@ public class BasicShader extends Shader {
 		super.createUniform("sampler");
 		super.createUniform("reflectivity");
 		super.createUniform("shineDamping");
+		super.createUniform("useFakeLighting");
+		super.createUniform("skyColor");
 	}
 
+	public void setSkyColor(Vector3f skyColor) {
+		super.setUniform3f("skyColor", skyColor);
+	}
+	
+	public void setUseFakeLighting(boolean useFakeLighting) {
+		System.out.println(useFakeLighting);
+		super.setUniformi("useFakeLighting", useFakeLighting ? 1 : 0);
+	}
+	
 	public void setMaterialReflectivity(float reflectivity, float shineDamper) {
 		super.setUniform("reflectivity", reflectivity);
 		super.setUniform("shineDamping", shineDamper);

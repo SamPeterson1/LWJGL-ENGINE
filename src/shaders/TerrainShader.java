@@ -32,11 +32,16 @@ public class TerrainShader extends Shader{
 		super.createUniform("sampler");
 		super.createUniform("reflectivity");
 		super.createUniform("shineDamping");
+		super.createUniform("skyColor");
 	}
 
 	public void setMaterialReflectivity(float reflectivity, float shineDamper) {
 		super.setUniform("reflectivity", reflectivity);
 		super.setUniform("shineDamping", shineDamper);
+	}
+	
+	public void setSkyColor(Vector3f skyColor) {
+		super.setUniform3f("skyColor", skyColor);
 	}
 
 	public void setSampler(int index) {

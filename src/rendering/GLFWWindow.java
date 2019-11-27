@@ -55,7 +55,7 @@ public class GLFWWindow {
 	}
 	
 	public static void update() {
-		GL11.glClearColor(1f, 0f, 1f, 1.0f);
+		GL11.glClearColor(0f, 1f, 1f, 1.0f);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		GLFW.glfwPollEvents();
 	}

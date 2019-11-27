@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL30;
 
 import camera.Camera;
 import math.Matrix;
+import math.Vector3f;
 import models.Mesh;
 import shaders.TerrainShader;
 
@@ -30,23 +31,21 @@ public class TerrainRenderer implements IRenderer {
 	
 	@Override
 	public void begin() {
-		System.out.println("BEGIN");
 		this.shader.bind();
 		glEnable(GL_DEPTH_TEST);
 		this.shader.loadLight(light);
 		this.shader.setViewMatrix(cam.viewMatrix());
 		this.shader.setProjectionMatrix(cam.perspective());
+		this.shader.setSkyColor(new Vector3f(0, 1f, 1f));
 	}
 
 	@Override
 	public void end() {
-		System.out.println("FOOY");
 		this.shader.unbind();
 	}
 
 	@Override
 	public void loadMesh(Mesh mesh) {
-		System.out.println("Textured mesh loaded");
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
