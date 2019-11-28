@@ -76,7 +76,20 @@ public class ModelLoader {
     	model.setVAO_ID(createVAO());
     	model.setBuffer(bindIndicesBuffer(indices), Model.IBO);
     	model.setBuffer(storeData(0, 2, vertices), Model.VBO);
-    	model.setBuffer(storeData(1, 2, textureCoords), Model.NBO); 
+    	model.setBuffer(storeData(1, 2, textureCoords), Model.TBO); 
+    	model.setVertexCount(indices.length);
+    	GL30.glBindVertexArray(0);
+    	
+    	return model;
+    	
+    }
+    
+    public static Model loadGUIModel(float[] vertices, int[] indices) {
+    	
+    	Model model = new Model();
+    	model.setVAO_ID(createVAO());
+    	model.setBuffer(bindIndicesBuffer(indices), Model.IBO);
+    	model.setBuffer(storeData(0, 2, vertices), Model.VBO);
     	model.setVertexCount(indices.length);
     	GL30.glBindVertexArray(0);
     	

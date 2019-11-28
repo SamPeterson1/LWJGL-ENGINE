@@ -4,8 +4,8 @@ import math.Vector3f;
 
 public class TextShader extends Shader {
 	
-	private static final String VERTEX_FILE = "src/shaders/TextVertexShader.glsl";
-	private static final String FRAGMENT_FILE = "src/shaders/TextFragmentShader.glsl";
+	private static final String VERTEX_FILE = "/shaders/TextVertexShader.glsl";
+	private static final String FRAGMENT_FILE = "/shaders/TextFragmentShader.glsl";
 	
 	public TextShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -14,7 +14,7 @@ public class TextShader extends Shader {
 	@Override
 	public void bindAllAttributes() {
 		super.bindAttribute(0, "position");
-		super.bindAttribute(1, "tesa xtCoords");
+		super.bindAttribute(1, "textCoords");
 	}
 
 	@Override

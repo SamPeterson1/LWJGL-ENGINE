@@ -8,6 +8,7 @@ public class Mesh {
 	public static final int TEXTURED = 1;
 	public static final int UNTEXTURED = 2;
 	public static final int TERRAIN = 3;
+	public static final int GUI = 4;
 	
 	protected int type;
 	protected Material material;

@@ -25,7 +25,7 @@ public class Entity {
 	}
 	
 	public void update() {
+		this.mesh.update();
 	}
-	
 	
 }

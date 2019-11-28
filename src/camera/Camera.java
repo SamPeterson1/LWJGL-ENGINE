@@ -19,6 +19,10 @@ public class Camera {
 		this.controller = new KeyboardCamController();
 	}
 	
+	public void setAspect(float aspect) {
+		this.camSpecs.setAspect(aspect);
+	}
+	
 	public Vector3f getPosition() {
 		return this.transform.getPos();
 	}

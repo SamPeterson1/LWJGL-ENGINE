@@ -6,8 +6,8 @@ import rendering.Light;
 
 public class TerrainShader extends Shader{
 
-	private static final String VERTEX_FILE = "src/shaders/TerrainVertShader.glsl";
-	private static final String FRAGMENT_FILE = "src/shaders/TerrainFragShader.glsl";
+	private static final String VERTEX_FILE = "/shaders/TerrainVertShader.glsl";
+	private static final String FRAGMENT_FILE = "/shaders/TerrainFragShader.glsl";
 	
 	public TerrainShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);

@@ -1,5 +1,7 @@
 package terrain;
 
+import math.Noise;
+import math.PerlinNoise;
 import models.Mesh;
 import models.Model;
 import models.ModelLoader;
@@ -14,15 +16,17 @@ public class Terrain extends Mesh {
 	private float x;
 	private float z;
 	
+	private Noise noise;
+	
 	public Terrain(int gridX, int gridZ, String texturePath) {
 		super(Mesh.TERRAIN);
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
+		this.noise = new Noise(130);
 		super.setModel(this.generateTerrain());
 		Material material = new Material();
 		material.setTexture(new Texture(texturePath));
-		this.setMaterial(material);
-		
+		this.setMaterial(material);		
 	}
 	
 	private Model generateTerrain(){
@@ -35,7 +39,7 @@ public class Terrain extends Mesh {
 		for(int i=0;i<VERTEX_COUNT;i++){
 			for(int j=0;j<VERTEX_COUNT;j++){
 				vertices[vertexPointer*3] = (float)j/((float)VERTEX_COUNT - 1) * SIZE;
-				vertices[vertexPointer*3+1] = 0;
+				vertices[vertexPointer*3+1] = (float)noise.interpolateNoise2D(i, j) * 10;
 				vertices[vertexPointer*3+2] = (float)i/((float)VERTEX_COUNT - 1) * SIZE;
 				normals[vertexPointer*3] = 0;
 				normals[vertexPointer*3+1] = 1;

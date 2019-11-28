@@ -18,6 +18,18 @@ public class Transform {
 		return this.pos;
 	}
 	
+	public void setScaleX(float scaleX) {
+		this.scale.setX(scaleX);
+	}
+	
+	public void setScaleY(float scaleY) {
+		this.scale.setY(scaleY);
+	}
+	
+	public void setScaleZ(float scaleZ) {
+		this.scale.setZ(scaleZ);
+	}
+	
 	public void translateX(float dist) {
 		this.pos.addX(dist);
 	}

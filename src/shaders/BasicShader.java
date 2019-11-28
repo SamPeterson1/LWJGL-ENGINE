@@ -6,12 +6,11 @@ import rendering.Light;
 
 public class BasicShader extends Shader {
 
-	private static final String VERTEX_FILE = "src/shaders/VertShader.glsl";
-	private static final String FRAGMENT_FILE = "src/shaders/FragShader.glsl";
+	private static final String VERTEX_FILE = "/shaders/VertShader.glsl";
+	private static final String FRAGMENT_FILE = "/shaders/FragShader.glsl";
 	
 	public BasicShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
-		
+		super(VERTEX_FILE, FRAGMENT_FILE);	
 	}
 
 	@Override

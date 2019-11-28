@@ -10,16 +10,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import camera.Camera;
 import models.Entity;
 import models.Mesh;
 
-public class MasterRenderer {
+public class MasterRenderer implements WindowListener {
 	
 	private IRenderer activeRenderer;
 	private TerrainRenderer terrainRenderer;
 	private BasicRenderer renderer;
+	private GUIRenderer guiRenderer;
 	private Light light;
 	private Camera cam;
 	
@@ -28,9 +30,11 @@ public class MasterRenderer {
 		this.cam = cam;
 		this.terrainRenderer = new TerrainRenderer(light, cam);
 		this.renderer = new BasicRenderer(light, cam);
+		this.guiRenderer = new GUIRenderer();
 		this.activeRenderer = renderer;
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
+		GLFWWindow.addListener(this);
 	}
 	
 	public static void setDoCull(boolean cull) {
@@ -59,6 +63,9 @@ public class MasterRenderer {
 			} else if(mesh.getType() == Mesh.TERRAIN) {
 				this.activateRenderer(terrainRenderer);
 				this.terrainRenderer.loadMesh(mesh);
+			} else if(mesh.getType() == Mesh.GUI) {
+				this.activateRenderer(guiRenderer);
+				this.guiRenderer.loadMesh(mesh);
 			}
 			
 			for(Entity e: entities) {
@@ -66,6 +73,7 @@ public class MasterRenderer {
 			}
 		}
 		
+		this.activeRenderer.unloadMesh();
 		this.activeRenderer.end();
 		
 	}
@@ -82,6 +90,12 @@ public class MasterRenderer {
 			this.activeRenderer = renderer;
 			this.activeRenderer.begin();
 		}
+	}
+
+	@Override
+	public void onResize(int width, int height) {
+		this.cam.setAspect((float)width/(float)height);
+		GL20.glViewport(0, 0, width, height);
 	}
 	
 }

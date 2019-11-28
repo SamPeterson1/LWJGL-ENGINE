@@ -1,9 +1,9 @@
 package files;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class TextFile implements File {
 	
@@ -16,11 +16,8 @@ public class TextFile implements File {
 	}
 	
 	private void createReader() {
-		try {
-			this.reader = new BufferedReader(new FileReader(path));
-		} catch (FileNotFoundException e) {
-			System.err.println("Error: file not found");
-		}
+		InputStream in = Class.class.getResourceAsStream(path);
+		this.reader = new BufferedReader(new InputStreamReader(in));
 	}
 	
 	public String readLine() {
