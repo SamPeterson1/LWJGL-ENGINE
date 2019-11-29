@@ -10,15 +10,17 @@ import models.Model;
 import models.ModelLoader;
 import rendering.GLFWWindow;
 import rendering.Material;
-import rendering.WindowListener;
 
-public class GUIComponent extends Mesh implements WindowListener {
+public class GUIComponent extends Mesh {
 	
-	Entity entity;
-	float depth;
-	int centerX;
-	int centerY;
-	List<Constraint> constraints = new ArrayList<>();
+	protected Entity entity;
+	protected GUIComponent parent;
+	protected float depth;
+	protected int centerX;
+	protected int centerY;
+	protected List<GUIComponent> children = new ArrayList<>();
+	protected List<Constraint> constraints = new ArrayList<>();
+	private String debugTag;
 	
 	private static final float[] rectVerts = new float[] {
 			1, 1,
@@ -34,44 +36,61 @@ public class GUIComponent extends Mesh implements WindowListener {
 	
 	private static final Model rectangle = ModelLoader.loadGUIModel(rectVerts, rectIndices);
 	
-	public GUIComponent(Vector3f color, int centerX, int centerY, float depth) {
+	public GUIComponent() {
+		super(Mesh.GUI);
+	}
+	
+	public GUIComponent(Vector3f color, float depth, String debugTag) {
 		
 		super(Mesh.GUI);
 		super.setModel(rectangle);
 		Material material = new Material();
 		material.setColor(color);
 		super.setMaterial(material);
-		this.entity = new Entity(this);
-		this.entity.getTransform().setTranslation(new Vector3f(centerX, centerY, 0));
-		this.centerX = centerX;
-		this.centerY = centerY;
-		GLFWWindow.addListener(this);
 		this.depth = depth;
-		this.constraints.add(new RelativeConstraint(0.5f, Constraint.X));
-		//this.constraints.add(new PixelConstraint(0, Constraint.X));
-		this.constraints.add(new RelativeConstraint(0.7f, Constraint.HEIGHT));
-		this.constraints.add(new AspectConstraint(0.5f, Constraint.WIDTH));
+		this.debugTag = debugTag;
 		
+	}
+	
+	public void setParent(GUIComponent parent) {
+		this.parent = parent;
+	}
+	
+	public void addChild(GUIComponent child) {
+		this.children.add(child);
+		child.setParent(this);
+	}
+	
+	public void addConstraint(Constraint constraint) {
+		this.constraints.add(constraint);
 	}
 	
 	public float getDepth() {
 		return this.depth;
 	}
 	
-	@Override
-	public void update() {
-
+	public void setEntity(Entity e) {
+		this.entity = e;
 	}
 	
 	public Entity getEntity() {
 		return this.entity;
 	}
 
-	@Override
-	public void onResize(int width, int height) {
+	public void onWindowResize(int width, int height) {
+		
+		System.out.println("WIMNWAOED size" + width + " " + height + " " + debugTag);
+
+		
 		for(Constraint constraint: constraints) {
-			constraint.constrain(width, height, this);
+			constraint.constrain(width, height, this, this.parent);
 		}
+		
+		Vector3f scale = this.entity.getTransform().getScale();
+		for(GUIComponent child: this.children) {
+			child.onWindowResize((int) (scale.getX() * GLFWWindow.getWidth()), (int) (scale.getY() * GLFWWindow.getHeight()));
+		}
+		
 	}
 
 }

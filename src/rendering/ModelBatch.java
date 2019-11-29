@@ -30,7 +30,7 @@ public class ModelBatch {
 	}
 	
 	public Map<Mesh, List<Entity>> getEntities() {
-		System.out.println(this.entities.keySet().size());
+		System.out.println(this.entities.keySet().size() + " fr");
 		return this.entities;
 	}
 	

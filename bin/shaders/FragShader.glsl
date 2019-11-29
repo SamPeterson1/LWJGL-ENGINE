@@ -34,14 +34,17 @@ void main(void) {
 	float dampedSpecular = pow(specular, shineDamping);
 	vec3 finalSpecular = dampedSpecular * lightColor * reflectivity;
 	
-	vec4 textureColor = texture(sampler, passTextCoords);
-	if(textureColor.w < 0.5) {
-		discard;
+	if(textured == 1) {
+		vec4 textureColor = texture(sampler, passTextCoords);
+		if(textureColor.w < 0.5) {
+			discard;
+		}
 	}
 	
 	if(textured == 1)
 		fragColor = texture(sampler, passTextCoords) * vec4(diffuse, 1.0);
 	else
 		fragColor = vec4(diffuse, 1.0) * vec4(color, 1.0) + vec4(finalSpecular, 1.0);
+		
 	fragColor = mix(vec4(skyColor, 1.0), fragColor, visibility);
 }

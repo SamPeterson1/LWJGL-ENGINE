@@ -41,6 +41,6 @@ public abstract class Constraint {
 		
 	}
 	
-	public abstract void constrain(int width, int height, GUIComponent component);
+	public abstract void constrain(int width, int height, GUIComponent component, GUIComponent parent);
 	
 }

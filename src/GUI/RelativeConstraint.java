@@ -1,6 +1,7 @@
 package GUI;
 
 import math.Transform;
+import rendering.GLFWWindow;
 
 public class RelativeConstraint extends Constraint {
 
@@ -12,14 +13,25 @@ public class RelativeConstraint extends Constraint {
 	}
 
 	@Override
-	public void constrain(int width, int height, GUIComponent component) {
+	public void constrain(int width, int height, GUIComponent component, GUIComponent parent) {
 		
 		Transform t = component.getEntity().getTransform();
+		Transform parentT = parent.getEntity().getTransform();
 		float value = 0;
-		if(super.isPosition()) {
-			value = (float)relativePixels - 0.5f;
-		} else {
-			value = relativePixels;
+		if(super.constraintValue == Constraint.X) {
+			float newX = (parentT.getPos().getX() + 1)/2f;
+			newX -= parentT.getScale().getX()/2;
+			newX += relativePixels*parentT.getScale().getX();
+			value = (newX*2f)-1;
+		} else if(super.constraintValue == Constraint.Y){
+			float newY = (parentT.getPos().getY() + 1)/2f;
+			newY -= parentT.getScale().getY()/2f;
+			newY += relativePixels*parentT.getScale().getY();
+			value = (newY*2f)-1;
+		} else if(super.constraintValue == Constraint.WIDTH) {
+			value = relativePixels * width/GLFWWindow.getWidth();
+		} else if(super.constraintValue == Constraint.HEIGHT) {
+			value = relativePixels * height/GLFWWindow.getHeight();
 		}
 		
 		System.out.println(value + "VALUE" + super.constraintValue);

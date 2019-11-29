@@ -1,6 +1,8 @@
 package rendering;
 
+import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
@@ -34,10 +36,6 @@ public class BasicRenderer implements IRenderer {
 	public void begin() {
 		this.shader.bind();
 		glEnable(GL_DEPTH_TEST);
-		this.shader.loadLight(light);
-		this.shader.setViewMatrix(cam.viewMatrix());
-		this.shader.setProjectionMatrix(cam.perspective());
-		this.shader.setSkyColor(new Vector3f(0f, 1f, 1f));
 	}
 
 	@Override
@@ -52,6 +50,10 @@ public class BasicRenderer implements IRenderer {
 		} else {
 			this.loadColoredMesh(mesh);
 		}
+		this.shader.loadLight(light);
+		this.shader.setViewMatrix(cam.viewMatrix());
+		this.shader.setProjectionMatrix(cam.perspective());
+		this.shader.setSkyColor(new Vector3f(0f, 1f, 1f));
 	}
 	
 	@Override
@@ -63,11 +65,13 @@ public class BasicRenderer implements IRenderer {
 	}
 	
 	private void loadColoredMesh(Mesh mesh) {
+		glDisable(GL_BLEND);
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
 		this.shader.setMaterialReflectivity(mesh.getMaterial().getReflectivity(), mesh.getMaterial().getShineDamping());
+		this.shader.setUseFakeLighting(false);
 		this.shader.setTextured(false);
 		this.shader.setColor(mesh.getMaterial().getColor());
 	}

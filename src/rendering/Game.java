@@ -1,15 +1,17 @@
 package rendering;
 
-import org.lwjgl.opengl.GL20;
-
+import GUI.AspectConstraint;
+import GUI.Constraint;
 import GUI.GUIComponent;
+import GUI.MasterGUI;
+import GUI.PixelConstraint;
+import GUI.RelativeConstraint;
 import camera.Camera;
 import camera.CameraSpecs;
 import math.Vector3f;
 import models.ColoredMesh;
 import models.Entity;
 import models.Mesh;
-import models.ModelLoader;
 import models.TextMesh;
 import models.TexturedMesh;
 import shaders.BasicShader;
@@ -70,8 +72,64 @@ public class Game {
 		};
 				
 		
-		GUIComponent test = new GUIComponent(new Vector3f(1f, 1f, 0f), 100, 0, 0.4f);
-		GUIComponent test2 = new GUIComponent(new Vector3f(1f, 0f, 0f), 0, 0, 0.5f);
+		MasterGUI gui = new MasterGUI();
+		gui.setEntity(new Entity(gui));
+		
+		GUIComponent container = new GUIComponent(new Vector3f(0f, 1f, 0f), 0.2f, "container");
+		container.addConstraint(new RelativeConstraint(1f, Constraint.HEIGHT));
+		container.addConstraint(new AspectConstraint(0.33f, Constraint.WIDTH));
+		container.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
+		container.addConstraint(new AspectConstraint(0.33f, Constraint.X));
+		GUIComponent bottom = new GUIComponent(new Vector3f(0.8f, 0.8f, 0.8f), 0.1f, "bottom");
+		bottom.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
+		bottom.addConstraint(new RelativeConstraint(0.05f, Constraint.Y));
+		bottom.addConstraint(new RelativeConstraint(0.7f, Constraint.WIDTH));
+		bottom.addConstraint(new RelativeConstraint(0.05f, Constraint.HEIGHT));
+		GUIComponent box1 = new GUIComponent(new Vector3f(1f, 1f, 0f), 0.1f, "box1");
+		box1.addConstraint(new RelativeConstraint(0.3f, Constraint.X));
+		box1.addConstraint(new RelativeConstraint(0.2f, Constraint.Y));
+		box1.addConstraint(new RelativeConstraint(0.3f, Constraint.WIDTH));
+		box1.addConstraint(new AspectConstraint(1f, Constraint.HEIGHT));
+		
+		GUIComponent box2 = new GUIComponent(new Vector3f(1f, 1f, 0f), 0.1f, "box2");
+		box2.addConstraint(new RelativeConstraint(0.7f, Constraint.X));
+		box2.addConstraint(new RelativeConstraint(0.2f, Constraint.Y));
+		box2.addConstraint(new RelativeConstraint(0.3f, Constraint.WIDTH));
+		box2.addConstraint(new AspectConstraint(1f, Constraint.HEIGHT));
+		
+		GUIComponent container2 = new GUIComponent(new Vector3f(1f, 1f, 0f), 0.1f, "box2");
+		container2.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
+		container2.addConstraint(new RelativeConstraint(0.63f, Constraint.Y));
+		container2.addConstraint(new RelativeConstraint(0.7f, Constraint.WIDTH));
+		container2.addConstraint(new RelativeConstraint(0.7f, Constraint.HEIGHT));
+		
+		GUIComponent box3 = new GUIComponent(new Vector3f(1f, 0f, 0f), 0.05f, "box3");
+		box3.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
+		box3.addConstraint(new RelativeConstraint(0.75f, Constraint.Y));
+		box3.addConstraint(new RelativeConstraint(0.7f, Constraint.WIDTH));
+		box3.addConstraint(new RelativeConstraint(0.4f, Constraint.HEIGHT));
+		
+		GUIComponent box4 = new GUIComponent(new Vector3f(1f, 0f, 0f), 0.05f, "box4");
+		box4.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
+		box4.addConstraint(new RelativeConstraint(0.25f, Constraint.Y));
+		box4.addConstraint(new RelativeConstraint(0.7f, Constraint.WIDTH));
+		box4.addConstraint(new RelativeConstraint(0.4f, Constraint.HEIGHT));
+		
+		container.setEntity(new Entity(container));
+		bottom.setEntity(new Entity(bottom));
+		box1.setEntity(new Entity(box1));
+		box2.setEntity(new Entity(box2));
+		box3.setEntity(new Entity(box3));
+		box4.setEntity(new Entity(box4));
+		container2.setEntity(new Entity(container2));
+		
+		container.addChild(bottom);
+		container.addChild(box1);
+		container.addChild(box2);
+		container.addChild(container2);
+		container2.addChild(box3);
+		container2.addChild(box4);
+		gui.addComponent(container);
 		
 		Time.setCap(100);
 		ColoredMesh coloredMesh = new ColoredMesh("/assets/dragon.obj", new Vector3f(1f, 0f, 0f));
@@ -104,7 +162,8 @@ public class Game {
 		grass.setCullFace(false);
 		grass.setUseFakeLighting(true);
 		
-		batch = new ModelBatch(test.getEntity(), test2.getEntity(), terrain, element1, element2, element3);
+		batch = new ModelBatch(container.getEntity(), bottom.getEntity(), container2.getEntity(), box1.getEntity(), box2.getEntity(), box3.getEntity(), box4.getEntity(), terrain, element1, element2);
+		
 		
 		for(int i = 0; i < 800; i ++) {
 			float x = (float) (Math.random() * 800);
@@ -120,19 +179,20 @@ public class Game {
 			grassEntity.getTransform().setTranslation(new Vector3f(x, 0, z));
 			batch.addEntity(grassEntity);
 			
-			x = (float) (Math.random() * 800);
-			z = (float) (Math.random() * 800);
-			Entity grassEntity2 = new Entity(grass);
-			grassEntity2.getTransform().setTranslation(new Vector3f(x, 0, z));
-			batch.addEntity(grassEntity2);
+			
 			
 			x = (float) (Math.random() * 800);
 			z = (float) (Math.random() * 800);
 			Entity fernEntity = new Entity(fern);
 			fernEntity.getTransform().setTranslation(new Vector3f(x, 0, z));
 			batch.addEntity(fernEntity);
+			
+			x = (float) (Math.random() * 800);
+			z = (float) (Math.random() * 800);
+			Entity grassEntity2 = new Entity(grass);
+			grassEntity2.getTransform().setTranslation(new Vector3f(x, 0, z));
+			batch.addEntity(grassEntity2);
 		}
-		
 	}
 	
 	public void render() {
