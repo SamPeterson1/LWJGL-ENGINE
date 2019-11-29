@@ -18,15 +18,14 @@ import models.Mesh;
 
 public class MasterRenderer implements WindowListener {
 	
+	
 	private IRenderer activeRenderer;
 	private TerrainRenderer terrainRenderer;
 	private BasicRenderer renderer;
 	private GUIRenderer guiRenderer;
-	private Light light;
 	private Camera cam;
 	
 	public MasterRenderer(Light light, Camera cam) {
-		this.light = light;
 		this.cam = cam;
 		this.terrainRenderer = new TerrainRenderer(light, cam);
 		this.renderer = new BasicRenderer(light, cam);
