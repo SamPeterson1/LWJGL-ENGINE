@@ -32,4 +32,25 @@ public class Font {
 		return this.data.get(c)[data];
 	}
 	
+	public int pixelWidth(String text, float size) {
+		
+		int width = 0;
+		for(char c: text.toCharArray()) {
+			width += this.getData(c, Font.ADV) * size;
+		}
+		
+		return width;
+	}
+	
+	public int pixelHeight(String text, float size) {
+		
+		int maxHeight = 0;
+		for(char c: text.toCharArray()) {
+			if(this.getData(c, Font.HEIGHT)*size > maxHeight) {
+				maxHeight = (int) (this.getData(c, Font.HEIGHT) * size);
+			}
+		}
+		
+		return maxHeight;
+	}
 }

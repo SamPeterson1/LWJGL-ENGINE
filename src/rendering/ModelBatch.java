@@ -2,6 +2,7 @@ package rendering;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +11,7 @@ import models.Mesh;
 
 public class ModelBatch {
 	
-	
-	private Map<Mesh, List<Entity>> entities = new HashMap<>();
+	private Map<Mesh, List<Entity>> entities = new LinkedHashMap<>();
 	
 	public ModelBatch(Entity...entities) {
 		for(Entity entity: entities) {

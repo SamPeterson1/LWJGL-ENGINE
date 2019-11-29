@@ -10,6 +10,7 @@ import models.Model;
 import models.ModelLoader;
 import rendering.GLFWWindow;
 import rendering.Material;
+import rendering.Texture;
 
 public class GUIComponent extends Mesh {
 	
@@ -36,8 +37,30 @@ public class GUIComponent extends Mesh {
 	
 	private static final Model rectangle = ModelLoader.loadGUIModel(rectVerts, rectIndices);
 	
+	public GUIComponent(int meshType) {
+		super(meshType);
+	}
+	
 	public GUIComponent() {
 		super(Mesh.GUI);
+	}
+	
+	public GUIComponent(String texturePath) {
+		
+		super(Mesh.GUI);
+		super.setModel(rectangle);
+		Material material = new Material();
+		material.setTexture(new Texture(texturePath));
+		
+	}
+	
+	public GUIComponent(String texturePath, Model model, int meshType) {
+		
+		super(meshType);
+		super.setModel(model);
+		Material material = new Material();
+		material.setTexture(new Texture(texturePath));
+		
 	}
 	
 	public GUIComponent(Vector3f color, float depth, String debugTag) {

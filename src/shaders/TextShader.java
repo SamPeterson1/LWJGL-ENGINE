@@ -1,5 +1,6 @@
 package shaders;
 
+import math.Matrix;
 import math.Vector3f;
 
 public class TextShader extends Shader {
@@ -21,6 +22,11 @@ public class TextShader extends Shader {
 	public void createUniforms() {
 		super.createUniform("color");
 		super.createUniform("sampler");
+		super.createUniform("t");
+	}
+	
+	public void setTransformationMatrix(Matrix matrix) {
+		super.setUniform("t", matrix);
 	}
 	
 	public void setTextColor(Vector3f color) {

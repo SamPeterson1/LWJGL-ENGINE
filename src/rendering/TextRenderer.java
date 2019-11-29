@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_GREATER;
 import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.glAlphaFunc;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glDisable;
@@ -15,44 +16,58 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import models.TextMesh;
+
+import math.Matrix;
+import models.Mesh;
+import models.Text;
 import shaders.TextShader;
 
-public class TextRenderer {
+public class TextRenderer implements IRenderer {
 	
 	TextShader shader;
 	
-	public TextRenderer(TextShader shader) {
-		this.shader = shader;
+	public TextRenderer() {
+		this.shader = new TextShader();
+		this.shader.create();
 		this.shader.createUniforms();
-		glEnable(GL_BLEND);
+		this.shader.bindAllAttributes();
+		
 		glBlendFunc(GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
 		glAlphaFunc(GL_GREATER,0);
 	}
 	
-	
-	private void begin(TextMesh model) {
-		glDisable(GL_DEPTH_TEST);
-		GL30.glBindVertexArray(model.getModel().getVAO_ID());
-        GL20.glEnableVertexAttribArray(0);
-        GL20.glEnableVertexAttribArray(1);
+	@Override
+	public void begin() {
+		glEnable(GL_BLEND);
+		this.shader.bind();
 	}
 	
-	private void end() {
+	@Override
+	public void loadMesh(Mesh mesh) {
+		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glEnableVertexAttribArray(1);
+        this.shader.setTextColor(mesh.getMaterial().getColor());
+		glActiveTexture(GL_TEXTURE0);
+		mesh.getMaterial().getTexture().bind();
+		this.shader.setSampler(GL_TEXTURE0);
+	}
+
+	@Override
+	public void unloadMesh() {
 		GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
         GL30.glBindVertexArray(0);
 	}
-	
-	public void renderText(TextMesh mesh) {
-		this.shader.bind();
-		this.begin(mesh);
-		this.shader.setTextColor(mesh.getColor());
-		glActiveTexture(GL_TEXTURE0);
-		mesh.getTexture().bind();
-		this.shader.setSampler(GL_TEXTURE0);
-		GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-		this.end();
+
+	@Override
+	public void setTransformationMatrix(Matrix matrix) {
+		this.shader.setTransformationMatrix(matrix);
+	}
+
+	@Override
+	public void end() {
+		glDisable(GL_BLEND);
 		this.shader.unbind();
 	}
 

@@ -9,7 +9,6 @@ out vec4 fragColor;
 void main(void) { 
 	
 	vec4 texColor = texture(sampler, passTextCoords);
-	if(texColor.a < 0.1)
-        texColor.a = 0;
     fragColor = texColor * vec4(color, 1.0);
+    gl_FragDepth = 0.01;
 }

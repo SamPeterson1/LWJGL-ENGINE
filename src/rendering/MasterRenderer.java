@@ -22,6 +22,7 @@ public class MasterRenderer implements WindowListener {
 	private IRenderer activeRenderer;
 	private TerrainRenderer terrainRenderer;
 	private BasicRenderer renderer;
+	private TextRenderer textRenderer;
 	private GUIRenderer guiRenderer;
 	private Camera cam;
 	
@@ -29,6 +30,7 @@ public class MasterRenderer implements WindowListener {
 		this.cam = cam;
 		this.terrainRenderer = new TerrainRenderer(light, cam);
 		this.renderer = new BasicRenderer(light, cam);
+		this.textRenderer = new TextRenderer();
 		this.guiRenderer = new GUIRenderer();
 		this.activeRenderer = renderer;
 		glEnable(GL_CULL_FACE);
@@ -65,6 +67,9 @@ public class MasterRenderer implements WindowListener {
 			} else if(mesh.getType() == Mesh.GUI) {
 				this.activateRenderer(guiRenderer);
 				this.guiRenderer.loadMesh(mesh);
+			} else if(mesh.getType() == Mesh.TEXT) {
+				this.activateRenderer(textRenderer);
+				this.textRenderer.loadMesh(mesh);
 			}
 			
 			for(Entity e: entities) {

@@ -3,7 +3,7 @@ package GUI;
 import files.FontFile;
 import models.Model;
 import models.ModelLoader;
-import models.TextMesh;
+import models.Text;
 import rendering.GLFWWindow;
 
 public class TextMeshGenerator {
@@ -23,12 +23,12 @@ public class TextMeshGenerator {
 		
 	}
 	
-	public Model genMesh(TextMesh mesh) {
+	public Model genMesh(Text mesh) {
 		
 		String text = mesh.getText();
-		int x = mesh.getX();
-		int y = mesh.getY();
 		float size = mesh.getRelativeSize();
+		int x = GLFWWindow.getWidth()/2 - this.f.pixelWidth(text, size)/2;
+		int y = GLFWWindow.getHeight()/2 - this.f.pixelHeight(text, size)/2;
 		
 		float[] vertices = new float[text.length()*12];
 		float[] textCoords = new float[text.length()*8];

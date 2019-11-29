@@ -12,7 +12,7 @@ import math.Vector3f;
 import models.ColoredMesh;
 import models.Entity;
 import models.Mesh;
-import models.TextMesh;
+import models.Text;
 import models.TexturedMesh;
 import shaders.BasicShader;
 import shaders.TextShader;
@@ -21,7 +21,7 @@ import terrain.Terrain;
 public class Game {
 	
 	private ModelBatch batch;
-	private TextMesh textMesh;
+	private Text textMesh;
 	private Light light;
 	private Camera cam;
 	private MasterRenderer renderer;
@@ -131,6 +131,14 @@ public class Game {
 		container2.addChild(box4);
 		gui.addComponent(container);
 		
+		textMesh = new Text("testing123", 50, 50, 0.3f, new Vector3f(1f, 0f, 0f), "/assets/TestFont.fnt");
+		textMesh.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
+		textMesh.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
+		textMesh.addConstraint(new RelativeConstraint(17f, Constraint.HEIGHT));
+		textMesh.addConstraint(new AspectConstraint(1.9f, Constraint.WIDTH));
+		textMesh.setEntity(new Entity(textMesh));
+		bottom.addChild(textMesh);
+		
 		Time.setCap(100);
 		ColoredMesh coloredMesh = new ColoredMesh("/assets/dragon.obj", new Vector3f(1f, 0f, 0f));
 		coloredMesh.setReflectivity(0.5f);
@@ -148,8 +156,6 @@ public class Game {
 		element2.getTransform().setScale(new Vector3f(0.5f, 0.5f, 0.5f));
 		element3.getTransform().setScale(new Vector3f(0.5f, 0.5f, 0.5f));
 		element3.getTransform().setTranslationZ(3);
-
-		//textMesh = new TextMesh("testing123", 50, 50, 0.3f, new Vector3f(1f, 0f, 0f), "/assets/TestFont.fnt");
 		//TextShader textShader = new TextShader();
 		//textShader.create();
 		//textRenderer = new TextRenderer(textShader);
@@ -162,7 +168,7 @@ public class Game {
 		grass.setCullFace(false);
 		grass.setUseFakeLighting(true);
 		
-		batch = new ModelBatch(container.getEntity(), bottom.getEntity(), container2.getEntity(), box1.getEntity(), box2.getEntity(), box3.getEntity(), box4.getEntity(), terrain, element1, element2);
+		batch = new ModelBatch(container.getEntity(), bottom.getEntity(), container2.getEntity(), box1.getEntity(), box2.getEntity(), box3.getEntity(), box4.getEntity(), textMesh.getEntity(), terrain, element1, element2);
 		
 		
 		for(int i = 0; i < 800; i ++) {
@@ -193,6 +199,8 @@ public class Game {
 			grassEntity2.getTransform().setTranslation(new Vector3f(x, 0, z));
 			batch.addEntity(grassEntity2);
 		}
+		
+		batch.addEntity(textMesh.getEntity());
 	}
 	
 	public void render() {

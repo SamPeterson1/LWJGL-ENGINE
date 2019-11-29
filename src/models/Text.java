@@ -1,24 +1,21 @@
 package models;
 
+import GUI.GUIComponent;
 import GUI.TextMeshGenerator;
 import math.Vector3f;
 import rendering.Material;
 import rendering.Texture;
 
-public class TextMesh extends Mesh {
+public class Text extends GUIComponent {
 
 	private TextMeshGenerator meshGenerator;
 	private String text;
-	private int x;
-	private int y;
 	private float relativeSize;
 	
-	public TextMesh(String text, int x, int y, float relativeSize, Vector3f color, String fontFile) {
+	public Text(String text, int x, int y, float relativeSize, Vector3f color, String fontFile) {
 		
 		super(Mesh.TEXT);
 		
-		this.x = x;
-		this.y = y;
 		this.text = text;
 		this.relativeSize = relativeSize;
 		this.meshGenerator = new TextMeshGenerator(fontFile);
@@ -37,14 +34,6 @@ public class TextMesh extends Mesh {
 	
 	public Texture getTexture() {
 		return this.material.getTexture();
-	}
-	
-	public int getX() {
-		return this.x;
-	}
-	
-	public int getY() {
-		return this.y;
 	}
 	
 	public float getRelativeSize() {
