@@ -6,8 +6,8 @@ public class Time {
 	public static float deltaTime;
 	private static long frameStart;
 	
-	public static void setCap(float fpsCap) {
-		maxDeltaTime = 1f/(float)fpsCap;
+	public static void setCap(int fpsCap) {
+		maxDeltaTime = 1f/fpsCap;
 	}
 	
 	private static long getTimeMillis() {
@@ -23,16 +23,9 @@ public class Time {
 	}
 	
 	public static void waitForNextFrame() {
-		if(getDeltaTime() > maxDeltaTime) {
-			Time.deltaTime = getDeltaTime();
-			System.out.println(1/Time.deltaTime);
-			return;
-		}
-		while(getDeltaTime() < maxDeltaTime && !GLFWWindow.closed()) {
-			GLFWWindow.update();
+		while(getDeltaTime() < maxDeltaTime) {
 		}
 		Time.deltaTime = getDeltaTime();
-		System.out.println(1/Time.deltaTime + " foo ");
 	}
 	
 }

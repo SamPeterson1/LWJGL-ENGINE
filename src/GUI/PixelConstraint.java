@@ -1,12 +1,13 @@
 package GUI;
 
 import math.Transform;
+import math.Vector2f;
 import rendering.GLFWWindow;
 
 public class PixelConstraint extends Constraint {
 
 	int pixels;
-	int constraintValue;
+	private float value;
 	
 	public PixelConstraint(int pixels, int value) {
 		super(value);
@@ -14,13 +15,15 @@ public class PixelConstraint extends Constraint {
 	}
 	
 	@Override
-	public void constrain(int width, int height, GUIComponent component, GUIComponent parent) {
+	public float getConstrainedValue() {
+		return this.value;
+	}
+	
+	@Override
+	public void constrain(int width, int height, GUIComponent component) {
 		
 		Transform t = component.getEntity().getTransform();
-		Transform parentT = parent.getEntity().getTransform();
-		float value = 0;
-		
-		System.out.println("PArent" + (1+parentT.getPos().getY()) + " " + parentT.getPos().getY());
+		Transform parentT = component.getParent().getEntity().getTransform();
 		
 		if(super.constraintValue == Constraint.X) {
 			value = (float)(pixels*2-GLFWWindow.getWidth())/GLFWWindow.getWidth() + parentT.getPos().getX() - parentT.getScale().getX();
@@ -33,8 +36,6 @@ public class PixelConstraint extends Constraint {
 		}
 		
 		super.setValue(value, t);
-		
-		System.out.println("FOOOOOOOOT" + t.getPos().getX());
 	}
 
 }

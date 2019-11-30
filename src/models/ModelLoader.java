@@ -84,7 +84,7 @@ public class ModelLoader {
     	
     }
     
-    public static Model loadGUIModel(float[] vertices, int[] indices) {
+    public static Model loadColoredGUIModel(float[] vertices, int[] indices) {
     	
     	Model model = new Model();
     	model.setVAO_ID(createVAO());

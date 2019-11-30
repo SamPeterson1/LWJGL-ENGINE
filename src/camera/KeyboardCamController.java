@@ -13,13 +13,20 @@ public class KeyboardCamController implements CameraController {
 	private float xSense = 0.05f;
 	private float ySense = 0.05f;
 	
+	private boolean cursorEnabled = false;
+	
 	@Override
 	public void update(Transform camera) {
 		
-		Vector3f newRotation = new Vector3f();
-		newRotation.setY((float)GLFWWindow.getCursorX() * this.xSense);
-		newRotation.setX((float)GLFWWindow.getCursorY() * this.ySense);
-		camera.setRotation(newRotation);
+		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_ESCAPE)) {
+			if(cursorEnabled) {
+				GLFWWindow.disableCursor();
+				this.cursorEnabled = false;
+			} else {
+				GLFWWindow.enableCursor();
+				this.cursorEnabled = true;
+			}
+		}
 		
 		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_W)) {
 			camera.translateX(this.movementX(speed * Time.deltaTime, camera));
@@ -43,6 +50,10 @@ public class KeyboardCamController implements CameraController {
 		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
 			camera.translateY(-speed * Time.deltaTime);
 		}
+		Vector3f newRotation = new Vector3f();
+		newRotation.setY((float)GLFWWindow.getCursorX() * this.xSense);
+		newRotation.setX((float)GLFWWindow.getCursorY() * this.ySense);
+		camera.setRotation(newRotation);
 		
 	}
 	

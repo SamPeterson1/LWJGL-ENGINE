@@ -6,6 +6,7 @@ import rendering.GLFWWindow;
 public class AspectConstraint extends Constraint {
 
 	private float aspect;
+	private float value;
 	
 	public AspectConstraint(float aspect, int constraintValue) {
 		super(constraintValue);
@@ -13,10 +14,14 @@ public class AspectConstraint extends Constraint {
 	}
 
 	@Override
-	public void constrain(int width, int height, GUIComponent component, GUIComponent parent) {
+	public float getConstrainedValue() {
+		return this.value;
+	}
+	
+	@Override
+	public void constrain(int width, int height, GUIComponent component) {
 		
 		Transform t = component.getEntity().getTransform();
-		float value = 0;
 		
 		if(super.constraintValue == Constraint.X) {
 			value = ((t.getPos().getY()+1)/2f*GLFWWindow.getHeight()*this.aspect/GLFWWindow.getWidth())*2f - 1;

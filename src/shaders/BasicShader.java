@@ -41,7 +41,6 @@ public class BasicShader extends Shader {
 	}
 	
 	public void setUseFakeLighting(boolean useFakeLighting) {
-		System.out.println(useFakeLighting);
 		super.setUniformi("useFakeLighting", useFakeLighting ? 1 : 0);
 	}
 	

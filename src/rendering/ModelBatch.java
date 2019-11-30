@@ -11,27 +11,26 @@ import models.Mesh;
 
 public class ModelBatch {
 	
-	private Map<Mesh, List<Entity>> entities = new LinkedHashMap<>();
+	private static Map<Mesh, List<Entity>> entities = new LinkedHashMap<>();
 	
-	public ModelBatch(Entity...entities) {
+	public static void addEntities(Entity...entities) {
 		for(Entity entity: entities) {
-			this.addEntity(entity);
+			addEntity(entity);
 		}
 	}
 	
-	public void addEntity(Entity e) {
-		if(this.entities.containsKey(e.getMesh())) {
-			this.entities.get(e.getMesh()).add(e);
+	public static void addEntity(Entity e) {
+		if(entities.containsKey(e.getMesh())) {
+			entities.get(e.getMesh()).add(e);
 		} else {
 			List<Entity> entitiesOfType = new ArrayList<>();
 			entitiesOfType.add(e);
-			this.entities.put(e.getMesh(), entitiesOfType);
+			entities.put(e.getMesh(), entitiesOfType);
 		}
 	}
 	
-	public Map<Mesh, List<Entity>> getEntities() {
-		System.out.println(this.entities.keySet().size() + " fr");
-		return this.entities;
+	public static Map<Mesh, List<Entity>> getEntities() {
+		return entities;
 	}
 	
 }

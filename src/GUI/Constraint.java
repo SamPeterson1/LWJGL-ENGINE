@@ -1,6 +1,7 @@
 package GUI;
 
 import math.Transform;
+import math.Vector2f;
 
 public abstract class Constraint {
 	
@@ -13,6 +14,10 @@ public abstract class Constraint {
 	
 	public Constraint(int constraintValue) {
 		this.constraintValue = constraintValue;
+	}
+	
+	public int getValue() {
+		return this.constraintValue;
 	}
 	
 	protected boolean usesWidth() {
@@ -41,6 +46,7 @@ public abstract class Constraint {
 		
 	}
 	
-	public abstract void constrain(int width, int height, GUIComponent component, GUIComponent parent);
+	public abstract float getConstrainedValue();
+	public abstract void constrain(int width, int height, GUIComponent component);
 	
 }

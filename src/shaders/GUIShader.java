@@ -16,6 +16,7 @@ public class GUIShader extends Shader {
 	@Override
 	public void bindAllAttributes() {
 		super.bindAttribute(0, "position");
+		super.bindAttribute(1, "textCoords");
 	}
 
 	@Override
@@ -23,6 +24,16 @@ public class GUIShader extends Shader {
 		super.createUniform("color");
 		super.createUniform("transformationMatrix");
 		super.createUniform("depth");
+		super.createUniform("textured");
+		super.createUniform("sampler");
+	}
+	
+	public void setTextured(boolean textured) {
+		super.setUniformi("textured", textured ? 1 : 0);
+	}
+	
+	public void setSampler(int index) {
+		super.setUniformi("sampler", index);
 	}
 	
 	public void setDepth(float depth) {

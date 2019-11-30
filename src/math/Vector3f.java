@@ -24,6 +24,10 @@ public class Vector3f {
 		this.z = 0;
 	}
 	
+	public Vector3f copyOf() {
+		return new Vector3f(this.x, this.y, this.z);
+	}
+	
 	public float dotProduct(Vector3f other) {
 		return this.getX()*other.getX() + this.getY()*other.getY() + this.getZ() * other.getZ();
 	}

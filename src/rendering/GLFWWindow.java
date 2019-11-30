@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
+import java.beans.EventHandler;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+
+import events.EventListener;
 
 public class GLFWWindow {
 
@@ -39,6 +42,7 @@ public class GLFWWindow {
 			System.exit(-1);
 		}
 		
+		EventListener.init(window);
 		GLFW.glfwMakeContextCurrent(window);
 		GL.createCapabilities();
 		
@@ -61,11 +65,18 @@ public class GLFWWindow {
 	private static void checkResize() {
 		int[] width = new int[1];
 		GLFW.glfwGetWindowSize(window, width, null);
-		resized = GLFWWindow.width != width[0];
-		if(resized) return;
+		resized = GLFWWindow.width != width[0];		
+		if(resized) {
+			GLFWWindow.width = width[0];
+			return;
+		}
 		int[] height = new int[1];
 		GLFW.glfwGetWindowSize(window, null, height);
 		resized = GLFWWindow.height != height[0];
+		if(resized) {
+			GLFWWindow.height = height[0];
+			return;
+		}
 	}
 	
 	public static int getWidth() {
@@ -106,8 +117,12 @@ public class GLFWWindow {
 		return posY.get(0);
 	}
 	
+	public static void enableCursor() {
+		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+	}
+	
 	public static void disableCursor() {
-		//GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 	}
 	
 	public static boolean keyDown(int key) {
@@ -120,5 +135,9 @@ public class GLFWWindow {
 	
 	public static boolean closed() {
 		return GLFW.glfwWindowShouldClose(window);
+	}
+	
+	public static long getWindowID() {
+		return window;
 	}
 }

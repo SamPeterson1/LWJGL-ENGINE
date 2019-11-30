@@ -47,34 +47,40 @@ public class MasterRenderer implements WindowListener {
 		}
 	}
 	
-	public void render(ModelBatch batch) {
+	public void render() {
 		
-		Map<Mesh, List<Entity>> meshesMap = batch.getEntities();
+		Map<Mesh, List<Entity>> meshesMap = ModelBatch.getEntities();
 		this.cam.update();
 		this.activeRenderer.begin();
 		for(Mesh mesh: meshesMap.keySet()) {
-			this.activeRenderer.unloadMesh();
 			List<Entity> entities = meshesMap.get(mesh);
-			if(mesh.getType() == Mesh.TEXTURED) {
-				this.activateRenderer(renderer);
-				this.renderer.loadMesh(mesh);
-			} else if(mesh.getType() == Mesh.UNTEXTURED) {
-				this.activateRenderer(renderer);
-				this.renderer.loadMesh(mesh);
-			} else if(mesh.getType() == Mesh.TERRAIN) {
-				this.activateRenderer(terrainRenderer);
-				this.terrainRenderer.loadMesh(mesh);
-			} else if(mesh.getType() == Mesh.GUI) {
-				this.activateRenderer(guiRenderer);
-				this.guiRenderer.loadMesh(mesh);
-			} else if(mesh.getType() == Mesh.TEXT) {
-				this.activateRenderer(textRenderer);
-				this.textRenderer.loadMesh(mesh);
+			if(mesh.isEnabled()) {
+				this.activeRenderer.unloadMesh();
+				if(mesh.getType() == Mesh.TEXTURED) {
+					this.activateRenderer(renderer);
+					this.renderer.loadMesh(mesh);
+				} else if(mesh.getType() == Mesh.UNTEXTURED) {
+					this.activateRenderer(renderer);
+					this.renderer.loadMesh(mesh);
+				} else if(mesh.getType() == Mesh.TERRAIN) {
+					this.activateRenderer(terrainRenderer);
+					this.terrainRenderer.loadMesh(mesh);
+				} else if(mesh.getType() == Mesh.GUI_COLORED || mesh.getType() == Mesh.GUI_TEXTURED) {
+					this.activateRenderer(guiRenderer);
+					this.guiRenderer.loadMesh(mesh);
+				} else if(mesh.getType() == Mesh.TEXT) {
+					this.activateRenderer(textRenderer);
+					this.textRenderer.loadMesh(mesh);
+				}
+				
+				for(Entity e: entities) {
+					this.renderEntity(e);
+				}
+			}
+			for(Entity e: entities) {
+				e.update();
 			}
 			
-			for(Entity e: entities) {
-				this.renderEntity(e);
-			}
 		}
 		
 		this.activeRenderer.unloadMesh();

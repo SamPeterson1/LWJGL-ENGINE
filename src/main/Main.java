@@ -9,6 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		Game game = new Game();
+		Time.setCap(10);
 		game.init();
 		
 		while(!GLFWWindow.closed()) {

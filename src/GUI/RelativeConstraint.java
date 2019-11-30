@@ -6,18 +6,23 @@ import rendering.GLFWWindow;
 public class RelativeConstraint extends Constraint {
 
 	private float relativePixels;
+	private float value;
 	
 	public RelativeConstraint(float relativePixels, int constraintValue) {
 		super(constraintValue);
 		this.relativePixels = relativePixels;
 	}
+	
+	@Override
+	public float getConstrainedValue() {
+		return this.value;
+	}
 
 	@Override
-	public void constrain(int width, int height, GUIComponent component, GUIComponent parent) {
+	public void constrain(int width, int height, GUIComponent component) {
 		
 		Transform t = component.getEntity().getTransform();
-		Transform parentT = parent.getEntity().getTransform();
-		float value = 0;
+		Transform parentT = component.getParent().getEntity().getTransform();
 		if(super.constraintValue == Constraint.X) {
 			float newX = (parentT.getPos().getX() + 1)/2f;
 			newX -= parentT.getScale().getX()/2;
@@ -34,7 +39,6 @@ public class RelativeConstraint extends Constraint {
 			value = relativePixels * height/GLFWWindow.getHeight();
 		}
 		
-		System.out.println(value + "VALUE" + super.constraintValue);
 		super.setValue(value, t);
 		
 	}

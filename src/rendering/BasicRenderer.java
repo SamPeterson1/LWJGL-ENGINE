@@ -69,7 +69,6 @@ public class BasicRenderer implements IRenderer {
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
-        GL20.glEnableVertexAttribArray(2);
 		this.shader.setMaterialReflectivity(mesh.getMaterial().getReflectivity(), mesh.getMaterial().getShineDamping());
 		this.shader.setUseFakeLighting(false);
 		this.shader.setTextured(false);
