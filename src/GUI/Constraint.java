@@ -1,9 +1,11 @@
 package GUI;
 
 import math.Transform;
-import math.Vector2f;
 
 public abstract class Constraint {
+	
+	public static int REF_CENTER = 0;
+	public static int REF_CORNER = 1;
 	
 	public static int WIDTH = 0;
 	public static int HEIGHT = 1;

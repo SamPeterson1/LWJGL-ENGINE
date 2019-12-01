@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import math.Vector2f;
 import math.Vector3f;
 import models.Entity;
 import models.Mesh;
@@ -21,6 +22,7 @@ public class GUIComponent extends Mesh {
 	protected float depth;
 	protected int centerX;
 	protected int centerY;
+	protected float radius = 0;
 	protected List<GUIComponent> children = new ArrayList<>();
 	protected Map<Integer, Constraint> constraints = new HashMap<>();
 	
@@ -44,15 +46,17 @@ public class GUIComponent extends Mesh {
 	};
 	
 	private static final Model rectangle = ModelLoader.loadColoredGUIModel(rectVerts, rectIndices);
-	private static final Model texturedRectangle = ModelLoader.load2DModel(rectVerts, rectTextCoords, rectIndices);
+	private static final Model texturedRectangle = ModelLoader.load2DModel(rectVerts, rectTextCoords, rectIndices, true);
 	
 	public GUIComponent(int meshType) {
 		super(meshType);
 		this.entity = new Entity(this);
+		super.setModel(texturedRectangle);
 	}
 	
 	public GUIComponent() {
 		super(Mesh.GUI_COLORED);
+		super.setModel(texturedRectangle);
 		this.entity = new Entity(this);
 	}
 	
@@ -84,10 +88,39 @@ public class GUIComponent extends Mesh {
 		super.setModel(rectangle);
 		this.entity = new Entity(this);
 		Material material = new Material();
+		System.out.println(color.getX());
 		material.setColor(color);
 		super.setMaterial(material);
 		this.depth = depth;
 		
+	}
+	
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
+	
+	public float getRadius() {
+		return this.radius;
+	}
+	
+	public Vector2f getSize() {
+		return new Vector2f(this.entity.getTransform().getScale().getX()*2f, this.entity.getTransform().getScale().getY()*2f);
+	}
+	
+	public Vector2f getCenter() {
+		return new Vector2f(this.entity.getTransform().getPos().getX(), this.entity.getTransform().getPos().getY());
+	}
+	
+	public void enableChildren() {
+		for(GUIComponent child: this.children) {
+			child.enable();
+		}
+	}
+	
+	public void disableChildren() {
+		for(GUIComponent child: this.children) {
+			child.disable();
+		}
 	}
 	
 	public void enable() {
@@ -133,6 +166,18 @@ public class GUIComponent extends Mesh {
 		return this.constraints.get(constraintType).getConstrainedValue();
 	}
 	
+	public void onWindowResizeOverride(int width, int height) {}
+	
+	public void calculateConstraints() {
+		for(Constraint constraint: constraints.values()) {
+			constraint.constrain(GLFWWindow.getWidth(), GLFWWindow.getHeight(), this);
+		}
+	}
+	
+	protected void setConstraint(Constraint constraint) {
+		this.constraints.put(constraint.getValue(), constraint);
+	}
+	
 	protected void updateChildren() {
 		
 		Vector3f scale = this.entity.getTransform().getScale();
@@ -144,11 +189,12 @@ public class GUIComponent extends Mesh {
 	
 	public void onWindowResize(int width, int height) {
 		
+		this.onWindowResizeOverride(width, height);
+		
 		for(Constraint constraint: constraints.values()) {
 			constraint.constrain(width, height, this);
 		}
 		this.updateChildren();
-		
 		
 	}
 

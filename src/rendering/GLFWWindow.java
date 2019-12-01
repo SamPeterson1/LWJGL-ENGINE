@@ -4,7 +4,6 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
-import java.beans.EventHandler;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +94,15 @@ public class GLFWWindow {
 		GL11.glClearColor(0f, 1f, 1f, 1.0f);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		GLFW.glfwPollEvents();
+	}
+	
+	public static void sendResize() {
+		for(WindowListener listener: listeners) {
+			listener.onResize(width, height);
+		}
+	}
+	
+	public static void updateSize() {
 		int width = GLFWWindow.getWidth();
 		int height = GLFWWindow.getHeight();
 		checkResize();
@@ -122,7 +130,7 @@ public class GLFWWindow {
 	}
 	
 	public static void disableCursor() {
-		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+		//GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 	}
 	
 	public static boolean keyDown(int key) {

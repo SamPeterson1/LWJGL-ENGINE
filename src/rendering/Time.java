@@ -23,8 +23,8 @@ public class Time {
 	}
 	
 	public static void waitForNextFrame() {
-		while(getDeltaTime() < maxDeltaTime) {
-		}
+		//while(getDeltaTime() < maxDeltaTime) {
+		//}
 		Time.deltaTime = getDeltaTime();
 	}
 	

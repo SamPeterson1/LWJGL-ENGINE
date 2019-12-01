@@ -1,7 +1,6 @@
 package terrain;
 
 import math.Noise;
-import math.PerlinNoise;
 import models.Mesh;
 import models.Model;
 import models.ModelLoader;

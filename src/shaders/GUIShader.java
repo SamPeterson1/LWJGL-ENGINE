@@ -1,7 +1,6 @@
 package shaders;
 
 import math.Matrix;
-import math.Vector2f;
 import math.Vector3f;
 
 public class GUIShader extends Shader {

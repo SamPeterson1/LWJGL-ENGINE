@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class TextFile implements File {
+public class TextFile {
 	
 	BufferedReader reader = null;
 	String path;
@@ -29,7 +29,6 @@ public class TextFile implements File {
 		return null;
 	}
 
-	@Override
 	public String read() {
 		
 		StringBuilder sb = new StringBuilder();

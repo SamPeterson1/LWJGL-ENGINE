@@ -1,6 +1,5 @@
 package rendering;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glDisable;
@@ -33,7 +32,7 @@ public class GUIRenderer implements IRenderer {
 	public void begin() {
 		glEnable(GL_DEPTH_TEST);
 		//glEnable(GL_BLEND);
-		//glDisable(GL_CULL_FACE);
+		glDisable(GL_CULL_FACE);
 		this.shader.bind();
 	}
 	
@@ -41,7 +40,7 @@ public class GUIRenderer implements IRenderer {
 	public void end() {
 		this.shader.unbind();
 		//glDisable(GL_BLEND);
-		//glEnable(GL_CULL_FACE);
+		glEnable(GL_CULL_FACE);
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class GUIRenderer implements IRenderer {
     		this.shader.setSampler(GL_TEXTURE0);
         }
 	}
-
+	
 	@Override
 	public void unloadMesh() {
 		GL30.glBindVertexArray(0);

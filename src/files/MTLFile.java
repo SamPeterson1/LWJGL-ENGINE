@@ -1,6 +1,6 @@
 package files;
 
-public class MTLFile implements File {
+public class MTLFile {
 	
 	String mtlName;
 	String material = "";
@@ -10,7 +10,6 @@ public class MTLFile implements File {
 		this.file = new TextFile(path);
 	}
 	
-	@Override
 	public String read() {
 		String line;
 		while((line = file.readLine()) != null) {
@@ -29,7 +28,6 @@ public class MTLFile implements File {
 		return this.mtlName;
 	}
 
-	@Override
 	public void close() {
 		this.file.close();
 	}

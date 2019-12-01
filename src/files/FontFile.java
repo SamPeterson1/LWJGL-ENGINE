@@ -2,7 +2,7 @@ package files;
 
 import GUI.Font;
 
-public class FontFile implements File {
+public class FontFile {
 	
 	TextFile file;
 	String atlasName;
@@ -11,7 +11,6 @@ public class FontFile implements File {
 		this.file = new TextFile(path);
 	}
 
-	@Override
 	public Font read() {
 		
 		String line;
@@ -40,7 +39,6 @@ public class FontFile implements File {
 		return font;
 	}
 
-	@Override
 	public void close() {
 		file.close();
 	}

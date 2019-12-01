@@ -1,10 +1,15 @@
 package GUI;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import events.EventListener;
 import math.Utils;
 import math.Vector3f;
 import models.Text;
 import rendering.GLFWWindow;
+import rendering.Material;
 import rendering.ModelBatch;
 
 public class Button extends GUIComponent {
@@ -14,6 +19,63 @@ public class Button extends GUIComponent {
 	Vector3f normalScale;
 	private boolean pressed;
 	private boolean justPressed;
+	
+	public Button(Element element) {
+		Vector3f color = new Vector3f(0.0f, 1.0f, 0.0f); //default color
+		System.out.println(element == null);
+		NodeList colorElements = element.getChildNodes();
+		for(int i = 0; i < colorElements.getLength(); i ++) {
+			if(colorElements.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				Element child = (Element) colorElements.item(i);
+				if(child.getNodeName().equals("color")) {
+					color.setX(Float.valueOf(child.getAttribute("r")));
+					color.setY(Float.valueOf(child.getAttribute("g")));
+					color.setZ(Float.valueOf(child.getAttribute("b")));
+				} else if(child.getNodeName().equals("text")) {
+					Vector3f textColor = new Vector3f();
+					float textSize = 0.5f;
+					NodeList textChildNodes = child.getChildNodes();
+					for(int ii = 0; ii < textChildNodes.getLength(); ii ++) {
+						if(textChildNodes.item(ii).getNodeType() == Node.ELEMENT_NODE) {
+							Element textElement = (Element) textChildNodes.item(ii);
+							if(textElement.getNodeName().equals("color")) {
+								textColor.setX(Float.valueOf(textElement.getAttribute("r")));
+								textColor.setY(Float.valueOf(textElement.getAttribute("g")));
+								textColor.setZ(Float.valueOf(textElement.getAttribute("b")));
+							}
+						} else if(textChildNodes.item(ii).getNodeType() == Node.ATTRIBUTE_NODE) {
+							System.out.println("foot");
+							textSize = Float.valueOf(textChildNodes.item(ii).getNodeValue());
+						}
+					}
+					Text t = new Text(child.getAttribute("text"), 1f, textColor, "/assets/TestFont.fnt", 0.1f);
+					this.addChild(t);
+					t.setConstraint(new RelativeConstraint(textSize, Constraint.HEIGHT));
+					t.setConstraint(new AspectConstraint(t.pixelWidth()/(float)t.pixelHeight(), Constraint.WIDTH));
+					t.setConstraint(new RelativeConstraint(0.5f, Constraint.X));
+					t.setConstraint(new RelativeConstraint(0.5f, Constraint.Y));
+					ModelBatch.addEntity(t.getEntity());
+				}
+			}
+		}
+
+		super.material = new Material();
+		super.material.setColor(color);
+		
+		this.color = color.copyOf();
+		this.tintedColor = color.copyOf();
+		this.tintedColor.multiply(new Vector3f(0.8f, 0.8f, 0.8f));
+		
+		if(element.hasAttribute("text")) {
+			Text t = new Text(element.getAttribute("text"), 1f, new Vector3f(0f, 1f, 0f), "/assets/TestFont.fnt", 0.1f);
+			this.addChild(t);
+			t.setConstraint(new RelativeConstraint(0.6f, Constraint.HEIGHT));
+			t.setConstraint(new AspectConstraint(t.pixelWidth()/(float)t.pixelHeight(), Constraint.WIDTH));
+			t.setConstraint(new RelativeConstraint(0.5f, Constraint.X));
+			t.setConstraint(new RelativeConstraint(0.5f, Constraint.Y));
+			ModelBatch.addEntity(t.getEntity());
+		}
+	}
 	
 	public Button(Vector3f buttonColor, float depth) {
 		super(buttonColor, depth);
@@ -60,8 +122,6 @@ public class Button extends GUIComponent {
 		}
 		
 		super.updateChildren();
-		if(this.pressed) super.enable();
-		else super.disable();
 	}
 	
 }

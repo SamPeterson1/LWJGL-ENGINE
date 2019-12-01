@@ -35,7 +35,7 @@ public class Mesh {
 	public void update() {
 		
 	}
-
+	
 	public int getType() {
 		return type;
 	}

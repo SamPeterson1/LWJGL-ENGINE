@@ -1,10 +1,16 @@
 package rendering;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 import GUI.AspectConstraint;
 import GUI.Button;
+import GUI.CheckBox;
 import GUI.Constraint;
+import GUI.DropdownBox;
 import GUI.GUIComponent;
 import GUI.MasterGUI;
+import GUI.PixelConstraint;
 import GUI.RelativeConstraint;
 import camera.Camera;
 import camera.CameraSpecs;
@@ -13,29 +19,29 @@ import math.Vector3f;
 import models.ColoredMesh;
 import models.Entity;
 import models.Mesh;
-import models.Text;
 import models.TexturedMesh;
 import shaders.BasicShader;
 import shaders.TextShader;
 import terrain.Terrain;
+import xml.XMLFile;
 
 public class Game {
 	
-	private ModelBatch batch;
 	private Light light;
 	private Camera cam;
 	private MasterRenderer renderer;
-	private TextRenderer textRenderer;
 	private BasicShader basicShader;
 	private TextShader textShader;
-	private Button button;
+	private GUIComponent button;
 	
 	public void init() {
 		
 		GLFWWindow.init(1440, 1080, "Test");
-
+		
 		light = new Light(new Vector3f(1f, 1f, 1f), new Vector3f(-1000f, 1000f, 100f));
 
+		XMLFile test = new XMLFile("src/xml/gui.xml");
+		
 		CameraSpecs specs = new CameraSpecs();
 		specs.setAspect(1440f/1080f);
 		specs.setFov(70f);
@@ -48,43 +54,20 @@ public class Game {
 		Mesh terrainMesh = new Terrain(1, 1, "/assets/grass.png");
 		Entity terrain = new Entity(terrainMesh);
 		
-		float[] rectVerts = new float[] {
-				0.5f, 0.5f, 0f,
-				0.5f, -0.5f, 0f,
-				-0.5f, -0.5f, 0f,
-				-0.5f, 0.5f, 0f
-		};
-		
-		float[] rectVerts2 = new float[] {
-				0.25f, 0.25f, -1f,
-				0.25f, -0.25f, -1f,
-				-0.25f, -0.25f, -1f,
-				-0.25f, 0.25f, -1f
-		};
-		
-		int[] rectIndices2 = new int[] {
-				0, 1, 2,
-				2, 0, 3
-		};
-		
-		int[] rectIndices = new int[] {
-				0, 2, 1,
-				2, 0, 3
-		};
-				
-		
-		MasterGUI gui = new MasterGUI();
-		
-		GUIComponent container = new GUIComponent("/assets/TestFont.png", 0.2f);
+		new MasterGUI();
+		GUIComponent container = new GUIComponent(new Vector3f(0f, 1f, 0f), 0.2f);
 		container.addConstraint(new RelativeConstraint(1f, Constraint.HEIGHT));
 		container.addConstraint(new AspectConstraint(0.33f, Constraint.WIDTH));
 		container.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
-		container.addConstraint(new AspectConstraint(0.33f, Constraint.X));
-		Button bottom = new Button(new Vector3f(0.8f, 0.8f, 0.8f), 0.1f);
+		MasterGUI.addComponent(container);
+		container.calculateConstraints();
+		container.addConstraint(new PixelConstraint(0, Constraint.X, Constraint.REF_CORNER));
+		Button bottom = new Button((Element) test.getRoot().getElementsByTagName("button").item(0));
 		bottom.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
 		bottom.addConstraint(new RelativeConstraint(0.05f, Constraint.Y));
 		bottom.addConstraint(new RelativeConstraint(0.7f, Constraint.WIDTH));
 		bottom.addConstraint(new RelativeConstraint(0.05f, Constraint.HEIGHT));
+		ModelBatch.addEntity(bottom.getEntity());
 		GUIComponent box1 = new GUIComponent(new Vector3f(1f, 1f, 0f), 0.1f);
 		box1.addConstraint(new RelativeConstraint(0.3f, Constraint.X));
 		box1.addConstraint(new RelativeConstraint(0.2f, Constraint.Y));
@@ -120,22 +103,17 @@ public class Game {
 		container.addChild(box2);
 		container.addChild(container2);
 		container2.addChild(box3);
-		container2.addChild(box4);
-		gui.addComponent(container);	
+		container2.addChild(box4);	
 		
-		Text textMesh = new Text("testing123", 50, 50, 0.2f, new Vector3f(1f, 0f, 0f), "/assets/TestFont.fnt");
-		textMesh.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
-		textMesh.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
-		textMesh.addConstraint(new RelativeConstraint(13f, Constraint.HEIGHT));
-		textMesh.addConstraint(new AspectConstraint(1.5f, Constraint.WIDTH));
-		
-		button = new Button(new Vector3f(0f, 1f, 0f), 0.1f);
-		button.addConstraint(new RelativeConstraint(0.1f, Constraint.HEIGHT));
-		button.addConstraint(new AspectConstraint(3f, Constraint.WIDTH));
+		button = new DropdownBox(new Vector3f(0f, 0.8f, 0f), new String[] {"mytoeshurt", "myleftToe", "habitat", "foot4"}, 0.1f, 0.1f);
 		button.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
 		button.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
-		button.addChild(textMesh);
-		gui.addComponent(button);
+		MasterGUI.addComponent(button);
+		
+		CheckBox checkBox = new CheckBox(0.5f, "test");
+		checkBox.addConstraint(new PixelConstraint(200, Constraint.Y));
+		ModelBatch.addEntity(checkBox.getEntity());
+		
 		
 		Time.setCap(100);
 		ColoredMesh coloredMesh = new ColoredMesh("/assets/dragon.obj", new Vector3f(1f, 0f, 0f));
@@ -154,9 +132,6 @@ public class Game {
 		element2.getTransform().setScale(new Vector3f(0.5f, 0.5f, 0.5f));
 		element3.getTransform().setScale(new Vector3f(0.5f, 0.5f, 0.5f));
 		element3.getTransform().setTranslationZ(3);
-		//TextShader textShader = new TextShader();
-		//textShader.create();
-		//textRenderer = new TextRenderer(textShader);
 		
 		TexturedMesh tree = new TexturedMesh("/assets/tree.obj", "/assets/tree.png");
 		TexturedMesh fern = new TexturedMesh("/assets/fern.obj", "/assets/fern.png");
@@ -166,7 +141,8 @@ public class Game {
 		grass.setCullFace(false);
 		grass.setUseFakeLighting(true);
 		
-		ModelBatch.addEntities(container.getEntity(), bottom.getEntity(), container2.getEntity(), box1.getEntity(), box2.getEntity(), box3.getEntity(), box4.getEntity(), button.getEntity(), terrain, element1, element2);
+		ModelBatch.addEntities(box1.getEntity(), button.getEntity(), new Entity(terrain.getMesh()), new Entity(element1.getMesh()), new Entity(element2.getMesh()), new Entity(element3.getMesh()));
+		
 		
 		for(int i = 0; i < 800; i ++) {
 			float x = (float) (Math.random() * 800);
@@ -182,8 +158,6 @@ public class Game {
 			grassEntity.getTransform().setTranslation(new Vector3f(x, 0, z));
 			ModelBatch.addEntity(grassEntity);
 			
-			
-			
 			x = (float) (Math.random() * 800);
 			z = (float) (Math.random() * 800);
 			Entity fernEntity = new Entity(fern);
@@ -196,8 +170,6 @@ public class Game {
 			grassEntity2.getTransform().setTranslation(new Vector3f(x, 0, z));
 			ModelBatch.addEntity(grassEntity2);
 		}
-		
-		ModelBatch.addEntity(textMesh.getEntity());
 	}
 	
 	public void render() {

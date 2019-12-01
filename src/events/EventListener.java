@@ -1,7 +1,6 @@
 package events;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 public class EventListener {
@@ -24,12 +23,14 @@ public class EventListener {
 	}
 	
 	private static void mouseCallback(long window, int button, int action, int mods) {
+		System.out.println("mouse callback");
 		if(button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
 			if(action == GLFW.GLFW_PRESS) {
 				leftMouseDown = true;
 				leftMouseJustDown = true;
 			} else if(action == GLFW.GLFW_RELEASE) {
 				leftMouseDown = false;
+				leftMouseJustDown = false;
 			}
 		}
 	}

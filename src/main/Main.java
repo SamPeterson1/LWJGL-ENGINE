@@ -11,11 +11,13 @@ public class Main {
 		Game game = new Game();
 		Time.setCap(10);
 		game.init();
+		GLFWWindow.sendResize();
 		
 		while(!GLFWWindow.closed()) {
 			Time.beginFrame();
 			GLFWWindow.update();
 			game.render();
+			GLFWWindow.updateSize();
 			GLFWWindow.swapBuffer();
 			Time.waitForNextFrame();
 		}

@@ -12,6 +12,7 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
+import GUI.DropdownBox;
 import camera.Camera;
 import models.Entity;
 import models.Mesh;
@@ -48,7 +49,6 @@ public class MasterRenderer implements WindowListener {
 	}
 	
 	public void render() {
-		
 		Map<Mesh, List<Entity>> meshesMap = ModelBatch.getEntities();
 		this.cam.update();
 		this.activeRenderer.begin();
@@ -68,24 +68,33 @@ public class MasterRenderer implements WindowListener {
 				} else if(mesh.getType() == Mesh.GUI_COLORED || mesh.getType() == Mesh.GUI_TEXTURED) {
 					this.activateRenderer(guiRenderer);
 					this.guiRenderer.loadMesh(mesh);
-				} else if(mesh.getType() == Mesh.TEXT) {
-					this.activateRenderer(textRenderer);
-					this.textRenderer.loadMesh(mesh);
 				}
 				
 				for(Entity e: entities) {
 					this.renderEntity(e);
 				}
+			} else {
+				for(Entity e: entities) {
+					if(e.getMesh() instanceof DropdownBox) {
+						System.out.println("sending update");
+					}
+					e.update();
+				}
 			}
-			for(Entity e: entities) {
-				e.update();
-			}
-			
 		}
 		
 		this.activeRenderer.unloadMesh();
 		this.activeRenderer.end();
 		
+		this.activateRenderer(textRenderer);
+		for(Entity e: ModelBatch.getText()) {
+			if(e.getMesh().isEnabled()) {
+				textRenderer.loadMesh(e.getMesh());
+				this.renderEntity(e);
+			} else {
+				e.update();
+			}
+		}
 	}
 	
 	private void renderEntity(Entity e) {

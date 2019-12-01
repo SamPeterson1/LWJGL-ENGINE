@@ -1,11 +1,11 @@
 package rendering;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_GREATER;
 import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.glAlphaFunc;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glDisable;
@@ -13,13 +13,12 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import math.Matrix;
 import models.Mesh;
-import models.Text;
+
 import shaders.TextShader;
 
 public class TextRenderer implements IRenderer {
@@ -38,6 +37,8 @@ public class TextRenderer implements IRenderer {
 	
 	@Override
 	public void begin() {
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_CULL_FACE);
 		glEnable(GL_BLEND);
 		this.shader.bind();
 	}
@@ -68,6 +69,8 @@ public class TextRenderer implements IRenderer {
 	@Override
 	public void end() {
 		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
 		this.shader.unbind();
 	}
 

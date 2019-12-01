@@ -1,6 +1,8 @@
 package rendering;
 
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
@@ -33,6 +35,7 @@ public class TerrainRenderer implements IRenderer {
 	public void begin() {
 		this.shader.bind();
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
 		this.shader.loadLight(light);
 		this.shader.setViewMatrix(cam.viewMatrix());
 		this.shader.setProjectionMatrix(cam.perspective());
@@ -42,6 +45,7 @@ public class TerrainRenderer implements IRenderer {
 	@Override
 	public void end() {
 		this.shader.unbind();
+		glDisable(GL_CULL_FACE);
 	}
 
 	@Override

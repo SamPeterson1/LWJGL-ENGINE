@@ -1,6 +1,7 @@
 #version 330 core
 out vec4 fragColor;
 
+in vec2 fragCoord;
 in vec2 passTextCoords;
 uniform sampler2D sampler;
 uniform vec3 color;

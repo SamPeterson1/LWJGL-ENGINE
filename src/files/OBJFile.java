@@ -8,7 +8,7 @@ import math.Vector3f;
 import models.Model;
 import models.ModelLoader;
 
-public class OBJFile implements File {
+public class OBJFile {
 
 	/*
 	private TextFile file;
@@ -26,7 +26,6 @@ public class OBJFile implements File {
 		this.file = new TextFile(path);
 	}
 	
-	@Override
 	public Model read() {
 		
 		List<Vector3f> vertices = new ArrayList<Vector3f>();
@@ -114,83 +113,8 @@ public class OBJFile implements File {
 
 	}
 
-	@Override
 	public void close() {
 		this.file.close();
 	}
-	
-	/*
-	@Override
-	public Mesh read() {
-		this.loadData();
-		this.texPath = mtlFile.read();
-		float[] textCoords = new float[this.textCoords.size()];
-		int[] indices = new int[faceIndices.size()];
-		int index = 0;
-		for(int[] i: this.faceIndices) {
-			indices[index] = i[0]-1;
-			int vertIndex = indices[index];
-			int textIndex = (i[1] - 1)*2;
-			textCoords[vertIndex*2] = this.textCoords.get(textIndex);
-			textCoords[vertIndex*2+1] = this.textCoords.get(textIndex+ 1);
-			System.out.print(indices[index] + ", ");
-			index ++;
-		}
-		
-		System.out.println("f");
-		
-		for(float f: textCoords) {
-			System.out.print(f + ", ");
-		}
-		
-		System.out.println("f");
-		
-		float[] verts = new float[this.verts.size()];
-		for(int i = 0; i < verts.length; i ++) {
-			verts[i] = this.verts.get(i);
-			System.out.print(verts[i] + ", ");
-		}
-		
-		
-		System.out.println("f" + this.texPath);
-		
-		if(this.texPath.equals("")) {
-			return new Mesh(verts, indices, new Vector3f(1f, 0f, 0f));
-		} else {
-			return new Mesh(verts, textCoords, indices, this.texPath);
-		}
-	}
-	
-	private void loadData() {
-		String line;
-		while((line = this.file.readLine()) != null) {
-			String[] vals = line.split(" ");
-			if(vals[0].equals("v")) {
-				System.out.println(line);
-				this.verts.add(Float.valueOf(vals[1]));
-				this.verts.add(Float.valueOf(vals[2]));
-				this.verts.add(Float.valueOf(vals[3]));
-			} else if(vals[0].equals("vt")) {
-				this.textCoords.add(Float.valueOf(vals[1]));
-				this.textCoords.add(Float.valueOf(vals[2]));
-			} else if(vals[0].equals("f")) {
-				for(String s: vals) {
-					if(!s.equals("f")) {
-						String[] indices = s.split("/");
-						int[] indicesInt = new int[] {
-							Integer.valueOf(indices[0]),
-							Integer.valueOf(indices[1]),
-							Integer.valueOf(indices[2])
-						};
-						this.faceIndices.add(indicesInt);
-					}
-				}
-			} else if(vals[0].equals("mtllib")) {
-				System.out.println("HI" + "src/assets/" + vals[1]);
-				this.mtlFile = new MTLFile("src/assets/" + vals[1]);
-			}
-		}
-	}
-	
-	*/
+
 }

@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import rendering.Texture;
 
-public class PNGFile implements File {
+public class PNGFile {
 
 	PNGDecoder decoder = null;
 	String path;
@@ -24,7 +24,6 @@ public class PNGFile implements File {
 		}
 	}
 	
-	@Override
 	public ByteBuffer read() {
 
 	    ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
@@ -39,11 +38,6 @@ public class PNGFile implements File {
 	    
 	    return buffer;
 		
-	}
-	
-	@Override
-	public void close() {
-
 	}
 	
 	public int getWidth() {	

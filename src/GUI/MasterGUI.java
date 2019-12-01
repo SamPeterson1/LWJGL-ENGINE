@@ -1,23 +1,25 @@
 package GUI;
 
-import math.Vector3f;
 import rendering.GLFWWindow;
 import rendering.WindowListener;
 
 public class MasterGUI extends GUIComponent implements WindowListener {
 
+	private static GUIComponent root;
+	
 	public MasterGUI() {
+		GLFWWindow.addListener(this);
+		root = new GUIComponent();
 	}
 	
-	public void addComponent(GUIComponent component) {
-		super.children.add(component);
-		component.setParent(this);
-		GLFWWindow.addListener(this);
+	public static void addComponent(GUIComponent component) {
+		root.children.add(component);
+		component.setParent(root);
 	}
 
 	@Override
 	public void onResize(int width, int height) {
-		for(GUIComponent child: super.children) {
+		for(GUIComponent child: root.children) {
 			child.onWindowResize(width, height);
 		}
 	}
