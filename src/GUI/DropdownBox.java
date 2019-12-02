@@ -9,6 +9,7 @@ import math.Vector3f;
 import models.Text;
 import rendering.GLFWWindow;
 import rendering.ModelBatch;
+import xml.XMLElement;
 
 public class DropdownBox extends GUIComponent {
 	
@@ -23,14 +24,65 @@ public class DropdownBox extends GUIComponent {
 	int optionPadding;
 	int initHeight;
 	
-	public DropdownBox(Vector3f buttonColor, String[] options, float fontSize, float depth) {
+	public DropdownBox(XMLElement element, GUIComponent parent) {
+		
+		super("/assets/DropdownBox.png", 0.9f);
+		
+		if(element.hasAttribute("depth")) {
+			super.depth = element.getAttribute("depth").getFloat();
+		}
+		
+		Vector3f color = new Vector3f(0.8f, 0.8f, 0.8f);
+		if(element.hasChildWithName("color")) {
+			XMLElement colorElement = element.anyChildWithName("color");
+			color.setX(colorElement.getAttribute("r").getFloat());
+			color.setY(colorElement.getAttribute("g").getFloat());
+			color.setZ(colorElement.getAttribute("b").getFloat());
+		}
+		
+		Vector3f textColor = new Vector3f();
+		if(element.hasChildWithName("textColor")) {
+			XMLElement colorElement = element.anyChildWithName("textColor");
+			textColor.setX(colorElement.getAttribute("r").getFloat());
+			textColor.setY(colorElement.getAttribute("g").getFloat());
+			textColor.setZ(colorElement.getAttribute("b").getFloat());
+		}
+		
+		float textSize = 0.5f;
+		if(element.hasAttribute("textSize")) {
+			textSize = element.getAttribute("textSize").getFloat();
+		}
+		
+		String[] options = new String[0];
+		if(element.hasAttribute("options")) {
+			options = element.getAttribute("options").getArray();
+		}
+		
+		if(element.hasChildWithName("constraints")) {
+			System.out.println("loaded constraints");
+			super.loadConstraints(element.anyChildWithName("constraints"));
+		} else {
+		}
+		super.setParent(parent);
+		this.calculateConstraints();
+		this.createDropdown(color, textColor, options, textSize);
+		
+		
+	}
+	
+	public DropdownBox(Vector3f buttonColor, String[] options, float depth) {
 		super("/assets/DropdownBox.png", depth);
+		this.createDropdown(buttonColor, new Vector3f(), options, 0.5f);
+	}
+	
+	private void createDropdown(Vector3f buttonColor, Vector3f textColor, String[] options, float textSize) {
 		this.tintedColor = buttonColor.copyOf();
-		this.tintedColor.multiply(new Vector3f(0.8f, 0.8f, 0.8f));
+		this.tintedColor.multiply(new Vector3f(0.9f, 0.9f, 0.9f));
 		this.color = buttonColor.copyOf();
-		this.addConstraint(new RelativeConstraint(0.05f, Constraint.HEIGHT));
-		this.addConstraint(new AspectConstraint(4f, Constraint.WIDTH));
 		MasterGUI.addComponent(this);
+		this.addConstraint(new RelativeConstraint(0.1f, Constraint.HEIGHT));
+		this.addConstraint(new AspectConstraint(4, Constraint.WIDTH));
+		this.calculateConstraints();
 		GUIComponent bgColor = new GUIComponent(buttonColor, depth+0.01f);
 		bgColor.addConstraint(new RelativeConstraint(1f, Constraint.WIDTH));
 		bgColor.addConstraint(new RelativeConstraint(1f, Constraint.HEIGHT));
@@ -38,7 +90,6 @@ public class DropdownBox extends GUIComponent {
 		bgColor.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
 		this.addChild(bgColor);
 		ModelBatch.addEntity(bgColor.getEntity());
-		this.calculateConstraints();
 		this.optionContainer = new GUIComponent(new Vector3f(0f, 0f, 0f), 0.1f);
 		this.optionContainer.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
 		this.optionContainer.addConstraint(new PixelConstraint((int) (-this.getConstrainedValue(Constraint.HEIGHT) * GLFWWindow.getHeight()), Constraint.Y, Constraint.REF_CORNER));
@@ -49,9 +100,9 @@ public class DropdownBox extends GUIComponent {
 		this.addChild(optionContainer);
 		int index = 0;
 		
-		this.selectedText = new Text(options[0], 1f, new Vector3f(0.8f, 0.8f, 0.8f), "/assets/TestFont.fnt", 0.1f);
-		selectedText.addConstraint(new RelativeConstraint(0.5f, Constraint.HEIGHT));
-		selectedText.addConstraint(new AspectConstraint((float)selectedText.pixelWidth()/(float)selectedText.pixelHeight(), Constraint.WIDTH));
+		this.selectedText = new Text(options[0], 1f, textColor, "/assets/TestFont.fnt", 0.5f);
+		selectedText.addConstraint(new RelativeConstraint(textSize, Constraint.HEIGHT));
+		selectedText.addConstraint(new AspectConstraint(selectedText.pixelWidth()/(float)selectedText.pixelHeight(), Constraint.WIDTH));
 		selectedText.addConstraint(new PixelConstraint(10, Constraint.X, Constraint.REF_CORNER));
 		selectedText.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
 		this.addChild(selectedText);
@@ -59,7 +110,7 @@ public class DropdownBox extends GUIComponent {
 		
 		for(String option: options) {
 			System.out.println(option);
-			GUIComponent cell = new GUIComponent(new Vector3f(), 0.1f);
+			GUIComponent cell = new GUIComponent(buttonColor, 0.1f);
 			cell.addConstraint(new RelativeConstraint(1f, Constraint.WIDTH));
 			cell.addConstraint(new RelativeConstraint(1f/options.length, Constraint.HEIGHT));
 			cell.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
@@ -68,10 +119,10 @@ public class DropdownBox extends GUIComponent {
 			optionContainer.addChild(cell);
 			ModelBatch.addEntity(cell.getEntity());
 			
-			Text t = new Text(option, 1f, new Vector3f(0.8f, 0.8f, 0.8f), "/assets/TestFont.fnt", 0.1f);
-			t.addConstraint(new PixelConstraint(0, Constraint.X, Constraint.REF_CORNER));
+			Text t = new Text(option, 1f, textColor, "/assets/TestFont.fnt", 0.5f);
+			t.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
 			t.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
-			t.addConstraint(new RelativeConstraint(0.6f, Constraint.HEIGHT));
+			t.addConstraint(new RelativeConstraint(textSize, Constraint.HEIGHT));
 			t.addConstraint(new AspectConstraint(t.pixelWidth()/(float)t.pixelHeight(), Constraint.WIDTH));
 			cell.addChild(t);
 			cells.put(cell, t);
@@ -136,7 +187,7 @@ public class DropdownBox extends GUIComponent {
 					}
 					String text = this.cells.get(cell).getText();
 					this.selectedText.setText(text);
-					selectedText.setConstraint(new AspectConstraint((float)selectedText.pixelWidth()/(float)selectedText.pixelHeight(), Constraint.WIDTH));
+					selectedText.setConstraint(new AspectConstraint(this.selectedText.pixelWidth()/(float)this.selectedText.pixelHeight(), Constraint.WIDTH));
 				}
 			} else {
 				cell.getMaterial().setColor(tintedColor);

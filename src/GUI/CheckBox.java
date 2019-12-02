@@ -36,7 +36,7 @@ public class CheckBox extends GUIComponent {
 		MasterGUI.addComponent(this);
 		this.calculateConstraints();
 		
-		Text label = new Text(labelStr, 1f, new Vector3f(), "/assets/TestFont.fnt", depth);
+		Text label = new Text(labelStr, 1f, new Vector3f(), "/assets/TestFont.fnt", 0.5f);
 		this.addChild(label);
 		label.addConstraint(new RelativeConstraint(1f, Constraint.HEIGHT));
 		label.addConstraint(new AspectConstraint(label.pixelWidth()/(float)label.pixelHeight(), Constraint.WIDTH));

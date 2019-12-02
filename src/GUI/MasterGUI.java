@@ -12,6 +12,12 @@ public class MasterGUI extends GUIComponent implements WindowListener {
 		root = new GUIComponent();
 	}
 	
+	@Override
+	public void addChild(GUIComponent child) {
+		root.children.add(child);
+		child.setParent(root);
+	}
+	
 	public static void addComponent(GUIComponent component) {
 		root.children.add(component);
 		component.setParent(root);

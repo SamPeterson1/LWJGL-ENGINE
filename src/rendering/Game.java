@@ -1,10 +1,6 @@
 package rendering;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import GUI.AspectConstraint;
-import GUI.Button;
 import GUI.CheckBox;
 import GUI.Constraint;
 import GUI.DropdownBox;
@@ -23,7 +19,7 @@ import models.TexturedMesh;
 import shaders.BasicShader;
 import shaders.TextShader;
 import terrain.Terrain;
-import xml.XMLFile;
+import xml.GUIXMLLoader;
 
 public class Game {
 	
@@ -40,7 +36,7 @@ public class Game {
 		
 		light = new Light(new Vector3f(1f, 1f, 1f), new Vector3f(-1000f, 1000f, 100f));
 
-		XMLFile test = new XMLFile("src/xml/gui.xml");
+		new GUIXMLLoader("src/xml/gui.xml");
 		
 		CameraSpecs specs = new CameraSpecs();
 		specs.setAspect(1440f/1080f);
@@ -54,6 +50,7 @@ public class Game {
 		Mesh terrainMesh = new Terrain(1, 1, "/assets/grass.png");
 		Entity terrain = new Entity(terrainMesh);
 		
+		
 		new MasterGUI();
 		GUIComponent container = new GUIComponent(new Vector3f(0f, 1f, 0f), 0.2f);
 		container.addConstraint(new RelativeConstraint(1f, Constraint.HEIGHT));
@@ -62,12 +59,8 @@ public class Game {
 		MasterGUI.addComponent(container);
 		container.calculateConstraints();
 		container.addConstraint(new PixelConstraint(0, Constraint.X, Constraint.REF_CORNER));
-		Button bottom = new Button((Element) test.getRoot().getElementsByTagName("button").item(0));
-		bottom.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
-		bottom.addConstraint(new RelativeConstraint(0.05f, Constraint.Y));
-		bottom.addConstraint(new RelativeConstraint(0.7f, Constraint.WIDTH));
-		bottom.addConstraint(new RelativeConstraint(0.05f, Constraint.HEIGHT));
-		ModelBatch.addEntity(bottom.getEntity());
+		//Button bottom = new Button(test.getRoot().getChildrenByName("button").get(0));
+		//ModelBatch.addEntity(bottom.getEntity());
 		GUIComponent box1 = new GUIComponent(new Vector3f(1f, 1f, 0f), 0.1f);
 		box1.addConstraint(new RelativeConstraint(0.3f, Constraint.X));
 		box1.addConstraint(new RelativeConstraint(0.2f, Constraint.Y));
@@ -98,14 +91,14 @@ public class Game {
 		box4.addConstraint(new RelativeConstraint(0.7f, Constraint.WIDTH));
 		box4.addConstraint(new RelativeConstraint(0.4f, Constraint.HEIGHT));
 		
-		container.addChild(bottom);
+		//container.addChild(bottom);
 		container.addChild(box1);
 		container.addChild(box2);
 		container.addChild(container2);
 		container2.addChild(box3);
 		container2.addChild(box4);	
 		
-		button = new DropdownBox(new Vector3f(0f, 0.8f, 0f), new String[] {"mytoeshurt", "myleftToe", "habitat", "foot4"}, 0.1f, 0.1f);
+		button = new DropdownBox(new Vector3f(0f, 0.8f, 0f), new String[] {"mytoeshurt", "myleftToe", "habitat", "foot4"}, 0.1f);
 		button.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
 		button.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
 		MasterGUI.addComponent(button);
@@ -113,7 +106,6 @@ public class Game {
 		CheckBox checkBox = new CheckBox(0.5f, "test");
 		checkBox.addConstraint(new PixelConstraint(200, Constraint.Y));
 		ModelBatch.addEntity(checkBox.getEntity());
-		
 		
 		Time.setCap(100);
 		ColoredMesh coloredMesh = new ColoredMesh("/assets/dragon.obj", new Vector3f(1f, 0f, 0f));
@@ -141,7 +133,7 @@ public class Game {
 		grass.setCullFace(false);
 		grass.setUseFakeLighting(true);
 		
-		ModelBatch.addEntities(box1.getEntity(), button.getEntity(), new Entity(terrain.getMesh()), new Entity(element1.getMesh()), new Entity(element2.getMesh()), new Entity(element3.getMesh()));
+		ModelBatch.addEntities(button.getEntity(), new Entity(terrain.getMesh()), new Entity(element1.getMesh()), new Entity(element2.getMesh()), new Entity(element3.getMesh()));
 		
 		
 		for(int i = 0; i < 800; i ++) {

@@ -1,5 +1,7 @@
 package GUI;
 
+import static org.lwjgl.opengl.GL11.GL_AUX0;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,8 @@ import models.ModelLoader;
 import rendering.GLFWWindow;
 import rendering.Material;
 import rendering.Texture;
+import xml.XMLAttribute;
+import xml.XMLElement;
 
 public class GUIComponent extends Mesh {
 	
@@ -197,5 +201,30 @@ public class GUIComponent extends Mesh {
 		this.updateChildren();
 		
 	}
-
+	
+	public void loadConstraints(XMLElement constraints) {
+		
+		for(XMLElement child: constraints.getChildren()) {
+			String name = child.getName();
+			int axis = 0;
+			if(name.equals("x")) axis = Constraint.X;
+			else if(name.equals("y")) axis = Constraint.Y;
+			else if(name.equals("width")) axis = Constraint.WIDTH;
+			else if(name.equals("height")) axis = Constraint.HEIGHT;
+			
+			float value = child.getAttribute("value").getFloat();
+			String type = child.getAttribute("type").getString();
+			
+			if(type.equals("pixel")) {
+				this.addConstraint(new PixelConstraint((int) value, axis));
+			} else if(type.equals("relative")) {
+				this.addConstraint(new RelativeConstraint(value, axis));
+			} else if(type.equals("aspect")) {
+				this.addConstraint(new AspectConstraint(value, axis));
+			}
+			
+		}
+		
+	}
+	
 }

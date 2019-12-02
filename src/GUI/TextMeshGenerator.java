@@ -22,13 +22,13 @@ public class TextMeshGenerator {
 	
 	public void updateMesh(Text mesh) {
 		String text = mesh.getText();
-		float size = mesh.getRelativeSize();
-		int x = GLFWWindow.getWidth()/2 - this.f.pixelWidth(text, size)/2;
-		int y = GLFWWindow.getHeight()/2 - this.f.pixelHeight(text, size)/2;
+		int x = GLFWWindow.getWidth()/2 - this.f.pixelWidth(text, 1)/2;
+		int y = GLFWWindow.getHeight()/2 - this.f.pixelHeight(text, 1)/2;
 		this.windowWidth = GLFWWindow.getWidth();
 		this.windowHeight = GLFWWindow.getHeight();
-		float xFactor = (float)GLFWWindow.getWidth()/(float)f.pixelWidth(text, size);
-		float yFactor = (float)GLFWWindow.getHeight()/(float)f.pixelHeight(text, size);
+		
+		float xFactor = (float)GLFWWindow.getWidth()/(float)f.pixelWidth(text, 1);
+		float yFactor = (float)GLFWWindow.getHeight()/(float)f.pixelHeight(text, 1);
 		System.out.println(xFactor);
 		System.out.println(yFactor);
 		
@@ -46,22 +46,22 @@ public class TextMeshGenerator {
 			System.out.println(c + " " + f.getData(c, Font.HEIGHT));
 			
 			//v1
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF)*size)/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF)*size)/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF))/(this.windowHeight/2f) - 1) * yFactor;
 			
 			//v2
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF)*size + f.getData(c, Font.WIDTH)*size)/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF)*size)/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF) + f.getData(c, Font.WIDTH))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF))/(this.windowHeight/2f) - 1) * yFactor;
 			
 			//v3
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF)*size + f.getData(c, Font.WIDTH)*size)/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF)*size + f.getData(c, Font.HEIGHT)*size)/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF) + f.getData(c, Font.WIDTH))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF) + f.getData(c, Font.HEIGHT))/(this.windowHeight/2f) - 1) * yFactor;
 			
 			//v4
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF)*size)/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF)*size + f.getData(c, Font.HEIGHT)*size)/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF) + f.getData(c, Font.HEIGHT))/(this.windowHeight/2f) - 1) * yFactor;
 			
-			cursor += f.getData(c, Font.ADV) * size;
+			cursor += f.getData(c, Font.ADV);
 			
 			//top triangle
 			indices[indexPointer++] = 4*loops;
@@ -96,11 +96,10 @@ public class TextMeshGenerator {
 	public Model genMesh(Text mesh) {
 		
 		String text = mesh.getText();
-		float size = mesh.getRelativeSize();
-		int x = GLFWWindow.getWidth()/2 - this.f.pixelWidth(text, size)/2;
-		int y = GLFWWindow.getHeight()/2 - this.f.pixelHeight(text, size)/2;
-		float xFactor = (float)GLFWWindow.getWidth()/(float)f.pixelWidth(text, size);
-		float yFactor = (float)GLFWWindow.getHeight()/(float)f.pixelHeight(text, size);
+		int x = GLFWWindow.getWidth()/2 - this.f.pixelWidth(text, 1)/2;
+		int y = GLFWWindow.getHeight()/2 - this.f.pixelHeight(text, 1)/2;
+		float xFactor = (float)GLFWWindow.getWidth()/(float)f.pixelWidth(text, 1);
+		float yFactor = (float)GLFWWindow.getHeight()/(float)f.pixelHeight(text, 1);
 		
 		float[] vertices = new float[text.length()*12];
 		float[] textCoords = new float[text.length()*8];
@@ -116,22 +115,22 @@ public class TextMeshGenerator {
 			System.out.println(c + " " + f.getData(c, Font.HEIGHT));
 			
 			//v1
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF)*size)/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF)*size)/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF))/(this.windowHeight/2f) - 1) * yFactor;
 			
 			//v2
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF)*size + f.getData(c, Font.WIDTH)*size)/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF)*size)/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF) + f.getData(c, Font.WIDTH))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF))/(this.windowHeight/2f) - 1) * yFactor;
 			
 			//v3
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF)*size + f.getData(c, Font.WIDTH)*size)/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF)*size + f.getData(c, Font.HEIGHT)*size)/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF) + f.getData(c, Font.WIDTH))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF) + f.getData(c, Font.HEIGHT))/(this.windowHeight/2f) - 1) * yFactor;
 			
 			//v4
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF)*size)/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF)*size + f.getData(c, Font.HEIGHT)*size)/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF) + f.getData(c, Font.HEIGHT))/(this.windowHeight/2f) - 1) * yFactor;
 			
-			cursor += f.getData(c, Font.ADV) * size;
+			cursor += f.getData(c, Font.ADV);
 			
 			//top triangle
 			indices[indexPointer++] = 4*loops;

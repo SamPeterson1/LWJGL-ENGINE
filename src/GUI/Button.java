@@ -11,6 +11,7 @@ import models.Text;
 import rendering.GLFWWindow;
 import rendering.Material;
 import rendering.ModelBatch;
+import xml.XMLElement;
 
 public class Button extends GUIComponent {
 
@@ -19,6 +20,29 @@ public class Button extends GUIComponent {
 	Vector3f normalScale;
 	private boolean pressed;
 	private boolean justPressed;
+	
+	public Button(XMLElement button) {
+		
+		Vector3f color = new Vector3f(0.0f, 1.0f, 0.0f);
+		if(button.hasChildWithName("color")) {
+			
+			XMLElement colorElement = button.anyChildWithName("color");
+			color.setX(colorElement.getAttribute("r").getFloat());
+			color.setY(colorElement.getAttribute("g").getFloat());
+			color.setZ(colorElement.getAttribute("b").getFloat());
+			
+		}
+		
+		super.loadConstraints(button.anyChildWithName("constraints"));
+		
+		super.material = new Material();
+		super.material.setColor(color);
+		
+		this.color = color.copyOf();
+		this.tintedColor = color.copyOf();
+		this.tintedColor.multiply(new Vector3f(0.8f, 0.8f, 0.8f));
+		
+	}
 	
 	public Button(Element element) {
 		Vector3f color = new Vector3f(0.0f, 1.0f, 0.0f); //default color
@@ -48,13 +72,15 @@ public class Button extends GUIComponent {
 							textSize = Float.valueOf(textChildNodes.item(ii).getNodeValue());
 						}
 					}
-					Text t = new Text(child.getAttribute("text"), 1f, textColor, "/assets/TestFont.fnt", 0.1f);
+					/*
+					Text t = new Text(child.getAttribute("text"), textColor, "/assets/TestFont.fnt");
 					this.addChild(t);
 					t.setConstraint(new RelativeConstraint(textSize, Constraint.HEIGHT));
 					t.setConstraint(new AspectConstraint(t.pixelWidth()/(float)t.pixelHeight(), Constraint.WIDTH));
 					t.setConstraint(new RelativeConstraint(0.5f, Constraint.X));
 					t.setConstraint(new RelativeConstraint(0.5f, Constraint.Y));
 					ModelBatch.addEntity(t.getEntity());
+					*/
 				}
 			}
 		}
@@ -66,15 +92,6 @@ public class Button extends GUIComponent {
 		this.tintedColor = color.copyOf();
 		this.tintedColor.multiply(new Vector3f(0.8f, 0.8f, 0.8f));
 		
-		if(element.hasAttribute("text")) {
-			Text t = new Text(element.getAttribute("text"), 1f, new Vector3f(0f, 1f, 0f), "/assets/TestFont.fnt", 0.1f);
-			this.addChild(t);
-			t.setConstraint(new RelativeConstraint(0.6f, Constraint.HEIGHT));
-			t.setConstraint(new AspectConstraint(t.pixelWidth()/(float)t.pixelHeight(), Constraint.WIDTH));
-			t.setConstraint(new RelativeConstraint(0.5f, Constraint.X));
-			t.setConstraint(new RelativeConstraint(0.5f, Constraint.Y));
-			ModelBatch.addEntity(t.getEntity());
-		}
 	}
 	
 	public Button(Vector3f buttonColor, float depth) {
