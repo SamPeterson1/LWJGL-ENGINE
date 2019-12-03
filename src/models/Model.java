@@ -41,15 +41,11 @@ public class Model {
 	
 	public void updateBuffers(float[] vertices, float[] textCoords, int[] indices) {
 		
-		System.out.println("HI");
 		FloatBuffer vertsBuff = BufferUtils.createFloatBuffer(vertices.length);
 		vertsBuff.put(vertices);
 		vertsBuff.flip();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.ids.get(VBO));
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertsBuff, GL15.GL_DYNAMIC_DRAW);
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		
-		
 		
 		FloatBuffer textBuff = BufferUtils.createFloatBuffer(textCoords.length);
 		textBuff.put(textCoords);
@@ -57,18 +53,14 @@ public class Model {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.ids.get(TBO));
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, textBuff, GL15.GL_DYNAMIC_DRAW);
 		
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	
-		
 		IntBuffer indicesBuff  = BufferUtils.createIntBuffer(indices.length);
 		indicesBuff.put(indices);
 		indicesBuff.flip();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.ids.get(IBO));
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuff, GL15.GL_DYNAMIC_DRAW);
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		
-		//this.vertexCount = indices.length;
-		System.out.println("I made it");
+	    this.vertexCount = indices.length;
+	    
 	}
 	
 	public void setBuffer(int bufferID, int type) {

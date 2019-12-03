@@ -22,11 +22,11 @@ public class GUIXMLLoader {
 			String name = child.getName();
 			GUIComponent guiComponent = null;
 			
-			if(name.equals("button")) {
-				guiComponent = new Button(child);
-			} else if(name.equals("text")) {
-				guiComponent = new Text(child);
-			} else if(name.equals("dropdown")) {
+			//if(name.equals("button")) {
+				//guiComponent = new Button(child);
+			//} else if(name.equals("text")) {
+				//guiComponent = new Text(child);
+			/*} else */if(name.equals("dropdown")) {
 				guiComponent = new DropdownBox(child, parentComponent);
 			}
 			

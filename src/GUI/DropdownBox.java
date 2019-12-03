@@ -63,10 +63,7 @@ public class DropdownBox extends GUIComponent {
 			super.loadConstraints(element.anyChildWithName("constraints"));
 		} else {
 		}
-		super.setParent(parent);
-		this.calculateConstraints();
-		this.createDropdown(color, textColor, options, textSize);
-		
+		this.createDropdown(new Vector3f(0f, 1f, 0f), new Vector3f(), new String[] {"myleftToe", "mytoeshurt", "habitat", "foot4"}, 0.5f);
 		
 	}
 	
@@ -76,6 +73,8 @@ public class DropdownBox extends GUIComponent {
 	}
 	
 	private void createDropdown(Vector3f buttonColor, Vector3f textColor, String[] options, float textSize) {
+		
+		this.options = options;
 		this.tintedColor = buttonColor.copyOf();
 		this.tintedColor.multiply(new Vector3f(0.9f, 0.9f, 0.9f));
 		this.color = buttonColor.copyOf();
@@ -123,7 +122,7 @@ public class DropdownBox extends GUIComponent {
 			t.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
 			t.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
 			t.addConstraint(new RelativeConstraint(textSize, Constraint.HEIGHT));
-			t.addConstraint(new AspectConstraint(t.pixelWidth()/(float)t.pixelHeight(), Constraint.WIDTH));
+			t.addConstraint(new AspectConstraint((float)t.pixelWidth()/(float)t.pixelHeight(), Constraint.WIDTH));
 			cell.addChild(t);
 			cells.put(cell, t);
 			
@@ -151,9 +150,9 @@ public class DropdownBox extends GUIComponent {
 	@Override
 	public void update() {
 		Vector3f pos = super.getEntity().getTransform().getPos();
-		Vector3f scale = super.getEntity().getTransform().getScale();
+		Vector3f scale = this.entity.getTransform().getScale().copyOf();
 		int width = (int) (scale.getX() * GLFWWindow.getWidth());
-		int height = (int) (scale.getY() * GLFWWindow.getHeight());
+		int height = (int) ((scale.getY() * GLFWWindow.getHeight()));
 		int x = (int) ((pos.getX() + 1)/2 * GLFWWindow.getWidth()) - width/2;
 		int y = (int) ((-pos.getY() + 1)/2 * GLFWWindow.getHeight()) - height/2;
 		if(Utils.inBounds(x, y, width, height, (int) GLFWWindow.getCursorX(), (int) GLFWWindow.getCursorY())) {
@@ -176,17 +175,13 @@ public class DropdownBox extends GUIComponent {
 			height = (int) (scale.getY() * GLFWWindow.getHeight());
 			x = (int) ((pos.getX() + 1)/2 * GLFWWindow.getWidth()) - width/2;
 			y = (int) ((-pos.getY() + 1)/2 * GLFWWindow.getHeight()) - height/2;
+			System.out.println("CELL");
 			if(Utils.inBounds(x, y, width, height, (int) GLFWWindow.getCursorX(), (int) GLFWWindow.getCursorY())) {
 				cell.getMaterial().setColor(color);	
 				if(EventListener.leftMouseJustDown()) {
-					this.showOptions = !this.showOptions;
-					if(!this.showOptions) {
-						this.optionContainer.disableChildren();
-					} else {
-						this.optionContainer.enableChildren();
-					}
 					String text = this.cells.get(cell).getText();
 					this.selectedText.setText(text);
+					this.optionContainer.disableChildren();
 					selectedText.setConstraint(new AspectConstraint(this.selectedText.pixelWidth()/(float)this.selectedText.pixelHeight(), Constraint.WIDTH));
 				}
 			} else {

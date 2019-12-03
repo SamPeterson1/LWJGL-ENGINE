@@ -97,6 +97,7 @@ public class Text extends GUIComponent {
 	}
 	
 	public void setText(String text) {
+		this.meshGenerator = new TextMeshGenerator(f);
 		this.text = text;
 		this.meshGenerator.updateMesh(this);
 	}

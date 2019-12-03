@@ -50,6 +50,7 @@ public class Game {
 		Mesh terrainMesh = new Terrain(1, 1, "/assets/grass.png");
 		Entity terrain = new Entity(terrainMesh);
 		
+		/*
 		
 		new MasterGUI();
 		GUIComponent container = new GUIComponent(new Vector3f(0f, 1f, 0f), 0.2f);
@@ -106,7 +107,7 @@ public class Game {
 		CheckBox checkBox = new CheckBox(0.5f, "test");
 		checkBox.addConstraint(new PixelConstraint(200, Constraint.Y));
 		ModelBatch.addEntity(checkBox.getEntity());
-		
+		*/
 		Time.setCap(100);
 		ColoredMesh coloredMesh = new ColoredMesh("/assets/dragon.obj", new Vector3f(1f, 0f, 0f));
 		coloredMesh.setReflectivity(0.5f);
@@ -133,7 +134,7 @@ public class Game {
 		grass.setCullFace(false);
 		grass.setUseFakeLighting(true);
 		
-		ModelBatch.addEntities(button.getEntity(), new Entity(terrain.getMesh()), new Entity(element1.getMesh()), new Entity(element2.getMesh()), new Entity(element3.getMesh()));
+		//ModelBatch.addEntities(button.getEntity(), new Entity(terrain.getMesh()), new Entity(element1.getMesh()), new Entity(element2.getMesh()), new Entity(element3.getMesh()));
 		
 		
 		for(int i = 0; i < 800; i ++) {

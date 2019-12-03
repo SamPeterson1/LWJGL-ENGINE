@@ -18,7 +18,7 @@
 		<textColor r="0.2" g="0.2" b="0.2"></textColor>
 		<constraints>
 			<x type="relative" value="0.2"></x>
-			<y type="relative" value="0.2"></y>
+			<y type="relative" value="0.7"></y>
 			<width type="relative" value="0.1"></width>
 			<height type="aspect" value="0.25"></height>
 		</constraints></dropdown></display>

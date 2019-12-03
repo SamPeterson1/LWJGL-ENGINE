@@ -32,7 +32,7 @@ public class TextMeshGenerator {
 		System.out.println(xFactor);
 		System.out.println(yFactor);
 		
-		float[] vertices = new float[text.length()*12];
+		float[] vertices = new float[text.length()*8];
 		float[] textCoords = new float[text.length()*8];
 		int[] indices = new int[text.length()*6];
 		int vtPointer = 0;
@@ -46,20 +46,22 @@ public class TextMeshGenerator {
 			System.out.println(c + " " + f.getData(c, Font.HEIGHT));
 			
 			//v1
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF))/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer + 1] = ((y + f.getData(c, Font.YOFF))/(this.windowHeight/2f) - 1) * yFactor;
 			
 			//v2
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF) + f.getData(c, Font.WIDTH))/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF))/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer + 2] = ((x + cursor + f.getData(c, Font.XOFF) + f.getData(c, Font.WIDTH))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer + 3] = ((y + f.getData(c, Font.YOFF))/(this.windowHeight/2f) - 1) * yFactor;
 			
 			//v3
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF) + f.getData(c, Font.WIDTH))/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF) + f.getData(c, Font.HEIGHT))/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer + 4] = ((x + cursor + f.getData(c, Font.XOFF) + f.getData(c, Font.WIDTH))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer + 5] = ((y + f.getData(c, Font.YOFF) + f.getData(c, Font.HEIGHT))/(this.windowHeight/2f) - 1) * yFactor;
 			
 			//v4
-			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
-			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF) + f.getData(c, Font.HEIGHT))/(this.windowHeight/2f) - 1) * yFactor;
+			vertices[vtPointer + 6] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
+			vertices[vtPointer + 7] = ((y + f.getData(c, Font.YOFF) + f.getData(c, Font.HEIGHT))/(this.windowHeight/2f) - 1) * yFactor;
+			
+			vtPointer += 8;
 			
 			cursor += f.getData(c, Font.ADV);
 			
@@ -90,6 +92,7 @@ public class TextMeshGenerator {
 			loops ++;
 		}
 		
+		System.out.println(vertices.length + " " + vtPointer);
 		mesh.getModel().updateBuffers(vertices, textCoords, indices);
 	}
 	
