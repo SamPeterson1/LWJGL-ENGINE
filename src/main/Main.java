@@ -1,8 +1,8 @@
 package main;
 
-import rendering.GLFWWindow;
-import rendering.Game;
-import rendering.Time;
+import misc.Game;
+import misc.Time;
+import window.GLFWWindow;
 
 public class Main {
 	

@@ -13,14 +13,21 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import GUI.DropdownBox;
+import GUI.GUIRenderer;
 import camera.Camera;
+import models.BasicRenderer;
 import models.Entity;
 import models.Mesh;
+import models.ModelBatch;
+import terrain.TerrainRenderer;
+import text.TextRenderer;
+import window.GLFWWindow;
+import window.WindowListener;
 
 public class MasterRenderer implements WindowListener {
 	
 	
-	private IRenderer activeRenderer;
+	private Renderer activeRenderer;
 	private TerrainRenderer terrainRenderer;
 	private BasicRenderer renderer;
 	private TextRenderer textRenderer;
@@ -103,7 +110,7 @@ public class MasterRenderer implements WindowListener {
 		GL11.glDrawElements(GL11.GL_TRIANGLES, e.getMesh().getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 	}
 	
-	private void activateRenderer(IRenderer renderer) {
+	private void activateRenderer(Renderer renderer) {
 		if(this.activeRenderer != renderer) {
 			this.activeRenderer.end();
 			this.activeRenderer = renderer;

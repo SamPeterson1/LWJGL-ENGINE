@@ -40,14 +40,14 @@ public class ModelLoader {
         return indicesBufferID;
     }
     
-    public static Model load3DModel(float[] vertices, float[] textureCoords, float[] vertexNormals, int[] indices) {
+    public static RawModel load3DModel(float[] vertices, float[] textureCoords, float[] vertexNormals, int[] indices) {
     	
-    	Model model = new Model();
+    	RawModel model = new RawModel();
     	model.setVAO_ID(createVAO());
-    	model.setBuffer(bindIndicesBuffer(indices, true), Model.IBO);
-    	model.setBuffer(storeData(0, 3, vertices, true), Model.VBO);
-    	model.setBuffer(storeData(1, 3, vertexNormals, true), Model.NBO);
-    	model.setBuffer(storeData(2, 2, textureCoords, true), Model.TBO);
+    	model.setBuffer(bindIndicesBuffer(indices, true), RawModel.IBO);
+    	model.setBuffer(storeData(0, 3, vertices, true), RawModel.VBO);
+    	model.setBuffer(storeData(1, 3, vertexNormals, true), RawModel.NBO);
+    	model.setBuffer(storeData(2, 2, textureCoords, true), RawModel.TBO);
     	model.setVertexCount(indices.length);
     	GL30.glBindVertexArray(0);
     	
@@ -56,13 +56,13 @@ public class ModelLoader {
     }
     
     
-    public static Model load3DModel(float[] vertices, float[] vertexNormals, int[] indices) {
+    public static RawModel load3DModel(float[] vertices, float[] vertexNormals, int[] indices) {
     	
-    	Model model = new Model();
+    	RawModel model = new RawModel();
     	model.setVAO_ID(createVAO());
-    	model.setBuffer(bindIndicesBuffer(indices, true), Model.IBO);
-    	model.setBuffer(storeData(0, 3, vertices, true), Model.VBO);
-    	model.setBuffer(storeData(1, 3, vertexNormals, true), Model.NBO);
+    	model.setBuffer(bindIndicesBuffer(indices, true), RawModel.IBO);
+    	model.setBuffer(storeData(0, 3, vertices, true), RawModel.VBO);
+    	model.setBuffer(storeData(1, 3, vertexNormals, true), RawModel.NBO);
     	model.setVertexCount(indices.length);
     	GL30.glBindVertexArray(0);
     	
@@ -70,13 +70,13 @@ public class ModelLoader {
     	
     }
     
-    public static Model load2DModel(float[] vertices, float[] textureCoords, int[] indices, boolean isStatic) {
+    public static RawModel load2DModel(float[] vertices, float[] textureCoords, int[] indices, boolean isStatic) {
     	
-    	Model model = new Model();
+    	RawModel model = new RawModel();
     	model.setVAO_ID(createVAO());
-    	model.setBuffer(bindIndicesBuffer(indices, isStatic), Model.IBO);
-    	model.setBuffer(storeData(0, 2, vertices, isStatic), Model.VBO);
-    	model.setBuffer(storeData(1, 2, textureCoords, isStatic), Model.TBO); 
+    	model.setBuffer(bindIndicesBuffer(indices, isStatic), RawModel.IBO);
+    	model.setBuffer(storeData(0, 2, vertices, isStatic), RawModel.VBO);
+    	model.setBuffer(storeData(1, 2, textureCoords, isStatic), RawModel.TBO); 
     	model.setVertexCount(indices.length);
     	GL30.glBindVertexArray(0);
     	
@@ -84,12 +84,12 @@ public class ModelLoader {
     	
     }
     
-    public static Model loadColoredGUIModel(float[] vertices, int[] indices) {
+    public static RawModel loadColoredGUIModel(float[] vertices, int[] indices) {
     	
-    	Model model = new Model();
+    	RawModel model = new RawModel();
     	model.setVAO_ID(createVAO());
-    	model.setBuffer(bindIndicesBuffer(indices, true), Model.IBO);
-    	model.setBuffer(storeData(0, 2, vertices, true), Model.VBO);
+    	model.setBuffer(bindIndicesBuffer(indices, true), RawModel.IBO);
+    	model.setBuffer(storeData(0, 2, vertices, true), RawModel.VBO);
     	model.setVertexCount(indices.length);
     	GL30.glBindVertexArray(0);
     	

@@ -1,4 +1,4 @@
-package rendering;
+package GUI;
 
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
@@ -10,12 +10,12 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import GUI.GUIComponent;
 import math.Matrix;
 import models.Mesh;
+import rendering.Renderer;
 import shaders.GUIShader;
 
-public class GUIRenderer implements IRenderer {
+public class GUIRenderer implements Renderer {
 
 	private GUIShader shader;
 	

@@ -1,14 +1,14 @@
 package GUI;
 
 import events.EventListener;
-import math.Utils;
 import math.Vector3f;
+import misc.Utils;
 import models.Mesh;
-import models.Text;
-import rendering.GLFWWindow;
+import models.ModelBatch;
 import rendering.Material;
-import rendering.ModelBatch;
 import rendering.Texture;
+import text.Text;
+import window.GLFWWindow;
 import xml.XMLElement;
 
 public class CheckBox extends GUIComponent {

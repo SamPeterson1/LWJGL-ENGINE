@@ -1,4 +1,4 @@
-package rendering;
+package window;
 
 public interface WindowListener {
 	

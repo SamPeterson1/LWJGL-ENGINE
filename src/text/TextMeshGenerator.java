@@ -1,9 +1,8 @@
-package GUI;
+package text;
 
-import models.Model;
+import models.RawModel;
+import window.GLFWWindow;
 import models.ModelLoader;
-import models.Text;
-import rendering.GLFWWindow;
 
 public class TextMeshGenerator {
 	
@@ -91,7 +90,7 @@ public class TextMeshGenerator {
 		mesh.getModel().updateBuffers(vertices, textCoords, indices);
 	}
 	
-	public Model genMesh(Text mesh) {
+	public RawModel genMesh(Text mesh) {
 		
 		String text = mesh.getText();
 		int x = GLFWWindow.getWidth()/2 - this.f.pixelWidth(text, 1)/2;

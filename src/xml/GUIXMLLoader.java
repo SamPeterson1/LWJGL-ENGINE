@@ -5,8 +5,8 @@ import GUI.CheckBox;
 import GUI.DropdownBox;
 import GUI.GUIComponent;
 import GUI.MasterGUI;
-import models.Text;
-import rendering.ModelBatch;
+import models.ModelBatch;
+import text.Text;
 
 public class GUIXMLLoader {
 	

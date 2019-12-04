@@ -4,11 +4,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import events.EventListener;
-import math.Utils;
 import math.Vector3f;
-import models.Text;
-import rendering.GLFWWindow;
-import rendering.ModelBatch;
+import misc.Utils;
+import models.ModelBatch;
+import text.Text;
+import window.GLFWWindow;
 import xml.XMLElement;
 
 public class DropdownBox extends GUIComponent {

@@ -2,7 +2,7 @@ package terrain;
 
 import math.Noise;
 import models.Mesh;
-import models.Model;
+import models.RawModel;
 import models.ModelLoader;
 import rendering.Material;
 import rendering.Texture;
@@ -28,7 +28,7 @@ public class Terrain extends Mesh {
 		this.setMaterial(material);		
 	}
 	
-	private Model generateTerrain(){
+	private RawModel generateTerrain(){
 		int count = VERTEX_COUNT * VERTEX_COUNT;
 		float[] vertices = new float[count * 3];
 		float[] normals = new float[count * 3];

@@ -13,7 +13,7 @@ public class Mesh {
 	
 	protected int type;
 	protected Material material;
-	protected Model model;
+	protected RawModel model;
 	protected boolean enabled = true;
 	
 	public Mesh(int type) {
@@ -24,7 +24,7 @@ public class Mesh {
 		return this.enabled;
 	}
 	
-	public void setModel(Model model) {
+	public void setModel(RawModel model) {
 		this.model = model;
 	}
 	
@@ -44,7 +44,7 @@ public class Mesh {
 		return material;
 	}
 
-	public Model getModel() {
+	public RawModel getModel() {
 		return model;
 	}
 	

@@ -12,7 +12,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 
-public class Model {
+public class RawModel {
 	
 	private HashMap<Integer, Integer> ids = new HashMap<>();
 	private int vertexCount;
@@ -32,11 +32,11 @@ public class Model {
 	}
 	
 	public void setVAO_ID(int vaoID) {
-		this.ids.put(Model.VAO, vaoID);
+		this.ids.put(RawModel.VAO, vaoID);
 	}
 	
 	public int getVAO_ID() {
-		return this.ids.get(Model.VAO);
+		return this.ids.get(RawModel.VAO);
 	}
 	
 	public void updateBuffers(float[] vertices, float[] textCoords, int[] indices) {
@@ -69,13 +69,13 @@ public class Model {
 	
 	public void remove() {
 		
-		if(this.ids.containsKey(Model.VAO))
-			GL30.glDeleteVertexArrays(this.ids.get(Model.VAO));
+		if(this.ids.containsKey(RawModel.VAO))
+			GL30.glDeleteVertexArrays(this.ids.get(RawModel.VAO));
 		
-		this.deleteBuffer(Model.VBO);
-		this.deleteBuffer(Model.TBO);
-		this.deleteBuffer(Model.IBO);
-		this.deleteBuffer(Model.NBO);
+		this.deleteBuffer(RawModel.VBO);
+		this.deleteBuffer(RawModel.TBO);
+		this.deleteBuffer(RawModel.IBO);
+		this.deleteBuffer(RawModel.NBO);
 		
 	}
 	

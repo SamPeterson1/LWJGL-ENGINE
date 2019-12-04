@@ -1,7 +1,7 @@
 package GUI;
 
 import math.Transform;
-import rendering.GLFWWindow;
+import window.GLFWWindow;
 
 public class PixelConstraint extends Constraint {
 

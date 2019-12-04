@@ -1,4 +1,4 @@
-package rendering;
+package misc;
 
 import GUI.Button;
 import GUI.MasterGUI;
@@ -9,9 +9,13 @@ import math.Vector3f;
 import models.ColoredMesh;
 import models.Entity;
 import models.Mesh;
+import models.ModelBatch;
 import models.TexturedMesh;
+import rendering.Light;
+import rendering.MasterRenderer;
 import shaders.BasicShader;
 import shaders.TextShader;
+import window.GLFWWindow;
 import xml.GUIXMLLoader;
 
 public class Game {

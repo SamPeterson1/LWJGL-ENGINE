@@ -3,7 +3,7 @@ package rendering;
 import math.Matrix;
 import models.Mesh;
 
-public interface IRenderer {
+public interface Renderer {
 	
 	void begin();
 	void end();

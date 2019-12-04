@@ -9,11 +9,11 @@ import math.Vector2f;
 import math.Vector3f;
 import models.Entity;
 import models.Mesh;
-import models.Model;
+import models.RawModel;
 import models.ModelLoader;
-import rendering.GLFWWindow;
 import rendering.Material;
 import rendering.Texture;
+import window.GLFWWindow;
 import xml.XMLElement;
 
 public class GUIComponent extends Mesh {
@@ -47,8 +47,8 @@ public class GUIComponent extends Mesh {
 			0.0f, 0.0f
 	};
 	
-	private static final Model rectangle = ModelLoader.loadColoredGUIModel(rectVerts, rectIndices);
-	private static final Model texturedRectangle = ModelLoader.load2DModel(rectVerts, rectTextCoords, rectIndices, true);
+	private static final RawModel rectangle = ModelLoader.loadColoredGUIModel(rectVerts, rectIndices);
+	private static final RawModel texturedRectangle = ModelLoader.load2DModel(rectVerts, rectTextCoords, rectIndices, true);
 	
 	public GUIComponent(int meshType) {
 		super(meshType);
@@ -74,7 +74,7 @@ public class GUIComponent extends Mesh {
 		
 	}
 	
-	public GUIComponent(String texturePath, Model model, int meshType) {
+	public GUIComponent(String texturePath, RawModel model, int meshType) {
 		
 		super(meshType);
 		super.setModel(model);

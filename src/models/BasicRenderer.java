@@ -1,4 +1,4 @@
-package rendering;
+package models;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
@@ -13,11 +13,12 @@ import org.lwjgl.opengl.GL30;
 import camera.Camera;
 import math.Matrix;
 import math.Vector3f;
-import models.Mesh;
-import models.TexturedMesh;
+import rendering.Light;
+import rendering.MasterRenderer;
+import rendering.Renderer;
 import shaders.BasicShader;
 
-public class BasicRenderer implements IRenderer {
+public class BasicRenderer implements Renderer {
 
 	private BasicShader shader;
 	private Light light;

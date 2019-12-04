@@ -1,4 +1,4 @@
-package rendering;
+package misc;
 
 public class Time {
 	

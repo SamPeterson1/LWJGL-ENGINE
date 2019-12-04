@@ -3,9 +3,7 @@ package camera;
 import math.Matrix;
 import math.Transform;
 import math.Vector3f;
-import rendering.GLFWWindow;
-import rendering.GameElement;
-
+import window.GLFWWindow;
 public class Camera {
 	
 	private CameraSpecs camSpecs;
@@ -47,13 +45,6 @@ public class Camera {
         		0, 0, d, 0			
         );
     }
-	
-	public Matrix getModelViewMatrix(GameElement element) {
-		Matrix modelMatrix = Matrix.getIdentity(4, 4);
-		modelMatrix = modelMatrix.multiply(element.getTransform().calculateTranslation(false))
-		.multiply(element.getTransform().calculateRotation(true));
-		return this.viewMatrix().multiply(modelMatrix);
-	}
 	
 	public Matrix viewMatrix() {
 		return new Matrix(4,

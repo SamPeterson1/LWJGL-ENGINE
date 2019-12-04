@@ -3,8 +3,8 @@ package GUI;
 import java.util.HashMap;
 import java.util.Map;
 
-import rendering.GLFWWindow;
-import rendering.WindowListener;
+import window.GLFWWindow;
+import window.WindowListener;
 
 public class MasterGUI extends GUIComponent implements WindowListener {
 

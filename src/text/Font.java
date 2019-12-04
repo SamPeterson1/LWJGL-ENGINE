@@ -1,4 +1,4 @@
-package GUI;
+package text;
 
 import java.util.HashMap;
 

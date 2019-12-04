@@ -1,10 +1,10 @@
 package GUI;
 
 import events.EventListener;
-import math.Utils;
 import math.Vector3f;
-import rendering.GLFWWindow;
+import misc.Utils;
 import rendering.Material;
+import window.GLFWWindow;
 import xml.XMLElement;
 
 public class Button extends GUIComponent {

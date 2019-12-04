@@ -4,8 +4,8 @@ import org.lwjgl.glfw.GLFW;
 
 import math.Transform;
 import math.Vector3f;
-import rendering.GLFWWindow;
-import rendering.Time;
+import misc.Time;
+import window.GLFWWindow;
 
 public class KeyboardCamController implements CameraController {
 	

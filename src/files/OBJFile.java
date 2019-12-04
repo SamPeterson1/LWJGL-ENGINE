@@ -5,7 +5,7 @@ import java.util.List;
 
 import math.Vector2f;
 import math.Vector3f;
-import models.Model;
+import models.RawModel;
 import models.ModelLoader;
 
 public class OBJFile {
@@ -26,7 +26,7 @@ public class OBJFile {
 		this.file = new TextFile(path);
 	}
 	
-	public Model read() {
+	public RawModel read() {
 		
 		List<Vector3f> vertices = new ArrayList<Vector3f>();
 		List<Vector2f> textures = new ArrayList<Vector2f>();

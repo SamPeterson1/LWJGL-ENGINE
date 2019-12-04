@@ -1,6 +1,6 @@
 package files;
 
-import GUI.Font;
+import text.Font;
 
 public class FontFile {
 	

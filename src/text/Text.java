@@ -1,15 +1,14 @@
-package models;
+package text;
 
 import GUI.AspectConstraint;
 import GUI.Constraint;
-import GUI.Font;
 import GUI.GUIComponent;
 import GUI.RelativeConstraint;
-import GUI.TextMeshGenerator;
 import files.FontFile;
 import math.Vector3f;
+import models.Mesh;
+import models.ModelBatch;
 import rendering.Material;
-import rendering.ModelBatch;
 import rendering.Texture;
 import xml.XMLElement;
 
