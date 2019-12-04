@@ -1,6 +1,7 @@
 package rendering;
 
 import GUI.AspectConstraint;
+import GUI.Button;
 import GUI.CheckBox;
 import GUI.Constraint;
 import GUI.DropdownBox;
@@ -166,6 +167,7 @@ public class Game {
 	}
 	
 	public void render() {
+		System.out.println(((Button)MasterGUI.getComponent("button1")).pressed());
 		renderer.render();
 		EventListener.endFrame();
 	}

@@ -1,6 +1,7 @@
 package xml;
 
 import GUI.Button;
+import GUI.CheckBox;
 import GUI.DropdownBox;
 import GUI.GUIComponent;
 import GUI.MasterGUI;
@@ -22,15 +23,24 @@ public class GUIXMLLoader {
 			String name = child.getName();
 			GUIComponent guiComponent = null;
 			
-			//if(name.equals("button")) {
-				//guiComponent = new Button(child);
-			//} else if(name.equals("text")) {
-				//guiComponent = new Text(child);
-			/*} else */if(name.equals("dropdown")) {
+			if(name.equals("button")) {
+				guiComponent = new Button(child);
+			} else if(name.equals("text")) {
+				guiComponent = new Text(child);
+			} else if(name.equals("dropdown")) {
+				System.out.println("oh you foot you");
 				guiComponent = new DropdownBox(child, parentComponent);
+			} else if(name.equals("checkbox")) {
+				guiComponent = new CheckBox(child);
+			} else if(name.equals("rectangle")) {
+				guiComponent = new GUIComponent(child);
 			}
 			
 			if(guiComponent != null) {
+				if(child.hasAttribute("tag")) {
+					guiComponent.setTag(child.getAttribute("tag").getString());
+				}
+				MasterGUI.addComponentByTag(guiComponent);
 				parentComponent.addChild(guiComponent);
 				ModelBatch.addEntity(guiComponent.getEntity());
 				this.loadToGUI(child, guiComponent);

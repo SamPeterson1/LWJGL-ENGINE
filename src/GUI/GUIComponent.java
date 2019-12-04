@@ -29,6 +29,7 @@ public class GUIComponent extends Mesh {
 	protected float radius = 0;
 	protected List<GUIComponent> children = new ArrayList<>();
 	protected Map<Integer, Constraint> constraints = new HashMap<>();
+	private String tag;
 	
 	private static final float[] rectVerts = new float[] {
 			1, 1,
@@ -99,6 +100,44 @@ public class GUIComponent extends Mesh {
 		
 	}
 	
+	public GUIComponent(XMLElement xml) {
+		
+		super(Mesh.GUI_COLORED);
+		
+		Vector3f color = new Vector3f(0f, 1f, 0f);
+		
+		if(xml.hasChildWithName("color")) {
+			
+			XMLElement colorElement = xml.anyChildWithName("color");
+			color.setX(colorElement.getAttribute("r").getFloat());
+			color.setY(colorElement.getAttribute("g").getFloat());
+			color.setZ(colorElement.getAttribute("b").getFloat());
+			
+		}
+		
+		float depth = 0.9f;
+		
+		if(xml.hasAttribute("depth")) {
+			depth = xml.getAttribute("depth").getFloat();
+		}
+		
+		super.setModel(rectangle);
+		this.entity = new Entity(this);
+		Material material = new Material();
+		material.setColor(color);
+		super.setMaterial(material);
+		this.depth = depth;
+		
+		if(xml.hasChildWithName("constraints")) {
+			this.loadConstraints(xml.anyChildWithName("constraints"));
+		}
+		
+	}
+	
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+	
 	public void setRadius(float radius) {
 		this.radius = radius;
 	}
@@ -113,6 +152,10 @@ public class GUIComponent extends Mesh {
 	
 	public Vector2f getCenter() {
 		return new Vector2f(this.entity.getTransform().getPos().getX(), this.entity.getTransform().getPos().getY());
+	}
+	
+	public String getTag() {
+		return this.tag;
 	}
 	
 	public void enableChildren() {

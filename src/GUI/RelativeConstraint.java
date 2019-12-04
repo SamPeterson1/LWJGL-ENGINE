@@ -30,6 +30,7 @@ public class RelativeConstraint extends Constraint {
 		
 		Transform t = component.getEntity().getTransform();
 		Transform parentT = component.getParent().getEntity().getTransform();
+		
 		if(super.constraintValue == Constraint.X) {
 			float newX = (parentT.getPos().getX() + 1)/2f;
 			newX -= parentT.getScale().getX()/2;

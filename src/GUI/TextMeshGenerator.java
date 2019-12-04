@@ -29,8 +29,6 @@ public class TextMeshGenerator {
 		
 		float xFactor = (float)GLFWWindow.getWidth()/(float)f.pixelWidth(text, 1);
 		float yFactor = (float)GLFWWindow.getHeight()/(float)f.pixelHeight(text, 1);
-		System.out.println(xFactor);
-		System.out.println(yFactor);
 		
 		float[] vertices = new float[text.length()*8];
 		float[] textCoords = new float[text.length()*8];
@@ -42,8 +40,6 @@ public class TextMeshGenerator {
 		int loops = 0;
 		
 		for(char c: text.toCharArray()) {
-			
-			System.out.println(c + " " + f.getData(c, Font.HEIGHT));
 			
 			//v1
 			vertices[vtPointer] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
@@ -92,7 +88,6 @@ public class TextMeshGenerator {
 			loops ++;
 		}
 		
-		System.out.println(vertices.length + " " + vtPointer);
 		mesh.getModel().updateBuffers(vertices, textCoords, indices);
 	}
 	
@@ -114,9 +109,7 @@ public class TextMeshGenerator {
 		int loops = 0;
 		
 		for(char c: text.toCharArray()) {
-			
-			System.out.println(c + " " + f.getData(c, Font.HEIGHT));
-			
+						
 			//v1
 			vertices[vtPointer++] = ((x + cursor + f.getData(c, Font.XOFF))/(this.windowWidth/2f) - 1) * xFactor;
 			vertices[vtPointer++] = ((y + f.getData(c, Font.YOFF))/(this.windowHeight/2f) - 1) * yFactor;

@@ -59,45 +59,55 @@ public class DropdownBox extends GUIComponent {
 		}
 		
 		if(element.hasChildWithName("constraints")) {
-			System.out.println("loaded constraints");
 			super.loadConstraints(element.anyChildWithName("constraints"));
-		} else {
 		}
-		this.createDropdown(new Vector3f(0f, 1f, 0f), new Vector3f(), new String[] {"myleftToe", "mytoeshurt", "habitat", "foot4"}, 0.5f);
+
+		this.createDropdown(parent, color, textColor, options, textSize);
 		
 	}
 	
 	public DropdownBox(Vector3f buttonColor, String[] options, float depth) {
 		super("/assets/DropdownBox.png", depth);
-		this.createDropdown(buttonColor, new Vector3f(), options, 0.5f);
+		this.createDropdown(null, buttonColor, new Vector3f(), options, 0.5f);
 	}
 	
-	private void createDropdown(Vector3f buttonColor, Vector3f textColor, String[] options, float textSize) {
-		
-		this.options = options;
-		this.tintedColor = buttonColor.copyOf();
+	public String getSelected() {
+		return this.selected;
+	}
+	
+	private void loadColors(Vector3f color) {
+		this.tintedColor = color.copyOf();
 		this.tintedColor.multiply(new Vector3f(0.9f, 0.9f, 0.9f));
-		this.color = buttonColor.copyOf();
-		MasterGUI.addComponent(this);
-		this.addConstraint(new RelativeConstraint(0.1f, Constraint.HEIGHT));
-		this.addConstraint(new AspectConstraint(4, Constraint.WIDTH));
-		this.calculateConstraints();
-		GUIComponent bgColor = new GUIComponent(buttonColor, depth+0.01f);
+		this.color = color.copyOf();
+	}
+	
+	private void createBg(Vector3f color) {
+		
+		GUIComponent bgColor = new GUIComponent(color, depth+0.01f);
 		bgColor.addConstraint(new RelativeConstraint(1f, Constraint.WIDTH));
 		bgColor.addConstraint(new RelativeConstraint(1f, Constraint.HEIGHT));
 		bgColor.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
 		bgColor.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
 		this.addChild(bgColor);
 		ModelBatch.addEntity(bgColor.getEntity());
+		
+	}
+	
+	private void createOptionContainer() {
+		
 		this.optionContainer = new GUIComponent(new Vector3f(0f, 0f, 0f), 0.1f);
 		this.optionContainer.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
-		this.optionContainer.addConstraint(new PixelConstraint((int) (-this.getConstrainedValue(Constraint.HEIGHT) * GLFWWindow.getHeight()), Constraint.Y, Constraint.REF_CORNER));
+		this.optionContainer.addConstraint(new RelativeConstraint(1f, Constraint.Y));
 		this.optionContainer.addConstraint(new RelativeConstraint(options.length, Constraint.HEIGHT));
 		this.optionContainer.addConstraint(new RelativeConstraint(1f, Constraint.WIDTH));
-		this.optionContainer.disable();
+		
+	    this.optionContainer.disable();
 		ModelBatch.addEntity(optionContainer.getEntity());
 		this.addChild(optionContainer);
-		int index = 0;
+		
+	}
+	
+	private void createSelectedText(Vector3f textColor, float textSize) {
 		
 		this.selectedText = new Text(options[0], 1f, textColor, "/assets/TestFont.fnt", 0.5f);
 		selectedText.addConstraint(new RelativeConstraint(textSize, Constraint.HEIGHT));
@@ -107,13 +117,19 @@ public class DropdownBox extends GUIComponent {
 		this.addChild(selectedText);
 		ModelBatch.addEntity(selectedText.getEntity());
 		
+	}
+	
+	private void createOptions(String[] options, Vector3f buttonColor, Vector3f textColor, float textSize) {
+		
+		int index = 0;
+		
 		for(String option: options) {
 			System.out.println(option);
 			GUIComponent cell = new GUIComponent(buttonColor, 0.1f);
 			cell.addConstraint(new RelativeConstraint(1f, Constraint.WIDTH));
-			cell.addConstraint(new RelativeConstraint(1f/options.length, Constraint.HEIGHT));
+			cell.addConstraint(new RelativeConstraint(1f/(options.length), Constraint.HEIGHT));
 			cell.addConstraint(new RelativeConstraint(0.5f, Constraint.X));
-			cell.addConstraint(new PixelConstraint((int) (this.getConstrainedValue(Constraint.HEIGHT) * GLFWWindow.getHeight() * index), Constraint.Y, Constraint.REF_CORNER));
+			cell.addConstraint(new PixelConstraint((int) (GLFWWindow.getHeight() * index), Constraint.Y, Constraint.REF_CORNER));
 			index --;
 			optionContainer.addChild(cell);
 			ModelBatch.addEntity(cell.getEntity());
@@ -130,7 +146,24 @@ public class DropdownBox extends GUIComponent {
 			
 		}
 		
+	}
+	
+	private void createDropdown(GUIComponent parent, Vector3f buttonColor, Vector3f textColor, String[] options, float textSize) {
+		
+		this.options = options;
+		this.selected = options[0];
+		this.loadColors(buttonColor);
+		
+		parent.addChild(this);
+		this.calculateConstraints();
+		
+		this.createBg(buttonColor);
+		this.createOptionContainer();
+		this.createSelectedText(textColor, textSize);
+		this.createOptions(options, buttonColor, textColor, textSize);
+		
 		this.optionContainer.disableChildren();
+		
 	}
 	
 	@Override
@@ -149,6 +182,14 @@ public class DropdownBox extends GUIComponent {
 	
 	@Override
 	public void update() {
+		
+		this.checkClick();
+		if(this.showOptions) this.updateCells();
+		super.updateChildren();
+	}
+	
+	private void checkClick() {
+		
 		Vector3f pos = super.getEntity().getTransform().getPos();
 		Vector3f scale = this.entity.getTransform().getScale().copyOf();
 		int width = (int) (scale.getX() * GLFWWindow.getWidth());
@@ -168,27 +209,38 @@ public class DropdownBox extends GUIComponent {
 		} else {
 			super.getMaterial().setColor(tintedColor);
 		}
+		
+	}
+	
+	private void updateCells() {
+		
 		for(GUIComponent cell: this.cells.keySet()) {
-			pos = cell.getEntity().getTransform().getPos();
-			scale = cell.getEntity().getTransform().getScale();
-			width = (int) (scale.getX() * GLFWWindow.getWidth());
-			height = (int) (scale.getY() * GLFWWindow.getHeight());
-			x = (int) ((pos.getX() + 1)/2 * GLFWWindow.getWidth()) - width/2;
-			y = (int) ((-pos.getY() + 1)/2 * GLFWWindow.getHeight()) - height/2;
-			System.out.println("CELL");
+			
+			Vector3f pos = cell.getEntity().getTransform().getPos();
+			Vector3f scale = cell.getEntity().getTransform().getScale();
+			int width = (int) (scale.getX() * GLFWWindow.getWidth());
+			int height = (int) (scale.getY() * GLFWWindow.getHeight());
+			int x = (int) ((pos.getX() + 1)/2 * GLFWWindow.getWidth()) - width/2;
+			int y = (int) ((-pos.getY() + 1)/2 * GLFWWindow.getHeight()) - height/2;
+			
 			if(Utils.inBounds(x, y, width, height, (int) GLFWWindow.getCursorX(), (int) GLFWWindow.getCursorY())) {
+				
 				cell.getMaterial().setColor(color);	
 				if(EventListener.leftMouseJustDown()) {
 					String text = this.cells.get(cell).getText();
 					this.selectedText.setText(text);
 					this.optionContainer.disableChildren();
+					this.showOptions = false;
+					this.selected = text;
 					selectedText.setConstraint(new AspectConstraint(this.selectedText.pixelWidth()/(float)this.selectedText.pixelHeight(), Constraint.WIDTH));
 				}
+				
 			} else {
 				cell.getMaterial().setColor(tintedColor);
 			}
+			
 		}
-		super.updateChildren();
+		
 	}
 	
 }

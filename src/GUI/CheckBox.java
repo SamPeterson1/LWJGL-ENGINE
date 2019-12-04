@@ -9,6 +9,7 @@ import rendering.GLFWWindow;
 import rendering.Material;
 import rendering.ModelBatch;
 import rendering.Texture;
+import xml.XMLElement;
 
 public class CheckBox extends GUIComponent {
 	
@@ -18,9 +19,50 @@ public class CheckBox extends GUIComponent {
 	Texture unchecked;
 	boolean isChecked = false;
 	
-	public CheckBox(float depth, String labelStr) {
+	public CheckBox(XMLElement element) {
 		
 		super(Mesh.GUI_TEXTURED);
+		
+		float depth = 0.9f;
+		if(element.hasAttribute("depth")) {
+			depth = element.getAttribute("depth").getFloat();
+		}
+		super.depth = depth;
+		
+		String label = "";
+		float textSize = 1f;
+		Vector3f textColor = new Vector3f();
+		int xOff = 10;
+		
+		if(element.hasChildWithName("label")) {
+			
+			XMLElement text = element.anyChildWithName("label");
+			label = text.getAttribute("text").getString();
+			textSize = text.getAttribute("size").getFloat();
+			
+			if(text.hasAttribute("xOff")) {
+				xOff = text.getAttribute("xOff").getInt();
+			}
+			
+			if(text.hasChildWithName("color")) {
+				
+				XMLElement color = text.anyChildWithName("color");
+				textColor.setX(color.getAttribute("r").getFloat());
+				textColor.setY(color.getAttribute("g").getFloat());
+				textColor.setZ(color.getAttribute("b").getFloat());
+			
+			}
+			
+		}
+		
+		if(element.hasChildWithName("constraints")) {
+			super.loadConstraints(element.anyChildWithName("constraints"));
+		}
+		
+		this.loadCheckbox(textColor, textSize, xOff, label);
+	}
+	
+	private void loadCheckbox(Vector3f textColor, float textSize, int xOff, String labelStr) {
 		
 		this.checkedHover = new Texture("/assets/CheckedHover.png");
 		this.uncheckedHover = new Texture("/assets/UncheckedHover.png");
@@ -36,11 +78,11 @@ public class CheckBox extends GUIComponent {
 		MasterGUI.addComponent(this);
 		this.calculateConstraints();
 		
-		Text label = new Text(labelStr, 1f, new Vector3f(), "/assets/TestFont.fnt", 0.5f);
+		Text label = new Text(labelStr, 1f, textColor, "/assets/TestFont.fnt", 0.5f);
 		this.addChild(label);
-		label.addConstraint(new RelativeConstraint(1f, Constraint.HEIGHT));
+		label.addConstraint(new RelativeConstraint(textSize, Constraint.HEIGHT));
 		label.addConstraint(new AspectConstraint(label.pixelWidth()/(float)label.pixelHeight(), Constraint.WIDTH));
-		label.addConstraint(new PixelConstraint((int) (GLFWWindow.getWidth() * this.getConstrainedValue(Constraint.WIDTH) + 10), Constraint.X, Constraint.REF_CORNER));
+		label.addConstraint(new PixelConstraint((int) (GLFWWindow.getWidth() * this.getConstrainedValue(Constraint.WIDTH) + xOff), Constraint.X, Constraint.REF_CORNER));
 		label.addConstraint(new RelativeConstraint(0.5f, Constraint.Y));
 		ModelBatch.addEntity(label.getEntity());
 		

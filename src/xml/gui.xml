@@ -1,5 +1,5 @@
 <display>
-	<button depth="0.9">
+	<button depth="0.9" tag="button1">
 		<text size="0.5" text="foot">
 			<color r="1.0" g="1.0" b="0.0"></color></text>
 		<color r="0.0" g="0.0" b="1.0"></color>
@@ -8,17 +8,31 @@
 			<y type="relative" value="0.5"></y>
 			<width type="pixel" value="200"></width>
 			<height type="relative" value="0.2"></height></constraints></button>
-	<text size="0.05" text='xml text test'>
+	<text size="0.05" text='xml text test' tag="textTest">
 		<color b="1.0" r="0.0" g="0.0"></color>
 		<constraints>
 			<x type="pixel" value="400"></x>
 			<y type="relative" value="0.5"></y></constraints></text>
-	<dropdown textSize="0.5" options="foot1,foot2,foot3,foot4, testing12345" depth="0.7">
+	
+	<checkbox depth="0.9" tag="checkbox">
+		<constraints>
+			<x type="relative" value="0.1"></x>
+			<y type="relative" value="0.9"></y>
+			<width type="relative" value="0.1"></width>
+			<height type="aspect" value="1.0"></height></constraints>
+		<label size="0.6" text="checkbox test" xOff="10"><color r="1.0" g="0.0" b="0.0"></color></label></checkbox>
+	<rectangle depth="0.9" tag="container">
+		<color r="0.0" g="1.0" b="1.0"></color>
+		<constraints>
+			<x type="pixel" value="100"></x>
+			<y type="relative" value="0.7"></y>
+			<width type="pixel" value="500"></width>
+			<height type="pixel" value="500"></height></constraints><dropdown textSize="0.5" options="foot1,foot2,foot3,foot4,testing12345" depth="0.7" tag="dropdown">
 		<color b="0.0" r="0.0" g="1.0"></color>
 		<textColor r="0.2" g="0.2" b="0.2"></textColor>
 		<constraints>
 			<x type="relative" value="0.2"></x>
 			<y type="relative" value="0.7"></y>
-			<width type="relative" value="0.1"></width>
-			<height type="aspect" value="0.25"></height>
-		</constraints></dropdown></display>
+			<width type="relative" value="0.4"></width>
+			<height type="relative" value="0.1"></height>
+		</constraints></dropdown></rectangle></display>

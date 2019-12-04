@@ -117,12 +117,5 @@ public class Text extends GUIComponent {
 	public String getText() {
 		return this.text;
 	}
-
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }
