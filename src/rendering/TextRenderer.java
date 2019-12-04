@@ -18,7 +18,6 @@ import org.lwjgl.opengl.GL30;
 
 import math.Matrix;
 import models.Mesh;
-
 import shaders.TextShader;
 
 public class TextRenderer implements IRenderer {

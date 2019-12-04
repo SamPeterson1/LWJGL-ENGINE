@@ -1,7 +1,5 @@
 package GUI;
 
-import static org.lwjgl.opengl.GL11.GL_AUX0;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +14,6 @@ import models.ModelLoader;
 import rendering.GLFWWindow;
 import rendering.Material;
 import rendering.Texture;
-import xml.XMLAttribute;
 import xml.XMLElement;
 
 public class GUIComponent extends Mesh {
