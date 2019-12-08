@@ -4,7 +4,7 @@ import math.Vector3f;
 
 public class Material {
 	
-	Vector3f color = new Vector3f(1f, 1f, 1f);
+	Vector3f color = null;
 	Texture texture = null;
 	float reflectivity = 0;
 	float shineDamping = 0;

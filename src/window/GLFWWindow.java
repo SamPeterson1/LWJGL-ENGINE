@@ -14,7 +14,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
-import events.EventListener;
+import events.EventHandler;
 
 public class GLFWWindow {
 
@@ -41,7 +41,7 @@ public class GLFWWindow {
 			System.exit(-1);
 		}
 		
-		EventListener.init(window);
+		EventHandler.init(window);
 		GLFW.glfwMakeContextCurrent(window);
 		GL.createCapabilities();
 		
@@ -91,6 +91,7 @@ public class GLFWWindow {
 	}
 	
 	public static void update() {
+		updateSize();
 		GL11.glClearColor(0f, 1f, 1f, 1.0f);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		GLFW.glfwPollEvents();
@@ -131,10 +132,6 @@ public class GLFWWindow {
 	
 	public static void disableCursor() {
 		//GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
-	}
-	
-	public static boolean keyDown(int key) {
-		return GLFW.glfwGetKey(window, key) == GLFW.GLFW_PRESS;
 	}
 	
 	public static void swapBuffer() {

@@ -2,6 +2,7 @@ package camera;
 
 import org.lwjgl.glfw.GLFW;
 
+import events.EventHandler;
 import math.Transform;
 import math.Vector3f;
 import misc.Time;
@@ -18,7 +19,7 @@ public class KeyboardCamController implements CameraController {
 	@Override
 	public void update(Transform camera) {
 		
-		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_ESCAPE)) {
+		if(EventHandler.keyDown(GLFW.GLFW_KEY_ESCAPE)) {
 			if(cursorEnabled) {
 				GLFWWindow.disableCursor();
 				this.cursorEnabled = false;
@@ -28,26 +29,26 @@ public class KeyboardCamController implements CameraController {
 			}
 		}
 		
-		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_W)) {
+		if(EventHandler.keyDown(GLFW.GLFW_KEY_W)) {
 			camera.translateX(this.movementX(speed * Time.deltaTime, camera));
 			camera.translateZ(this.movementZ(-speed * Time.deltaTime, camera));
 		}
-		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_S)) {
+		if(EventHandler.keyDown(GLFW.GLFW_KEY_S)) {
 			camera.translateX(this.movementX(-speed * Time.deltaTime, camera));
 			camera.translateZ(this.movementZ(speed * Time.deltaTime, camera));
 		}
-		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_A)) {
+		if(EventHandler.keyDown(GLFW.GLFW_KEY_A)) {
 			camera.translateZ(this.strafeZ(speed * Time.deltaTime, camera));
 			camera.translateX(this.strafeX(-speed * Time.deltaTime, camera));
 		}
-		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_D)) {
+		if(EventHandler.keyDown(GLFW.GLFW_KEY_D)) {
 			camera.translateZ(this.strafeZ(-speed * Time.deltaTime, camera));
 			camera.translateX(this.strafeX(speed * Time.deltaTime, camera));
 		}
-		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_SPACE)) {
+		if(EventHandler.keyDown(GLFW.GLFW_KEY_SPACE)) {
 			camera.translateY(speed * Time.deltaTime);
 		}
-		if(GLFWWindow.keyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+		if(EventHandler.keyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
 			camera.translateY(-speed * Time.deltaTime);
 		}
 		Vector3f newRotation = new Vector3f();

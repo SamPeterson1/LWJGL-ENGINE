@@ -21,10 +21,9 @@
 			<width type="relative" value="0.1"></width>
 			<height type="aspect" value="1.0"></height></constraints>
 		<label size="0.6" text="checkbox test" xOff="10"><color r="1.0" g="0.0" b="0.0"></color></label></checkbox>
-	<rectangle depth="0.9" tag="container">
-		<color r="0.0" g="1.0" b="1.0"></color>
+	<rectangle depth="0.9" tag="container" texture="/assets/TestFont.png">
 		<constraints>
-			<x type="pixel" value="100"></x>
+			<x type="pixel" value="0" reference="corne"></x>
 			<y type="relative" value="0.7"></y>
 			<width type="pixel" value="500"></width>
 			<height type="pixel" value="500"></height></constraints><dropdown textSize="0.5" options="foot1,foot2,foot3,foot4,testing12345" depth="0.7" tag="dropdown">
@@ -35,4 +34,5 @@
 			<y type="relative" value="0.7"></y>
 			<width type="relative" value="0.4"></width>
 			<height type="relative" value="0.1"></height>
-		</constraints></dropdown></rectangle></display>
+		</constraints></dropdown>
+		<color r="1.0" g="0.0" b="0.0"></color></rectangle></display>

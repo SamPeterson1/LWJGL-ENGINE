@@ -3,7 +3,9 @@ package GUI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import events.EventListener;
+import org.lwjgl.glfw.GLFW;
+
+import events.EventHandler;
 import math.Vector3f;
 import misc.Utils;
 import models.ModelBatch;
@@ -198,7 +200,7 @@ public class DropdownBox extends GUIComponent {
 		int y = (int) ((-pos.getY() + 1)/2 * GLFWWindow.getHeight()) - height/2;
 		if(Utils.inBounds(x, y, width, height, (int) GLFWWindow.getCursorX(), (int) GLFWWindow.getCursorY())) {
 			super.getMaterial().setColor(color);	
-			if(EventListener.leftMouseJustDown()) {
+			if(EventHandler.mouseButtonJustDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)) {
 				this.showOptions = !this.showOptions;
 				if(!this.showOptions) {
 					this.optionContainer.disableChildren();
@@ -226,7 +228,7 @@ public class DropdownBox extends GUIComponent {
 			if(Utils.inBounds(x, y, width, height, (int) GLFWWindow.getCursorX(), (int) GLFWWindow.getCursorY())) {
 				
 				cell.getMaterial().setColor(color);	
-				if(EventListener.leftMouseJustDown()) {
+				if(EventHandler.mouseButtonJustDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)) {
 					String text = this.cells.get(cell).getText();
 					this.selectedText.setText(text);
 					this.optionContainer.disableChildren();

@@ -38,7 +38,7 @@ public class MasterGUI extends GUIComponent implements WindowListener {
 	@Override
 	public void onResize(int width, int height) {
 		for(GUIComponent child: root.children) {
-			child.onWindowResize(width, height);
+			child.onParentResize(width, height);
 		}
 	}
 	

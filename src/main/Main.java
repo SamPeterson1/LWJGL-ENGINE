@@ -1,5 +1,6 @@
 package main;
 
+import events.EventHandler;
 import misc.Game;
 import misc.Time;
 import window.GLFWWindow;
@@ -17,8 +18,8 @@ public class Main {
 			Time.beginFrame();
 			GLFWWindow.update();
 			game.render();
-			GLFWWindow.updateSize();
 			GLFWWindow.swapBuffer();
+			EventHandler.clearEvents();
 			Time.waitForNextFrame();
 		}
 		

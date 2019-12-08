@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 import org.lwjgl.opengl.GL20;
@@ -52,12 +53,19 @@ public class GUIRenderer implements Renderer {
         if(mesh.getType() == Mesh.GUI_COLORED) {
         	this.shader.setColor(mesh.getMaterial().getColor());
         	this.shader.setTextured(false);
+        	this.shader.setHasBackground(false);
         } else if(mesh.getType() == Mesh.GUI_TEXTURED) {
         	this.shader.setTextured(true);
-        	GL20.glEnableVertexAttribArray(1);
+            GL20.glEnableVertexAttribArray(1);
         	glActiveTexture(GL_TEXTURE0);
     		mesh.getMaterial().getTexture().bind();
-    		this.shader.setSampler(GL_TEXTURE0);
+    		if(mesh.getMaterial().getColor() != null) {
+    			this.shader.setColor(mesh.getMaterial().getColor());
+    			this.shader.setHasBackground(true);
+    		} else {
+    			this.shader.setHasBackground(false);
+    		}
+    		this.shader.setSampler(GL_TEXTURE1);
         }
 	}
 	

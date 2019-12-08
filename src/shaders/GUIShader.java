@@ -25,10 +25,15 @@ public class GUIShader extends Shader {
 		super.createUniform("depth");
 		super.createUniform("textured");
 		super.createUniform("sampler");
+		super.createUniform("hasBackground");
 	}
 	
 	public void setTextured(boolean textured) {
 		super.setUniformi("textured", textured ? 1 : 0);
+	}
+	
+	public void setHasBackground(boolean hasBackground) {
+		super.setUniformi("hasBackground", hasBackground ? 1 : 0);
 	}
 	
 	public void setSampler(int index) {

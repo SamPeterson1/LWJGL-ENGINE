@@ -1,6 +1,8 @@
 package GUI;
 
-import events.EventListener;
+import org.lwjgl.glfw.GLFW;
+
+import events.EventHandler;
 import math.Vector3f;
 import misc.Utils;
 import models.Mesh;
@@ -107,7 +109,7 @@ public class CheckBox extends GUIComponent {
 			} else {
 				super.material.setTexture(uncheckedHover);
 			}
-			if(EventListener.leftMouseJustDown()) {
+			if(EventHandler.mouseButtonJustDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)) {
 				this.isChecked = !this.isChecked;
 			}
 		} else {

@@ -16,6 +16,8 @@ public class Mesh {
 	protected RawModel model;
 	protected boolean enabled = true;
 	
+	public Mesh() {}
+	
 	public Mesh(int type) {
 		this.type = type;
 	}

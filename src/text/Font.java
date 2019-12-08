@@ -36,7 +36,8 @@ public class Font {
 		
 		int width = 0;
 		for(char c: text.toCharArray()) {
-			width += this.getData(c, Font.ADV) * size;
+			
+			width += this.getData(c, Font.WIDTH) * size;
 		}
 		
 		return width;

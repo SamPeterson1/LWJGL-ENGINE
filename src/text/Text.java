@@ -99,6 +99,9 @@ public class Text extends GUIComponent {
 		this.meshGenerator = new TextMeshGenerator(f);
 		this.text = text;
 		this.meshGenerator.updateMesh(this);
+		System.out.println((float)this.pixelWidth()/(float)this.pixelHeight());
+		super.setConstraint(new AspectConstraint((float)this.pixelWidth()/(float)this.pixelHeight(), Constraint.WIDTH));
+		super.calculateConstraints();
 	}
 
 	public Vector3f getColor() {

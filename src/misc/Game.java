@@ -1,10 +1,10 @@
 package misc;
 
-import GUI.Button;
-import GUI.MasterGUI;
+import org.lwjgl.glfw.GLFW;
+
 import camera.Camera;
 import camera.CameraSpecs;
-import events.EventListener;
+import events.EventHandler;
 import math.Vector3f;
 import models.ColoredMesh;
 import models.Entity;
@@ -15,8 +15,8 @@ import rendering.Light;
 import rendering.MasterRenderer;
 import shaders.BasicShader;
 import shaders.TextShader;
+import terrain.Terrain;
 import window.GLFWWindow;
-import xml.GUIXMLLoader;
 
 public class Game {
 	
@@ -32,7 +32,7 @@ public class Game {
 		
 		light = new Light(new Vector3f(1f, 1f, 1f), new Vector3f(-1000f, 1000f, 100f));
 
-		new GUIXMLLoader("src/xml/gui.xml");
+		//new GUIXMLLoader("src/xml/gui.xml");
 		
 		CameraSpecs specs = new CameraSpecs();
 		specs.setAspect(1440f/1080f);
@@ -63,6 +63,9 @@ public class Game {
 		TexturedMesh tree = new TexturedMesh("/assets/tree.obj", "/assets/tree.png");
 		TexturedMesh fern = new TexturedMesh("/assets/fern.obj", "/assets/fern.png");
 		TexturedMesh grass = new TexturedMesh("/assets/grassModel.obj", "/assets/grassTexture.png");
+		
+		Terrain terrain = new Terrain(200, 200, "/assets/grass.png");
+		ModelBatch.addEntity(new Entity(terrain));
 		
 		fern.setCullFace(false);
 		grass.setCullFace(false);
@@ -96,11 +99,9 @@ public class Game {
 			ModelBatch.addEntity(grassEntity2);
 		}
 	}
-	
+		
 	public void render() {
-		System.out.println(((Button)MasterGUI.getComponent("button1")).pressed());
 		renderer.render();
-		EventListener.endFrame();
 	}
 	
 	public void dispose() {

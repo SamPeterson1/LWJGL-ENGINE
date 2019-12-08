@@ -99,9 +99,9 @@ public class GUIComponent extends Mesh {
 	
 	public GUIComponent(XMLElement xml) {
 		
-		super(Mesh.GUI_COLORED);
-		
 		Vector3f color = new Vector3f(0f, 1f, 0f);
+		Material material = new Material();
+		this.entity = new Entity(this);
 		
 		if(xml.hasChildWithName("color")) {
 			
@@ -109,20 +109,28 @@ public class GUIComponent extends Mesh {
 			color.setX(colorElement.getAttribute("r").getFloat());
 			color.setY(colorElement.getAttribute("g").getFloat());
 			color.setZ(colorElement.getAttribute("b").getFloat());
+			material.setColor(color);
 			
 		}
 		
+		if(xml.hasAttribute("texture")) {
+			System.out.println(xml.getAttribute("texture").getString());
+			material.setTexture(new Texture(xml.getAttribute("texture").getString()));
+			super.setModel(texturedRectangle);
+			super.type = Mesh.GUI_TEXTURED;		
+		} else {
+			super.setModel(rectangle);
+			super.type = Mesh.GUI_COLORED;
+		}
+		
+		
 		float depth = 0.9f;
+		super.setMaterial(material);
 		
 		if(xml.hasAttribute("depth")) {
 			depth = xml.getAttribute("depth").getFloat();
 		}
 		
-		super.setModel(rectangle);
-		this.entity = new Entity(this);
-		Material material = new Material();
-		material.setColor(color);
-		super.setMaterial(material);
 		this.depth = depth;
 		
 		if(xml.hasChildWithName("constraints")) {
@@ -213,8 +221,9 @@ public class GUIComponent extends Mesh {
 	public void onWindowResizeOverride(int width, int height) {}
 	
 	public void calculateConstraints() {
+		Vector3f size = parent.getEntity().getTransform().getScale();
 		for(Constraint constraint: constraints.values()) {
-			constraint.constrain(GLFWWindow.getWidth(), GLFWWindow.getHeight(), this);
+			constraint.constrain((int) (GLFWWindow.getWidth() * size.getX()), (int) (GLFWWindow.getHeight() * size.getY()), this);
 		}
 	}
 	
@@ -226,13 +235,14 @@ public class GUIComponent extends Mesh {
 		
 		Vector3f scale = this.entity.getTransform().getScale();
 		for(GUIComponent child: this.children) {
-			child.onWindowResize((int) (scale.getX() * GLFWWindow.getWidth()), (int) (scale.getY() * GLFWWindow.getHeight()));
+			child.onParentResize((int) (scale.getX() * GLFWWindow.getWidth()), (int) (scale.getY() * GLFWWindow.getHeight()));
 		}
 		
 	}
 	
-	public void onWindowResize(int width, int height) {
+	public void onParentResize(int width, int height) {
 		
+		System.out.println("window resized" + width + " " + height);
 		this.onWindowResizeOverride(width, height);
 		
 		for(Constraint constraint: constraints.values()) {
@@ -254,11 +264,21 @@ public class GUIComponent extends Mesh {
 			
 			float value = child.getAttribute("value").getFloat();
 			String type = child.getAttribute("type").getString();
+			int reference = Constraint.REF_CENTER;
+			
+			if(child.hasAttribute("reference")) {
+				String attrib = child.getAttribute("reference").getString();
+				if(attrib.equals("center")) {
+					reference = Constraint.REF_CENTER;
+				} else if(attrib.equals("corner")){
+					reference = Constraint.REF_CORNER;
+				}
+			}
 			
 			if(type.equals("pixel")) {
-				this.addConstraint(new PixelConstraint((int) value, axis));
+				this.addConstraint(new PixelConstraint((int) value, axis, reference));
 			} else if(type.equals("relative")) {
-				this.addConstraint(new RelativeConstraint(value, axis));
+				this.addConstraint(new RelativeConstraint(value, axis, reference));
 			} else if(type.equals("aspect")) {
 				this.addConstraint(new AspectConstraint(value, axis));
 			}

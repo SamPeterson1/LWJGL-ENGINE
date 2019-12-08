@@ -1,6 +1,8 @@
 package GUI;
 
-import events.EventListener;
+import org.lwjgl.glfw.GLFW;
+
+import events.EventHandler;
 import math.Vector3f;
 import misc.Utils;
 import rendering.Material;
@@ -66,8 +68,8 @@ public class Button extends GUIComponent {
 		if(Utils.inBounds(x, y, width, height, (int) GLFWWindow.getCursorX(), (int) GLFWWindow.getCursorY())) {
 			super.material.setColor(color);
 			
-			this.pressed = EventListener.leftMouseDown();
-			this.justPressed = EventListener.leftMouseJustDown();
+			this.pressed = EventHandler.mouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT);
+			this.justPressed = EventHandler.mouseButtonJustDown(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 			if(this.pressed) {
 				super.entity.getTransform().setScaleX(super.getConstrainedValue(Constraint.WIDTH));
 				super.entity.getTransform().setScaleY(super.getConstrainedValue(Constraint.HEIGHT));
