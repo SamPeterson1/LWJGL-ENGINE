@@ -1,10 +1,7 @@
 package misc;
 
-import org.lwjgl.glfw.GLFW;
-
 import camera.Camera;
 import camera.CameraSpecs;
-import events.EventHandler;
 import math.Vector3f;
 import models.ColoredMesh;
 import models.Entity;
@@ -17,6 +14,7 @@ import shaders.BasicShader;
 import shaders.TextShader;
 import terrain.Terrain;
 import window.GLFWWindow;
+import xml.GUIXMLLoader;
 
 public class Game {
 	
@@ -32,7 +30,7 @@ public class Game {
 		
 		light = new Light(new Vector3f(1f, 1f, 1f), new Vector3f(-1000f, 1000f, 100f));
 
-		//new GUIXMLLoader("src/xml/gui.xml");
+		new GUIXMLLoader("src/xml/gui.xml");
 		
 		CameraSpecs specs = new CameraSpecs();
 		specs.setAspect(1440f/1080f);

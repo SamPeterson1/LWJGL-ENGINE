@@ -97,29 +97,30 @@ public class CheckBox extends GUIComponent {
 	@Override
 	public void update() {
 		
-		Vector3f pos = super.entity.getTransform().getPos();
-		Vector3f scale = super.entity.getTransform().getScale();
-		int width = (int) (scale.getX() * GLFWWindow.getWidth());
-		int height = (int) (scale.getY() * GLFWWindow.getHeight());
-		int x = (int) ((pos.getX() + 1)/2 * GLFWWindow.getWidth()) - width/2;
-		int y = (int) ((-pos.getY() + 1)/2 * GLFWWindow.getHeight()) - height/2;
-		if(Utils.inBounds(x, y, width, height, (int) GLFWWindow.getCursorX(), (int) GLFWWindow.getCursorY())) {
-			if(this.isChecked) {
-				super.material.setTexture(checkedHover);
+		if(EventHandler.getCursorMode() == GLFW.GLFW_CURSOR_NORMAL) {
+			Vector3f pos = super.entity.getTransform().getPos();
+			Vector3f scale = super.entity.getTransform().getScale();
+			int width = (int) (scale.getX() * GLFWWindow.getWidth());
+			int height = (int) (scale.getY() * GLFWWindow.getHeight());
+			int x = (int) ((pos.getX() + 1)/2 * GLFWWindow.getWidth()) - width/2;
+			int y = (int) ((-pos.getY() + 1)/2 * GLFWWindow.getHeight()) - height/2;
+			if(Utils.inBounds(x, y, width, height, (int) EventHandler.getCursorX(), (int) EventHandler.getCursorY())) {
+				if(this.isChecked) {
+					super.material.setTexture(checkedHover);
+				} else {
+					super.material.setTexture(uncheckedHover);
+				}
+				if(EventHandler.mouseButtonJustDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)) {
+					this.isChecked = !this.isChecked;
+				}
 			} else {
-				super.material.setTexture(uncheckedHover);
-			}
-			if(EventHandler.mouseButtonJustDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)) {
-				this.isChecked = !this.isChecked;
-			}
-		} else {
-			if(this.isChecked) {
-				super.material.setTexture(checked);
-			} else {
-				super.material.setTexture(unchecked);
+				if(this.isChecked) {
+					super.material.setTexture(checked);
+				} else {
+					super.material.setTexture(unchecked);
+				}
 			}
 		}
-		
 	}
 	
 }

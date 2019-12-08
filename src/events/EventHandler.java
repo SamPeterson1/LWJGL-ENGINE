@@ -28,6 +28,18 @@ public class EventHandler {
 		setEventCallbacks();
 	}
 	
+	public static int getCursorMode() {
+		return GLFW.glfwGetInputMode(windowID, GLFW.GLFW_CURSOR);
+	}
+	
+	public static void enableCursor() {
+		GLFW.glfwSetInputMode(windowID, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+	}
+	
+	public static void disableCursor() {
+		GLFW.glfwSetInputMode(windowID, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+	}
+	
 	public static void clearEvents() {
 		mouseEvents.clear();
 		keyEvents.clear();

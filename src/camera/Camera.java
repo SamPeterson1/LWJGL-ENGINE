@@ -1,9 +1,9 @@
 package camera;
 
+import events.EventHandler;
 import math.Matrix;
 import math.Transform;
 import math.Vector3f;
-import window.GLFWWindow;
 public class Camera {
 	
 	private CameraSpecs camSpecs;
@@ -13,7 +13,7 @@ public class Camera {
 	public Camera(CameraSpecs camSpecs) {
 		this.camSpecs = camSpecs;
 		this.transform = new Transform();
-		GLFWWindow.disableCursor();
+		EventHandler.disableCursor();
 		this.controller = new KeyboardCamController();
 	}
 	

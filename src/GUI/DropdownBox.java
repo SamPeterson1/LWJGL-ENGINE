@@ -68,11 +68,6 @@ public class DropdownBox extends GUIComponent {
 		
 	}
 	
-	public DropdownBox(Vector3f buttonColor, String[] options, float depth) {
-		super("/assets/DropdownBox.png", depth);
-		this.createDropdown(null, buttonColor, new Vector3f(), options, 0.5f);
-	}
-	
 	public String getSelected() {
 		return this.selected;
 	}
@@ -185,9 +180,12 @@ public class DropdownBox extends GUIComponent {
 	@Override
 	public void update() {
 		
-		this.checkClick();
-		if(this.showOptions) this.updateCells();
-		super.updateChildren();
+		if(EventHandler.getCursorMode() == GLFW.GLFW_CURSOR_NORMAL) {
+			this.checkClick();
+			if(this.showOptions) this.updateCells();
+			super.updateChildren();
+		}
+		
 	}
 	
 	private void checkClick() {
@@ -198,7 +196,7 @@ public class DropdownBox extends GUIComponent {
 		int height = (int) ((scale.getY() * GLFWWindow.getHeight()));
 		int x = (int) ((pos.getX() + 1)/2 * GLFWWindow.getWidth()) - width/2;
 		int y = (int) ((-pos.getY() + 1)/2 * GLFWWindow.getHeight()) - height/2;
-		if(Utils.inBounds(x, y, width, height, (int) GLFWWindow.getCursorX(), (int) GLFWWindow.getCursorY())) {
+		if(Utils.inBounds(x, y, width, height, (int) EventHandler.getCursorX(), (int) EventHandler.getCursorY())) {
 			super.getMaterial().setColor(color);	
 			if(EventHandler.mouseButtonJustDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)) {
 				this.showOptions = !this.showOptions;
@@ -225,7 +223,7 @@ public class DropdownBox extends GUIComponent {
 			int x = (int) ((pos.getX() + 1)/2 * GLFWWindow.getWidth()) - width/2;
 			int y = (int) ((-pos.getY() + 1)/2 * GLFWWindow.getHeight()) - height/2;
 			
-			if(Utils.inBounds(x, y, width, height, (int) GLFWWindow.getCursorX(), (int) GLFWWindow.getCursorY())) {
+			if(Utils.inBounds(x, y, width, height, (int) EventHandler.getCursorX(), (int) EventHandler.getCursorY())) {
 				
 				cell.getMaterial().setColor(color);	
 				if(EventHandler.mouseButtonJustDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)) {

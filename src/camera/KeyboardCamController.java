@@ -6,7 +6,6 @@ import events.EventHandler;
 import math.Transform;
 import math.Vector3f;
 import misc.Time;
-import window.GLFWWindow;
 
 public class KeyboardCamController implements CameraController {
 	
@@ -19,12 +18,12 @@ public class KeyboardCamController implements CameraController {
 	@Override
 	public void update(Transform camera) {
 		
-		if(EventHandler.keyDown(GLFW.GLFW_KEY_ESCAPE)) {
+		if(EventHandler.keyJustDown(GLFW.GLFW_KEY_ESCAPE)) {
 			if(cursorEnabled) {
-				GLFWWindow.disableCursor();
+				EventHandler.disableCursor();
 				this.cursorEnabled = false;
 			} else {
-				GLFWWindow.enableCursor();
+				EventHandler.enableCursor();
 				this.cursorEnabled = true;
 			}
 		}
@@ -52,8 +51,8 @@ public class KeyboardCamController implements CameraController {
 			camera.translateY(-speed * Time.deltaTime);
 		}
 		Vector3f newRotation = new Vector3f();
-		newRotation.setY((float)GLFWWindow.getCursorX() * this.xSense);
-		newRotation.setX((float)GLFWWindow.getCursorY() * this.ySense);
+		newRotation.setY((float)EventHandler.getCursorX() * this.xSense);
+		newRotation.setX((float)EventHandler.getCursorY() * this.ySense);
 		camera.setRotation(newRotation);
 		
 	}
