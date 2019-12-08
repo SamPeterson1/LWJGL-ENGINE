@@ -32,6 +32,20 @@ public class Vector3f {
 		return this.getX()*other.getX() + this.getY()*other.getY() + this.getZ() * other.getZ();
 	}
 	
+	public void multiplyScalar(float scalar) {
+		this.x *= scalar;
+		this.y *= scalar;
+		this.z *= scalar;
+	}
+	
+	public float magnitude() {
+		return (float) Math.sqrt(x*x + y*y + z*z);
+	}
+	
+	public void normalize() {
+		this.multiplyScalar(1f/this.magnitude());
+	}
+	
 	public void subtract(Vector3f other) {
 		this.x -= other.getX();
 		this.y -= other.getY();

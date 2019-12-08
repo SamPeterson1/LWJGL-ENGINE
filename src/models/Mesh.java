@@ -10,6 +10,7 @@ public class Mesh {
 	public static final int TERRAIN = 3;
 	public static final int GUI_COLORED = 4;
 	public static final int GUI_TEXTURED = 5;
+	public static final int PARTICLE = 6;
 	
 	protected int type;
 	protected Material material;

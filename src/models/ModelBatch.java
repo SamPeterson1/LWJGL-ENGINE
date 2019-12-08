@@ -32,6 +32,10 @@ public class ModelBatch {
 		}
 	}
 	
+	public static void removeEntity(Mesh mesh, Entity e) {
+		entities.get(mesh).remove(e);
+	}
+	
 	public static List<Entity> getText() {
 		return text;
 	}

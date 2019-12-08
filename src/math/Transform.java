@@ -172,11 +172,20 @@ public class Transform {
 		);
 	}
 	
+	public Matrix getTransposedTransform(Matrix viewMatrix) {
+		Matrix retVal = this.calculateTranslation(false);
+		retVal.multiply(this.calculateRotation(false))
+		.multiply(this.calculateScale());
+		retVal.transpose3x3(viewMatrix);
+		return retVal;
+	}
+	
 	public Matrix getTransform() {
 
 		return this.calculateTranslation(false)
 		.multiply(this.calculateRotation(false))
 		.multiply(this.calculateScale());
+		
 	}
 	
 	

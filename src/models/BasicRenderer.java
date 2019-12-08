@@ -1,6 +1,7 @@
 package models;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
@@ -78,8 +79,7 @@ public class BasicRenderer implements Renderer {
 	
 	private void loadTexturedMesh(Mesh mesh) {
 		TexturedMesh texturedMesh = (TexturedMesh) mesh;
-		MasterRenderer.setDoCull((texturedMesh).cullFace());
-		
+		MasterRenderer.setDoCull(texturedMesh.cullFace());
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);

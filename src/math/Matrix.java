@@ -1,5 +1,7 @@
 package math;
 
+import java.util.Arrays;
+
 public class Matrix {
 	
 	private float[][] vals;
@@ -14,12 +16,31 @@ public class Matrix {
 		this.assignVals(width, vals);
 	}
 	
+	public void transpose3x3(Matrix other) {
+		float[][] clone = other.getVals();
+		this.print();
+		this.vals[0][0] = clone[0][0];
+		this.vals[0][1] = clone[1][0];
+		this.vals[0][2] = clone[2][0];
+		this.vals[1][0] = clone[0][1];
+		this.vals[1][1] = clone[1][1];
+		this.vals[1][2] = clone[2][1];
+		this.vals[2][0] = clone[0][2];
+		this.vals[2][1] = clone[1][2];
+		this.vals[2][2] = clone[2][2];
+		this.print();
+	}
+	
 	private void assignVals(int width, float[] vals) {
 		this.vals = new float[height][width];
 		
 		for(int i = 0; i < vals.length; i ++) {
 			this.vals[i/width][i%width] = vals[i];
 		}
+	}
+	
+	public float[][] getVals() {
+		return this.vals;
 	}
 	
 	public static Matrix getIdentity(int width, int height) {
@@ -87,6 +108,15 @@ public class Matrix {
 	
 	public float[] getRow(int index) {
 		return this.vals[index];
+	}
+	
+	public void print() {
+		for(int i = 0; i < this.height; i ++) {
+			for(int ii = 0; ii < this.width; ii ++) {
+				System.out.print(vals[i][ii]);
+			}
+			System.out.println("");
+		}
 	}
 	
 	public float[] getCol(int index) {

@@ -19,6 +19,7 @@ import models.BasicRenderer;
 import models.Entity;
 import models.Mesh;
 import models.ModelBatch;
+import particles.ParticleRenderer;
 import terrain.TerrainRenderer;
 import text.TextRenderer;
 import window.GLFWWindow;
@@ -32,12 +33,14 @@ public class MasterRenderer implements WindowListener {
 	private BasicRenderer renderer;
 	private TextRenderer textRenderer;
 	private GUIRenderer guiRenderer;
+	private ParticleRenderer particleRenderer;
 	private Camera cam;
 	
 	public MasterRenderer(Light light, Camera cam) {
 		this.cam = cam;
 		this.terrainRenderer = new TerrainRenderer(light, cam);
 		this.renderer = new BasicRenderer(light, cam);
+		this.particleRenderer = new ParticleRenderer(cam);
 		this.textRenderer = new TextRenderer();
 		this.guiRenderer = new GUIRenderer();
 		this.activeRenderer = renderer;
@@ -49,14 +52,15 @@ public class MasterRenderer implements WindowListener {
 	public static void setDoCull(boolean cull) {
 		if(cull) {
 			glEnable(GL_CULL_FACE);
-			glCullFace(GL_BACK);
 		} else {
 			glDisable(GL_CULL_FACE);
 		}
 	}
 	
 	public void render() {
+		
 		Map<Mesh, List<Entity>> meshesMap = ModelBatch.getEntities();
+		boolean isParticle = false;
 		this.cam.update();
 		this.activeRenderer.begin();
 		for(Mesh mesh: meshesMap.keySet()) {
@@ -75,16 +79,17 @@ public class MasterRenderer implements WindowListener {
 				} else if(mesh.getType() == Mesh.GUI_COLORED || mesh.getType() == Mesh.GUI_TEXTURED) {
 					this.activateRenderer(guiRenderer);
 					this.guiRenderer.loadMesh(mesh);
+				} else if(mesh.getType() == Mesh.PARTICLE) {
+					isParticle = true;
+					this.activateRenderer(particleRenderer);
+					this.particleRenderer.loadMesh(mesh);
 				}
 				
 				for(Entity e: entities) {
-					this.renderEntity(e);
+					this.renderEntity(e, isParticle);
 				}
 			} else {
 				for(Entity e: entities) {
-					if(e.getMesh() instanceof DropdownBox) {
-						System.out.println("sending update");
-					}
 					e.update();
 				}
 			}
@@ -97,16 +102,20 @@ public class MasterRenderer implements WindowListener {
 		for(Entity e: ModelBatch.getText()) {
 			if(e.getMesh().isEnabled()) {
 				textRenderer.loadMesh(e.getMesh());
-				this.renderEntity(e);
+				this.renderEntity(e, false);
 			} else {
 				e.update();
 			}
 		}
 	}
 	
-	private void renderEntity(Entity e) {
+	private void renderEntity(Entity e, boolean isParticle) {
 		e.update();
-		this.activeRenderer.setTransformationMatrix(e.getTransform().getTransform());
+		System.out.println(isParticle);
+		if(!isParticle)
+			this.activeRenderer.setTransformationMatrix(e.getTransform().getTransform());
+		else
+			this.activeRenderer.setTransformationMatrix(e.getTransform().getTransposedTransform(this.cam.viewMatrix()));
 		GL11.glDrawElements(GL11.GL_TRIANGLES, e.getMesh().getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 	}
 	
