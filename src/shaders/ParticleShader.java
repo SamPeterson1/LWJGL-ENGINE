@@ -1,8 +1,7 @@
 package shaders;
 
 import math.Matrix;
-import math.Vector3f;
-import rendering.Light;
+import particles.ParticleAnimation;
 
 public class ParticleShader extends Shader {
 
@@ -20,9 +19,23 @@ public class ParticleShader extends Shader {
 
 	@Override
 	public void createUniforms() {
+		super.createUniform("sampler");
+		super.createUniform("textCoordInfo");
+		super.createUniform("textOffset1");
+		super.createUniform("textOffset2");
 		super.createUniform("p");
 		super.createUniform("v");
 		super.createUniform("t");
+	}
+	
+	public void updateAnimation(ParticleAnimation animation) {
+		super.setUniform2f("textOffset1", animation.getTexOffset1());
+		super.setUniform2f("textOffset2", animation.getTexOffset2());
+		super.setUniform3f("textCoordInfo", animation.getTextureData());
+	}
+	
+	public void setSampler(int index) {
+		super.setUniformi("sampler", index);
 	}
 	
 	public void setProjectionMatrix(Matrix projection) {

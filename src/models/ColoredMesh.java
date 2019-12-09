@@ -26,7 +26,6 @@ public class ColoredMesh extends Mesh {
 		super.material.setShineDamping(shineDamping);
 	}
 	
-	
 	public Vector3f getColor() {
 		return this.material.getColor();
 	}

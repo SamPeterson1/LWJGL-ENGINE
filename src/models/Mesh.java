@@ -51,4 +51,8 @@ public class Mesh {
 		return model;
 	}
 	
+	public void remove() {
+		this.model.remove();
+	}
+	
 }

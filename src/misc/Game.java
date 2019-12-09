@@ -62,8 +62,8 @@ public class Game {
 		element3.getTransform().setScale(new Vector3f(0.5f, 0.5f, 0.5f));
 		element3.getTransform().setTranslationZ(3);
 		
-		Terrain terrain = new Terrain(200, 200, "/assets/grass.png", noise);
-		ModelBatch.addEntity(new Entity(terrain));
+		//Terrain terrain = new Terrain(200, 200, "/assets/grass.png", noise);
+		//ModelBatch.addEntity(new Entity(terrain));
 		
 	}
 		

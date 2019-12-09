@@ -18,7 +18,6 @@ public class Matrix {
 	
 	public void transpose3x3(Matrix other) {
 		float[][] clone = other.getVals();
-		this.print();
 		this.vals[0][0] = clone[0][0];
 		this.vals[0][1] = clone[1][0];
 		this.vals[0][2] = clone[2][0];
@@ -28,7 +27,6 @@ public class Matrix {
 		this.vals[2][0] = clone[0][2];
 		this.vals[2][1] = clone[1][2];
 		this.vals[2][2] = clone[2][2];
-		this.print();
 	}
 	
 	private void assignVals(int width, float[] vals) {

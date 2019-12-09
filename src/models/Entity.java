@@ -1,15 +1,25 @@
 package models;
 
 import math.Transform;
+import particles.ParticleAnimation;
 
 public class Entity {
 	
 	private Transform transform;
 	private Mesh mesh;
+	private ParticleAnimation animation;
 	
 	public Entity(Mesh mesh) {
 		this.transform = new Transform();
 		this.mesh = mesh;
+	}
+	
+	public void setAnimation(ParticleAnimation animation) {
+		this.animation = animation;
+	}
+	
+	public ParticleAnimation getAnimation() {
+		return this.animation;
 	}
 	
 	public Transform getTransform() {

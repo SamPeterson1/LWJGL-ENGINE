@@ -6,8 +6,10 @@ import models.Mesh;
 import models.ModelBatch;
 import models.ModelLoader;
 import models.RawModel;
+import rendering.Material;
+import rendering.Texture;
 
-public class Particle extends Mesh {
+public class Particle {
 	
 	private static final float[] rectVerts = new float[] {
 			1, 1,
@@ -22,7 +24,6 @@ public class Particle extends Mesh {
 	};
 	
 	private static final RawModel rectangle = ModelLoader.loadColoredGUIModel(rectVerts, rectIndices);
-
 	
 	private Vector3f pos;
 	private Vector3f velocity;
@@ -30,17 +31,20 @@ public class Particle extends Mesh {
 	private int lifetime;
 	private long birthTime;
 	private Entity entity;
+	private ParticleMesh mesh;
+	private ParticleAnimation animation;
 	
-	public Particle(Vector3f pos, Vector3f velocity, float gravity, int lifetime) {
+	public Particle(Vector3f pos, Vector3f velocity, float gravity, int lifetime, ParticleMesh mesh) {
 		
-		super(Mesh.PARTICLE);
-		super.setModel(rectangle);
+		this.animation = new ParticleAnimation(15, 4);
+		this.mesh = mesh;
 		this.pos = pos;
 		this.velocity = velocity;
 		this.gravity = gravity;
 		this.lifetime = lifetime;
 		this.birthTime = System.currentTimeMillis();
-		this.entity = new Entity(this);
+		this.entity = new Entity(this.mesh);
+		this.entity.setAnimation(animation);
 		
 	}
 
@@ -49,10 +53,11 @@ public class Particle extends Mesh {
 	}
 	
 	public void remove() {
-		ModelBatch.removeEntity(this, this.entity);
+		ModelBatch.removeEntity(this.mesh, this.entity);
 	}
 	
 	public boolean updateParticle() {
+		this.animation.update((float)(System.currentTimeMillis()-birthTime)/lifetime);
 		this.entity.getTransform().getPos().add(velocity);
 		this.velocity.addY(-gravity);
 		return System.currentTimeMillis() - birthTime < lifetime;

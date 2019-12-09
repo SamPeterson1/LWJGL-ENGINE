@@ -27,7 +27,7 @@ import window.WindowListener;
 
 public class MasterRenderer implements WindowListener {
 	
-	
+	int particleCt = 0;
 	private Renderer activeRenderer;
 	private TerrainRenderer terrainRenderer;
 	private BasicRenderer renderer;
@@ -58,11 +58,13 @@ public class MasterRenderer implements WindowListener {
 	}
 	
 	public void render() {
-		
+		long startTime = System.currentTimeMillis();
+		particleCt = 0;
 		Map<Mesh, List<Entity>> meshesMap = ModelBatch.getEntities();
 		boolean isParticle = false;
 		this.cam.update();
 		this.activeRenderer.begin();
+		System.out.println("Particleee");
 		for(Mesh mesh: meshesMap.keySet()) {
 			List<Entity> entities = meshesMap.get(mesh);
 			if(mesh.isEnabled()) {
@@ -85,7 +87,12 @@ public class MasterRenderer implements WindowListener {
 					this.particleRenderer.loadMesh(mesh);
 				}
 				
+				System.out.println("Loading time" + (System.currentTimeMillis() - startTime));
+				
 				for(Entity e: entities) {
+					if(isParticle) {
+						this.particleRenderer.updateAnimation(e.getAnimation());
+					}
 					this.renderEntity(e, isParticle);
 				}
 			} else {
@@ -107,11 +114,15 @@ public class MasterRenderer implements WindowListener {
 				e.update();
 			}
 		}
+		
+		
 	}
 	
 	private void renderEntity(Entity e, boolean isParticle) {
 		e.update();
-		System.out.println(isParticle);
+		if(isParticle) {
+			particleCt ++;
+		}
 		if(!isParticle)
 			this.activeRenderer.setTransformationMatrix(e.getTransform().getTransform());
 		else

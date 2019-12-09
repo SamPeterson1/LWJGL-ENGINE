@@ -1,9 +1,20 @@
 package particles;
 
+import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_GREATER;
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_COLOR;
+import static org.lwjgl.opengl.GL11.glAlphaFunc;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glDepthMask;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -30,8 +41,10 @@ public class ParticleRenderer implements Renderer {
 	@Override
 	public void begin() {
 		this.shader.bind();
-		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDepthMask(false);
 	}
 
 	@Override
@@ -40,12 +53,20 @@ public class ParticleRenderer implements Renderer {
 		glEnable(GL_CULL_FACE);
 	}
 
+	public void updateAnimation(ParticleAnimation animation) {
+		this.shader.updateAnimation(animation);
+	}
+	
 	@Override
 	public void loadMesh(Mesh mesh) {
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
 		this.shader.setViewMatrix(cam.viewMatrix());
 		this.shader.setProjectionMatrix(cam.perspective());
+		glActiveTexture(GL_TEXTURE0);
+		mesh.getMaterial().getTexture().bind();
+		this.shader.setSampler(GL_TEXTURE0);
+		
 	}
 	
 	@Override
