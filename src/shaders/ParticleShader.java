@@ -15,17 +15,17 @@ public class ParticleShader extends Shader {
 	@Override
 	public void bindAllAttributes() {
 		super.bindAttribute(0, "position");
+		super.bindAttribute(1, "t");
+		super.bindAttribute(5, "texOffsets");
+		super.bindAttribute(6, "blendFactor");
 	}
-
+	
 	@Override
 	public void createUniforms() {
 		super.createUniform("sampler");
-		super.createUniform("textCoordInfo");
-		super.createUniform("textOffset1");
-		super.createUniform("textOffset2");
+
 		super.createUniform("p");
 		super.createUniform("v");
-		super.createUniform("t");
 	}
 	
 	public void updateAnimation(ParticleAnimation animation) {
@@ -47,7 +47,7 @@ public class ParticleShader extends Shader {
 	}
 	
 	public void setTransformationMatrix(Matrix transformationMatrix) {
-		super.setUniform("t", transformationMatrix);
+		super.setUniform("t2", transformationMatrix);
 	}
 	
 }

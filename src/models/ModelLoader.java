@@ -2,12 +2,16 @@ package models;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL33;
+
+import particles.Particle;
 
 public class ModelLoader {
 	
@@ -17,16 +21,42 @@ public class ModelLoader {
         return vertexArrayID;
     }
 	
-    protected static int storeData(int attributeNumber, int coordSize, float[] data, boolean isStatic) {
+	protected static int createEmptyVBO(int floatCount) {
+	
+		int vbo = GL15.glGenBuffers();
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, floatCount * 4, GL15.GL_STREAM_DRAW);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		return vbo;
+		
+	}
+	
+	protected static void addInstancedAttribute(int vao, int vbo, int attribute, int datasize,
+			int instancedDataLength, int offset) {
+		
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+		GL30.glBindVertexArray(vao);
+		GL20.glVertexAttribPointer(attribute, datasize, GL11.GL_FLOAT, false, instancedDataLength * 4, offset * 4);
+		GL33.glVertexAttribDivisor(attribute, 1);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		GL30.glBindVertexArray(0);
+		
+	}
+	
+	protected static int storeData(int attributeNumber, int coordSize, float[] data, boolean isStatic, int stride, int offset) {
     	FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
         buffer.put(data);
         buffer.flip();
         int bufferID = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, bufferID);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, isStatic ? GL15.GL_STATIC_DRAW : GL15.GL_DYNAMIC_DRAW);
-        GL20.glVertexAttribPointer(attributeNumber, coordSize, GL11.GL_FLOAT, false, 0, 0);
+        GL20.glVertexAttribPointer(attributeNumber, coordSize, GL11.GL_FLOAT, false, stride, offset);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         return bufferID;
+	}
+	
+    protected static int storeData(int attributeNumber, int coordSize, float[] data, boolean isStatic) {
+    	return storeData(attributeNumber, coordSize, data, isStatic, 0, 0);
     }
      
     protected static int bindIndicesBuffer(int[] indices, boolean isStatic) {
@@ -38,6 +68,29 @@ public class ModelLoader {
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, isStatic ? GL15.GL_STATIC_DRAW : GL15.GL_DYNAMIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         return indicesBufferID;
+    }
+    
+    public static RawModel getInstancedParticles(float[] vertices, int[] indices) {
+    	
+    	RawModel model = new RawModel();
+    	model.setVAO_ID(createVAO());
+    	int vbo = storeData(0, 2, vertices, true);
+    	model.setBuffer(vbo, RawModel.VBO);
+    	model.setBuffer(bindIndicesBuffer(indices, true), RawModel.IBO);
+    	model.setVertexCount(indices.length);
+    	
+    	model.addVBO(createEmptyVBO(10000*21));
+    	vbo = model.getVBO(0);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 1, 4, 21, 0);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 2, 4, 21, 4);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 3, 4, 21, 8);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 4, 4, 21, 12);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 5, 4, 21, 16);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 6, 1, 21, 20);
+    	
+    	GL30.glBindVertexArray(0);
+    	return model;
+    	
     }
     
     public static RawModel load3DModel(float[] vertices, float[] textureCoords, float[] vertexNormals, int[] indices) {
@@ -54,7 +107,6 @@ public class ModelLoader {
     	return model;
     	
     }
-    
     
     public static RawModel load3DModel(float[] vertices, float[] vertexNormals, int[] indices) {
     	

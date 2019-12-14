@@ -18,9 +18,6 @@ public class ParticleAnimation {
 		this.numRows = numRows;
 	}
 	
-	private float fade(float x) {
-		return (float) (1f/(1+Math.pow(Math.E, x)));
-	}
 	
 	public void update(float percentLifetime) {
 		
@@ -30,7 +27,8 @@ public class ParticleAnimation {
 		int index2 = index1 < stages - 1 ? index1 + 1 : index1;
 		
 		this.blend = progression - index1;
-		this.fadeOut = 1-percentLifetime;
+		if(index1 == stages-1) fadeOut = stages*(1-percentLifetime);
+		else fadeOut = 1f;
 		this.setTextureOffset(texOffset1, index1);
 		this.setTextureOffset(texOffset2, index2);
 		

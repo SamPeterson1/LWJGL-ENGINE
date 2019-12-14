@@ -23,7 +23,22 @@ public class ParticleMesh extends Mesh {
 			0, 3, 2
 	};
 	
-	private static final RawModel rectangle = ModelLoader.loadColoredGUIModel(rectVerts, rectIndices);
+	private static final RawModel rectangle = ModelLoader.getInstancedParticles(rectVerts, rectIndices);
+	
+	private ParticleAnimation animation;
+	
+	public ParticleMesh(ParticleAnimation animation, Texture t) {
+		
+		this.animation = animation;
+		
+	}
+	
+	public ParticleMesh() {
+		
+		super(Mesh.PARTICLE);
+		super.setModel(rectangle);
+		
+	} 
 	
 	public ParticleMesh(Texture t) {
 		
@@ -33,6 +48,20 @@ public class ParticleMesh extends Mesh {
 		material.setTexture(t);
 		super.setMaterial(material);
 		
+	}
+	
+	public void setTexture(Texture t) {
+		Material material = new Material();
+		material.setTexture(t);
+		super.setMaterial(material);
+	}
+	
+	public ParticleAnimation getAnimation() {
+		return this.animation;
+	}
+	
+	public void setAnimation(ParticleAnimation animation) {
+		this.animation = animation;
 	}
 
 }

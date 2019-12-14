@@ -11,22 +11,22 @@ import rendering.Texture;
 public class ParticleMaster {
 	
 	private static List<Particle> particles = new ArrayList<>();
-	private static Texture t = new Texture("/assets/particleAtlas.png");
-	private static ParticleMesh mesh = new ParticleMesh(t);
 	
 	public static void addParticle(Particle p) {
 		particles.add(p);
-		ModelBatch.addEntity(p.getEntity());
+		ModelBatch.addEntity(p);
+	}
+	
+	public static void addParticleSystem(ParticleSystem system) {
+		
+		for(Particle p: system.getParticles()) {
+			particles.add(p);
+			ModelBatch.addEntity(p);
+		}
+		
 	}
 	
 	public static void update() {
-		
-		long time = System.currentTimeMillis();
-		Vector3f velocity = new Vector3f((float)Math.random() * 0.2f - 0.1f, (float)Math.random() * 0.2f - 0.1f, (float)Math.random() * 0.2f - 0.1f);
-		velocity.normalize();
-		velocity.multiplyScalar(0.1f);
-		Particle particle = new Particle(new Vector3f(1f, 1f, 0f), velocity, 0f, 5000, mesh);
-		ParticleMaster.addParticle(particle);
 		
 		Iterator<Particle> iterator = particles.iterator();
 		while(iterator.hasNext()) {
@@ -37,8 +37,6 @@ public class ParticleMaster {
 				iterator.remove();
 			}
 		}
-		
-		System.out.println(particles.size() + " " + (System.currentTimeMillis() - time));
 		
 	}
 	

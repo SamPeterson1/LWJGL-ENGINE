@@ -16,7 +16,7 @@ import models.Mesh;
 import rendering.Renderer;
 import shaders.GUIShader;
 
-public class GUIRenderer implements Renderer {
+public class GUIRenderer extends Renderer {
 
 	private GUIShader shader;
 	

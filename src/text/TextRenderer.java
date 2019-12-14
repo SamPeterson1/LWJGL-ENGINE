@@ -21,7 +21,7 @@ import models.Mesh;
 import rendering.Renderer;
 import shaders.TextShader;
 
-public class TextRenderer implements Renderer {
+public class TextRenderer extends Renderer {
 	
 	TextShader shader;
 	

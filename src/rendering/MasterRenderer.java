@@ -12,7 +12,6 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import GUI.DropdownBox;
 import GUI.GUIRenderer;
 import camera.Camera;
 import models.BasicRenderer;
@@ -20,6 +19,7 @@ import models.Entity;
 import models.Mesh;
 import models.ModelBatch;
 import particles.ParticleRenderer;
+import particles.TestParticleRenderer;
 import terrain.TerrainRenderer;
 import text.TextRenderer;
 import window.GLFWWindow;
@@ -34,6 +34,7 @@ public class MasterRenderer implements WindowListener {
 	private TextRenderer textRenderer;
 	private GUIRenderer guiRenderer;
 	private ParticleRenderer particleRenderer;
+	private Renderer2 testParticleRenderer;
 	private Camera cam;
 	
 	public MasterRenderer(Light light, Camera cam) {
@@ -44,6 +45,7 @@ public class MasterRenderer implements WindowListener {
 		this.textRenderer = new TextRenderer();
 		this.guiRenderer = new GUIRenderer();
 		this.activeRenderer = renderer;
+		this.testParticleRenderer = new TestParticleRenderer(cam);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		GLFWWindow.addListener(this);
@@ -58,13 +60,12 @@ public class MasterRenderer implements WindowListener {
 	}
 	
 	public void render() {
-		long startTime = System.currentTimeMillis();
 		particleCt = 0;
 		Map<Mesh, List<Entity>> meshesMap = ModelBatch.getEntities();
 		boolean isParticle = false;
+		boolean foo = true;
 		this.cam.update();
 		this.activeRenderer.begin();
-		System.out.println("Particleee");
 		for(Mesh mesh: meshesMap.keySet()) {
 			List<Entity> entities = meshesMap.get(mesh);
 			if(mesh.isEnabled()) {
@@ -82,18 +83,16 @@ public class MasterRenderer implements WindowListener {
 					this.activateRenderer(guiRenderer);
 					this.guiRenderer.loadMesh(mesh);
 				} else if(mesh.getType() == Mesh.PARTICLE) {
-					isParticle = true;
-					this.activateRenderer(particleRenderer);
-					this.particleRenderer.loadMesh(mesh);
+					this.testParticleRenderer.begin();
+					this.testParticleRenderer.render(mesh, entities);
+					this.testParticleRenderer.end();
+					foo = false;
 				}
-				
-				System.out.println("Loading time" + (System.currentTimeMillis() - startTime));
-				
-				for(Entity e: entities) {
-					if(isParticle) {
-						this.particleRenderer.updateAnimation(e.getAnimation());
+				if(foo) {
+					for(Entity e: entities) {
+						this.activeRenderer.loadEntity(e);
+						this.renderEntity(e, isParticle);
 					}
-					this.renderEntity(e, isParticle);
 				}
 			} else {
 				for(Entity e: entities) {

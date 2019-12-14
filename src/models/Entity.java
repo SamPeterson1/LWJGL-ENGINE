@@ -5,21 +5,20 @@ import particles.ParticleAnimation;
 
 public class Entity {
 	
-	private Transform transform;
-	private Mesh mesh;
-	private ParticleAnimation animation;
+	protected Transform transform;
+	protected Mesh mesh;
 	
 	public Entity(Mesh mesh) {
 		this.transform = new Transform();
 		this.mesh = mesh;
 	}
 	
-	public void setAnimation(ParticleAnimation animation) {
-		this.animation = animation;
+	public Entity() {
+		this(null);
 	}
 	
-	public ParticleAnimation getAnimation() {
-		return this.animation;
+	public void setMesh(Mesh mesh) {
+		this.mesh = mesh;
 	}
 	
 	public Transform getTransform() {

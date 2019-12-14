@@ -3,10 +3,13 @@ package models;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
@@ -15,6 +18,7 @@ import org.lwjgl.opengl.GL30;
 public class RawModel {
 	
 	private HashMap<Integer, Integer> ids = new HashMap<>();
+	private List<Integer> vbos = new ArrayList<>();
 	private int vertexCount;
 	
 	public static final int VAO = 0;
@@ -29,6 +33,10 @@ public class RawModel {
 	
 	public int getVertexCount() {
 		return this.vertexCount;
+	}
+	
+	public void addVBO(int vbo) {
+		this.vbos.add(vbo);
 	}
 	
 	public void setVAO_ID(int vaoID) {
@@ -63,8 +71,24 @@ public class RawModel {
 	    
 	}
 	
+	public void updateVBO(int vbo, float[] data, FloatBuffer buffer) {
+		
+		buffer.clear();
+		buffer.put(data);
+		buffer.flip();
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer.capacity() * 4, GL15.GL_STREAM_DRAW);
+		GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, buffer);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		
+	}
+	
 	public void setBuffer(int bufferID, int type) {
 		this.ids.put(type, bufferID);
+	}
+	
+	public int getVBO(int id) {
+		return this.vbos.get(id);
 	}
 	
 	public void remove() {
@@ -76,6 +100,10 @@ public class RawModel {
 		this.deleteBuffer(RawModel.TBO);
 		this.deleteBuffer(RawModel.IBO);
 		this.deleteBuffer(RawModel.NBO);
+		
+		for(int i: this.vbos) {
+			glDeleteBuffers(i);
+		}
 		
 	}
 	

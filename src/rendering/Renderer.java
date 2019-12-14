@@ -1,14 +1,17 @@
 package rendering;
 
 import math.Matrix;
+import models.Entity;
 import models.Mesh;
 
-public interface Renderer {
+public abstract class Renderer {
 	
-	void begin();
-	void end();
-	void loadMesh(Mesh mesh);
-	void unloadMesh();
-	void setTransformationMatrix(Matrix matrix);
+	public abstract void begin();
+	public abstract void end();
+	public abstract void loadMesh(Mesh mesh);
+	public abstract void unloadMesh();
+	public abstract void setTransformationMatrix(Matrix matrix);
+	
+	public void loadEntity(Entity e) {}
 	
 }

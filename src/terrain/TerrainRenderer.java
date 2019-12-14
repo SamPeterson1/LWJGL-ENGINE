@@ -18,7 +18,7 @@ import rendering.Light;
 import rendering.Renderer;
 import shaders.TerrainShader;
 
-public class TerrainRenderer implements Renderer {
+public class TerrainRenderer extends Renderer {
 
 	private TerrainShader shader;
 	private Light light;

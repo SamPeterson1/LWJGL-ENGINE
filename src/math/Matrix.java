@@ -16,6 +16,29 @@ public class Matrix {
 		this.assignVals(width, vals);
 	}
 	
+	public int storeData(float[] data, int pointer) {
+		
+		data[pointer++] = this.vals[0][0];
+		data[pointer++] = this.vals[0][1];
+		data[pointer++] = this.vals[0][2];
+		data[pointer++] = this.vals[0][3];
+		data[pointer++] = this.vals[1][0];
+		data[pointer++] = this.vals[1][1];
+		data[pointer++] = this.vals[1][2];
+		data[pointer++] = this.vals[1][3];
+		data[pointer++] = this.vals[2][0];
+		data[pointer++] = this.vals[2][1];
+		data[pointer++] = this.vals[2][2];
+		data[pointer++] = this.vals[2][3];
+		data[pointer++] = this.vals[3][0];
+		data[pointer++] = this.vals[3][1];
+		data[pointer++] = this.vals[3][2];
+		data[pointer++] = this.vals[3][3];
+		
+		return pointer;
+		
+	}
+	
 	public void transpose3x3(Matrix other) {
 		float[][] clone = other.getVals();
 		this.vals[0][0] = clone[0][0];

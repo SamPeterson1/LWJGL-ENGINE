@@ -19,7 +19,7 @@ import rendering.MasterRenderer;
 import rendering.Renderer;
 import shaders.BasicShader;
 
-public class BasicRenderer implements Renderer {
+public class BasicRenderer extends Renderer {
 
 	private BasicShader shader;
 	private Light light;
