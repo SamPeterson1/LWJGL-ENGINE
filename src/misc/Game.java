@@ -69,6 +69,7 @@ public class Game {
 		
 		Terrain terrain = new Terrain("/assets/grass.png", noise);
 		cam.setTerrain(terrain);
+		terrain.getTransform().setTranslationX(10f);
 		ModelBatch.addEntity(terrain);
 		
 		this.particles = new ParticleSystem(new CircularEmission(100f, 10f), 200, 1, 0f, 5000, "/assets/fireAtlas.png", 16, 4);

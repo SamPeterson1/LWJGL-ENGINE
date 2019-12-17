@@ -21,27 +21,34 @@ public class Terrain extends Entity {
 		System.out.println(x + "foo");
 		System.out.println(z + "foo");
 		float vertSpacing = (float)TerrainMesh.SIZE/TerrainMesh.VERTEX_COUNT;
+		Vector3f pos = transform.getPos();
+		x -= pos.getX();
+		z -= pos.getZ();
 		int gridX = (int) (x/vertSpacing);
 		int gridZ = (int) (z/vertSpacing);
 		
-		float xCoord = (x/vertSpacing) - gridX;
-		float zCoord = (z/vertSpacing) - gridZ;
-
-		float answer;
-		
-		if (xCoord <= (1-zCoord)) {
-			answer = Utils
-					.barryCentric(new Vector3f(0, mesh.heights[gridX][gridZ], 0), new Vector3f(1,
-							mesh.heights[gridX + 1][gridZ], 0), new Vector3f(0,
-									mesh.heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
-		} else {
-			answer = Utils
-					.barryCentric(new Vector3f(1, mesh.heights[gridX + 1][gridZ], 0), new Vector3f(1,
-							mesh.heights[gridX + 1][gridZ + 1], 1), new Vector3f(0,
-									mesh.heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
+		if(gridX >= 0 && gridZ >= 0) {
+			float xCoord = (x/vertSpacing) - gridX;
+			float zCoord = (z/vertSpacing) - gridZ;
+	
+			float answer;
+			
+			if (xCoord <= (1-zCoord)) {
+				answer = Utils
+						.barryCentric(new Vector3f(0, mesh.heights[gridX][gridZ], 0), new Vector3f(1,
+								mesh.heights[gridX + 1][gridZ], 0), new Vector3f(0,
+										mesh.heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
+			} else {
+				answer = Utils
+						.barryCentric(new Vector3f(1, mesh.heights[gridX + 1][gridZ], 0), new Vector3f(1,
+								mesh.heights[gridX + 1][gridZ + 1], 1), new Vector3f(0,
+										mesh.heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
+			}
+			
+			return answer;
 		}
 		
-		return answer;
+		return 0;
 	}
 	
 }
