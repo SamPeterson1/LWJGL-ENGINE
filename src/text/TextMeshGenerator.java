@@ -1,8 +1,8 @@
 package text;
 
+import models.ModelLoader;
 import models.RawModel;
 import window.GLFWWindow;
-import models.ModelLoader;
 
 public class TextMeshGenerator {
 	

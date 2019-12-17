@@ -23,6 +23,14 @@ public class Mesh {
 		this.type = type;
 	}
 	
+	public void disable() {
+		this.enabled = false;
+	}
+	
+	public void enable() {
+		this.enabled = true;
+	}
+	
 	public boolean isEnabled() {
 		return this.enabled;
 	}

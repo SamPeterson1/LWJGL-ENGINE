@@ -2,11 +2,9 @@ package particles;
 
 import math.Vector3f;
 import models.Entity;
-import models.Mesh;
 import models.ModelBatch;
 import models.ModelLoader;
 import models.RawModel;
-import rendering.Material;
 import rendering.Texture;
 
 public class Particle extends Entity {
@@ -53,6 +51,11 @@ public class Particle extends Entity {
 		this.birthTime = System.currentTimeMillis();
 		this.transform.setTranslation(pos);
 		
+	}
+	
+	public void reuse() {
+		this.birthTime = System.currentTimeMillis();
+		this.velocity = new Vector3f();
 	}
 	
 	public void setMesh(ParticleMesh mesh) {

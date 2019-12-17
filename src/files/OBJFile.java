@@ -5,8 +5,8 @@ import java.util.List;
 
 import math.Vector2f;
 import math.Vector3f;
-import models.RawModel;
 import models.ModelLoader;
+import models.RawModel;
 
 public class OBJFile {
 

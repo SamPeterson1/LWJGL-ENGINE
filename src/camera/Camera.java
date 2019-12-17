@@ -4,10 +4,11 @@ import events.EventHandler;
 import math.Matrix;
 import math.Transform;
 import math.Vector3f;
+import terrain.Terrain;
 public class Camera {
 	
 	private CameraSpecs camSpecs;
-	private CameraController controller;
+	private KeyboardCamController controller;
 	private Transform transform;
 	
 	public Camera(CameraSpecs camSpecs) {
@@ -15,6 +16,10 @@ public class Camera {
 		this.transform = new Transform();
 		EventHandler.disableCursor();
 		this.controller = new KeyboardCamController();
+	}
+	
+	public void setTerrain(Terrain terrain) {
+		controller.setTerrain(terrain);
 	}
 	
 	public void setAspect(float aspect) {

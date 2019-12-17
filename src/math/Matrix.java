@@ -1,7 +1,5 @@
 package math;
 
-import java.util.Arrays;
-
 public class Matrix {
 	
 	private float[][] vals;

@@ -36,7 +36,7 @@ void main(void) {
 	
 	if(textured == 1) {
 		vec4 textureColor = texture(sampler, passTextCoords);
-		if(textureColor.w < 0.5) {
+		if(textureColor.w < 0.8) {
 			discard;
 		}
 	}

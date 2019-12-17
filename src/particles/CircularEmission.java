@@ -24,14 +24,13 @@ public class CircularEmission implements ParticleEmission {
 	}
 	
 	@Override
-	public Particle emit() {
+	public void emit(Particle p) {
 		
 		float x = (1f-random.nextFloat()*2f) * radius;
 		float zRange = (float) Math.sqrt(radius*radius - x*x);
 		float z = zRange - random.nextFloat()*zRange*2f;
-		
-		return new Particle(new Vector3f(x, y, z), new Vector3f());
-		
+		p.getTransform().setTranslation(new Vector3f(x, y, z));
+
 	}
 	
 }

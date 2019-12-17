@@ -10,7 +10,7 @@ import text.Text;
 public class ModelBatch {
 	
 	private static Map<Mesh, List<Entity>> entities = new LinkedHashMap<>();
-	private static List<Entity> text = new ArrayList<>();
+	private static Map<Mesh, List<Entity>> text = new LinkedHashMap<>();
 	
 	public static void addEntities(Entity...entities) {
 		for(Entity entity: entities) {
@@ -20,7 +20,13 @@ public class ModelBatch {
 	
 	public static void addEntity(Entity e) {
 		if(e.getMesh() instanceof Text) {
-			text.add(e);
+			if(text.containsKey(e.getMesh())) {
+				text.get(e.getMesh()).add(e);
+			} else {
+				List<Entity> entitiesOfType = new ArrayList<>();
+				entitiesOfType.add(e);
+				text.put(e.getMesh(), entitiesOfType);
+			}
 		} else {
 			if(entities.containsKey(e.getMesh())) {
 				entities.get(e.getMesh()).add(e);
@@ -36,7 +42,7 @@ public class ModelBatch {
 		entities.get(mesh).remove(e);
 	}
 	
-	public static List<Entity> getText() {
+	public static Map<Mesh, List<Entity>> getText() {
 		return text;
 	}
 	

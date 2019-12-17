@@ -1,9 +1,6 @@
 package particles;
 
-import math.Vector3f;
-import models.Entity;
 import models.Mesh;
-import models.ModelBatch;
 import models.ModelLoader;
 import models.RawModel;
 import rendering.Material;

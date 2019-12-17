@@ -2,7 +2,6 @@ package models;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -11,7 +10,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL33;
 
-import particles.Particle;
+import particles.TestParticleRenderer;
 
 public class ModelLoader {
 	
@@ -78,15 +77,16 @@ public class ModelLoader {
     	model.setBuffer(vbo, RawModel.VBO);
     	model.setBuffer(bindIndicesBuffer(indices, true), RawModel.IBO);
     	model.setVertexCount(indices.length);
-    	
-    	model.addVBO(createEmptyVBO(10000*21));
+    	 
+    	model.addVBO(createEmptyVBO(TestParticleRenderer.MAX_PARTICLES*TestParticleRenderer.FLOATS_PER_PARTICLE));
     	vbo = model.getVBO(0);
-    	addInstancedAttribute(model.getVAO_ID(), vbo, 1, 4, 21, 0);
-    	addInstancedAttribute(model.getVAO_ID(), vbo, 2, 4, 21, 4);
-    	addInstancedAttribute(model.getVAO_ID(), vbo, 3, 4, 21, 8);
-    	addInstancedAttribute(model.getVAO_ID(), vbo, 4, 4, 21, 12);
-    	addInstancedAttribute(model.getVAO_ID(), vbo, 5, 4, 21, 16);
-    	addInstancedAttribute(model.getVAO_ID(), vbo, 6, 1, 21, 20);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 1, 4, 22, 0);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 2, 4, 22, 4);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 3, 4, 22, 8);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 4, 4, 22, 12);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 5, 4, 22, 16);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 6, 1, 22, 20);
+    	addInstancedAttribute(model.getVAO_ID(), vbo, 7, 1, 22, 21);
     	
     	GL30.glBindVertexArray(0);
     	return model;

@@ -6,16 +6,21 @@ import events.EventHandler;
 import math.Transform;
 import math.Vector3f;
 import misc.Time;
+import terrain.Terrain;
 
-public class KeyboardCamController implements CameraController {
+public class KeyboardCamController {
 	
 	private float speed = 20f;
 	private float xSense = 0.05f;
 	private float ySense = 0.05f;
+	private Terrain terrain;
 	
 	private boolean cursorEnabled = false;
 	
-	@Override
+	public void setTerrain(Terrain terrain) {
+		this.terrain = terrain;
+	}
+	
 	public void update(Transform camera) {
 		
 		if(EventHandler.keyJustDown(GLFW.GLFW_KEY_ESCAPE)) {
@@ -54,6 +59,9 @@ public class KeyboardCamController implements CameraController {
 		newRotation.setY((float)EventHandler.getCursorX() * this.xSense);
 		newRotation.setX((float)EventHandler.getCursorY() * this.ySense);
 		camera.setRotation(newRotation);
+		Vector3f pos = camera.getPos();
+		camera.setTranslationY(terrain.getHeight(pos.getX(), pos.getZ()));
+		camera.translateY(2f);
 		
 	}
 	

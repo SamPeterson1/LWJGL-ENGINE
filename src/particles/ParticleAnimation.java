@@ -12,12 +12,17 @@ public class ParticleAnimation {
 	private Vector2f texOffset2 = new Vector2f();
 	private float blend;
 	private float fadeOut;
+	private boolean fade;
 	
 	public ParticleAnimation(int stages, int numRows) {
-		this.stages = stages;
-		this.numRows = numRows;
+		this(stages, numRows, true);
 	}
 	
+	public ParticleAnimation(int stages, int numRows, boolean fade) {
+		this.stages = stages;
+		this.numRows = numRows;
+		this.fade = fade;
+	}
 	
 	public void update(float percentLifetime) {
 		
@@ -26,12 +31,21 @@ public class ParticleAnimation {
 		int index1 = (int) progression;
 		int index2 = index1 < stages - 1 ? index1 + 1 : index1;
 		
-		this.blend = progression - index1;
-		if(index1 == stages-1) fadeOut = stages*(1-percentLifetime);
+		this.blend = fade ? progression - index1 : 1;
+		if(index1 <= stages-1) fadeOut = stages*(1-percentLifetime);
 		else fadeOut = 1f;
 		this.setTextureOffset(texOffset1, index1);
 		this.setTextureOffset(texOffset2, index2);
 		
+	}
+	
+	public int getAtlasRows() {
+		System.out.println(this.numRows);
+		return this.numRows;
+	}
+	
+	public float getFadeOut() {
+		return this.fadeOut;
 	}
 	
 	public Vector3f getTextureData() {

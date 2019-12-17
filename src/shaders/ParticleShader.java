@@ -18,20 +18,19 @@ public class ParticleShader extends Shader {
 		super.bindAttribute(1, "t");
 		super.bindAttribute(5, "texOffsets");
 		super.bindAttribute(6, "blendFactor");
+		super.bindAttribute(7, "fadeOut");
 	}
 	
 	@Override
 	public void createUniforms() {
 		super.createUniform("sampler");
-
+		super.createUniform("atlasRows");
 		super.createUniform("p");
 		super.createUniform("v");
 	}
 	
-	public void updateAnimation(ParticleAnimation animation) {
-		super.setUniform2f("textOffset1", animation.getTexOffset1());
-		super.setUniform2f("textOffset2", animation.getTexOffset2());
-		super.setUniform3f("textCoordInfo", animation.getTextureData());
+	public void setAtlasRows(ParticleAnimation animation) {
+		super.setUniformi("atlasRows", animation.getAtlasRows());
 	}
 	
 	public void setSampler(int index) {

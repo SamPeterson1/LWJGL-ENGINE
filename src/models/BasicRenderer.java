@@ -1,25 +1,26 @@
 package models;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import camera.Camera;
-import math.Matrix;
 import math.Vector3f;
 import rendering.Light;
 import rendering.MasterRenderer;
 import rendering.Renderer;
 import shaders.BasicShader;
 
-public class BasicRenderer extends Renderer {
+public class BasicRenderer implements Renderer {
 
 	private BasicShader shader;
 	private Light light;
@@ -45,20 +46,7 @@ public class BasicRenderer extends Renderer {
 		this.shader.unbind();
 	}
 
-	@Override
-	public void loadMesh(Mesh mesh) {
-		if(mesh.getType() == Mesh.TEXTURED) {
-			this.loadTexturedMesh(mesh);
-		} else {
-			this.loadColoredMesh(mesh);
-		}
-		this.shader.loadLight(light);
-		this.shader.setViewMatrix(cam.viewMatrix());
-		this.shader.setProjectionMatrix(cam.perspective());
-		this.shader.setSkyColor(new Vector3f(0f, 1f, 1f));
-	}
 	
-	@Override
 	public void unloadMesh() {
 		GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
@@ -71,6 +59,7 @@ public class BasicRenderer extends Renderer {
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
+        GL20.glEnableVertexAttribArray(2);
 		this.shader.setMaterialReflectivity(mesh.getMaterial().getReflectivity(), mesh.getMaterial().getShineDamping());
 		this.shader.setUseFakeLighting(false);
 		this.shader.setTextured(false);
@@ -93,8 +82,24 @@ public class BasicRenderer extends Renderer {
 	}
 
 	@Override
-	public void setTransformationMatrix(Matrix matrix) {
-		this.shader.setTransformationMatrix(matrix);
+	public void render(Mesh mesh, List<Entity> entities) {
+		
+		if(mesh.getType() == Mesh.TEXTURED) {
+			this.loadTexturedMesh(mesh);	
+		} else {
+			this.loadColoredMesh(mesh);
+		}
+		
+		this.shader.loadLight(light);
+		this.shader.setViewMatrix(cam.viewMatrix());
+		this.shader.setProjectionMatrix(cam.perspective());
+		this.shader.setSkyColor(new Vector3f(0f, 1f, 1f));
+		
+		for(Entity e: entities) {
+			this.shader.setTransformationMatrix(e.getTransform().getTransform());
+			GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+		}
+		
 	}
 	
 }

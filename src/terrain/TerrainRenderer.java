@@ -7,18 +7,21 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import camera.Camera;
-import math.Matrix;
 import math.Vector3f;
+import models.Entity;
 import models.Mesh;
 import rendering.Light;
 import rendering.Renderer;
 import shaders.TerrainShader;
 
-public class TerrainRenderer extends Renderer {
+public class TerrainRenderer implements Renderer {
 
 	private TerrainShader shader;
 	private Light light;
@@ -50,7 +53,6 @@ public class TerrainRenderer extends Renderer {
 		glDisable(GL_CULL_FACE);
 	}
 
-	@Override
 	public void loadMesh(Mesh mesh) {
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
@@ -62,17 +64,21 @@ public class TerrainRenderer extends Renderer {
 		this.shader.setSampler(GL_TEXTURE0);
 	}
 	
-	@Override
 	public void unloadMesh() {
 		GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
         GL20.glDisableVertexAttribArray(2);
         GL30.glBindVertexArray(0);
 	}
-
+	
 	@Override
-	public void setTransformationMatrix(Matrix matrix) {
-		this.shader.setTransformationMatrix(matrix);
+	public void render(Mesh mesh, List<Entity> entities) {
+		this.loadMesh(mesh);
+		for(Entity e: entities) {
+			this.shader.setTransformationMatrix(e.getTransform().getTransform());
+			GL11.glDrawElements(GL11.GL_TRIANGLES, e.getMesh().getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+		}
+		this.unloadMesh();
 	}
 
 }

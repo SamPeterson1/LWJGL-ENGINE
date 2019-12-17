@@ -1,19 +1,21 @@
 package particles;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import math.Vector3f;
-import models.Mesh;
 import models.ModelBatch;
-import models.TexturedMesh;
 import rendering.Texture;
 
 public class ParticleSystem {
 	
-	private List<Particle> particles = new ArrayList<>();
-	private float emissionRate;
+	private List<Particle> livingParticles = new ArrayList<>();
+	private List<Particle> deadParticles = new ArrayList<>();
+	private int maxParticles;
+	private int emissionWait;
+	private int emissionBurst;
+	private long lastEmission;
 	private float gravity;
 	private int lifetime;
 	private ParticleEmission emission;
@@ -22,42 +24,67 @@ public class ParticleSystem {
 	private int numRows;
 	private int stages;
 	
-	public ParticleSystem(ParticleEmission emission, float emissionRate, float gravity, int lifetime, String texture, int stages, int numRows) {
+	public ParticleSystem(ParticleEmission emission, int emissionWait, int emissionBurst, float gravity, int lifetime, String texture, int stages, int numRows) {
 		
-		this.emissionRate = emissionRate;
+		this.emissionWait = emissionWait;
+		this.emissionBurst = emissionBurst;
 		this.gravity = gravity;
 		this.lifetime = lifetime;
 		this.mesh = new ParticleMesh(new Texture(texture));
 		this.numRows = numRows;
 		this.emission = emission;
 		this.stages = stages;
+		ParticleMaster.addParticle(this);
 		
+	}
+	
+	public int numParticles() {
+		return this.livingParticles.size();
 	}
 	
 	public void update() {
 			emissionCounter ++;
-			if(emissionCounter == (int) 1f/Math.min(1, emissionRate)) {
-				this.spawnParticle();
+			Iterator<Particle> iterator = this.livingParticles.iterator();
+			while(iterator.hasNext()) {
+				Particle p = iterator.next();
+				boolean stillAlive = p.updateParticle();
+				if(!stillAlive) {
+					iterator.remove();
+					deadParticles.add(p);
+					p.disable();
+				}
 			}
-			
-			for(int i = 0; i < (int) (emissionRate - 1); i ++) {
-				this.spawnParticle();
+			if(System.currentTimeMillis() - this.lastEmission >= this.emissionWait) {
+				for(int i = 0; i < this.emissionBurst; i ++) {
+					this.spawnParticle();
+				}
 			}
+
 	}
 	
 	private void spawnParticle() {
-		Particle p = this.emission.emit();
-		p.setMesh(mesh);
-		p.setAnimation(new ParticleAnimation(stages, numRows));
-		p.setGravity(gravity);
-		p.setLifetime(lifetime);
-		ParticleMaster.addParticle(p);  
-		emissionCounter = 0;
-	}
-	
-	public void setEmissionRate(float emissionRate) {
-		this.emissionRate = emissionRate;
-	}
+		
+		Particle p = null;
+		
+		if(this.deadParticles.size() == 0) {
+			p = new Particle(new Vector3f(), new Vector3f());	
+			p.setMesh(mesh);
+			p.setAnimation(new ParticleAnimation(stages, numRows));
+			p.setGravity(gravity);
+			p.setLifetime(lifetime);
+			ModelBatch.addEntity(p); 
+		} else {
+			p = this.deadParticles.get(0);
+			this.deadParticles.remove(0);
+			p.enable();
+			p.reuse();
+		}
+		
+		this.emission.emit(p);
+		this.livingParticles.add(p);
+		this.lastEmission = System.currentTimeMillis();
+		
+	}	
 
 	public void setGravity(float gravity) {
 		this.gravity = gravity;
@@ -67,13 +94,6 @@ public class ParticleSystem {
 		this.lifetime = lifetime;
 	}
 
-	public List<Particle> getParticles() {
-		return particles;
-	}
-
-	public float getEmissionRate() {
-		return emissionRate;
-	}
 
 	public float getGravity() {
 		return gravity;

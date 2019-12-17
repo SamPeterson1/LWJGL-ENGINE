@@ -10,4 +10,5 @@ void main(void) {
 	
 	vec4 texColor = texture(sampler, passTextCoords);
     fragColor = texColor * vec4(color, 1.0);
+    
 }

@@ -16,6 +16,12 @@ public class MasterGUI extends GUIComponent implements WindowListener {
 		root = new GUIComponent();
 	}
 	
+	public static void updateComponents() {
+		for(GUIComponent component: componentsByTag.values()) {
+			component.update();
+		}	
+	}
+	
 	public static void addComponentByTag(GUIComponent component) {
 		componentsByTag.put(component.getTag(), component);
 	}
