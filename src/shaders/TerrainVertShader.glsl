@@ -10,7 +10,7 @@ out vec3 toCamera;
 out vec3 toLight;
 out float visibility;
 
-const float fogDensity = 0.007;
+const float fogDensity = 0.02;
 const float fogGradient = 1.5;
 
 uniform mat4 p;

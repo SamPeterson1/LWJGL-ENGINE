@@ -1,6 +1,7 @@
 package models;
 
 import rendering.Material;
+import rendering.Texture;
 
 public class Mesh {
 	
@@ -11,6 +12,7 @@ public class Mesh {
 	public static final int GUI_COLORED = 4;
 	public static final int GUI_TEXTURED = 5;
 	public static final int PARTICLE = 6;
+	public static final int SKYBOX = 7;
 	
 	protected int type;
 	protected Material material;
@@ -23,6 +25,12 @@ public class Mesh {
 		this.type = type;
 	}
 	
+	public Mesh(RawModel model, Texture t) {
+		this.model = model;
+		this.material = new Material();
+		this.material.setTexture(t);
+	}
+
 	public void disable() {
 		this.enabled = false;
 	}

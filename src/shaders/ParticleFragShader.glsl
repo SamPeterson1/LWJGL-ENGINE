@@ -8,7 +8,6 @@ in float passFadeOut;
 
 void main(void) {
 	
-	
 	vec4 color1 = texture(sampler, textCoords1);
 	vec4 color2 = texture(sampler, textCoords2);
 	vec4 combined = mix(color1, color2, blend);

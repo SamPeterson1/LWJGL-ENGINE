@@ -1,5 +1,7 @@
 package math;
 
+import camera.CameraSpecs;
+
 public class Matrix {
 	
 	private float[][] vals;
@@ -12,6 +14,46 @@ public class Matrix {
 		this.height = vals.length/width;
 		
 		this.assignVals(width, vals);
+	}
+	
+	public static Matrix viewMatrix(Transform transform) {
+		return new Matrix(4,
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+		)
+		.multiply(transform.xRotation(1))
+		.multiply(transform.yRotation(1))
+		.multiply(transform.zRotation(1))
+		.multiply(transform.calculateTranslation(true).multiply(transform.calculateScale()));
+	}
+	
+	public static Matrix perspective(CameraSpecs camSpecs) {
+		
+		float f = (float) (1f / Math.tan(Math.toRadians(camSpecs.getFov()) / 2f));
+
+        float a = f / camSpecs.getAspect();
+        float b = f;
+        float c = camSpecs.getSumZ()/camSpecs.getDiffZ();
+        float d = (2f * camSpecs.getzFar() * camSpecs.getzNear()) / camSpecs.getDiffZ();
+
+        return new Matrix(4, 
+        		a, 0, 0, 0,
+        		0, b, 0, 0,
+        		0, 0, c, -1,
+        		0, 0, d, 0			
+        );
+		
+	}
+	
+	public static Matrix orthographic(float width, float height, float length) {
+		return new Matrix(4, 
+				2f/width, 0,         0,          0,
+				0, 		  2f/height, 0,          0,
+				0,        0,         -2f/length, 0,
+				0,        0,         0,          1
+		);
 	}
 	
 	public int storeData(float[] data, int pointer) {
@@ -132,7 +174,7 @@ public class Matrix {
 	public void print() {
 		for(int i = 0; i < this.height; i ++) {
 			for(int ii = 0; ii < this.width; ii ++) {
-				System.out.print(vals[i][ii]);
+				System.out.print(vals[i][ii] + ",");
 			}
 			System.out.println("");
 		}

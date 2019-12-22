@@ -30,6 +30,7 @@ public abstract class Shader {
 		this.uniforms = new HashMap<String, Integer>();
 		this.vertexFile = new TextFile(vertexFile);
 		this.fragmentFile = new TextFile(fragmentFile);
+		//System.out.println(this.vertexFile.read());
 	}
 	
 	public void createUniform(String name) {

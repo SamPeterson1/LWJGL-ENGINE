@@ -61,7 +61,7 @@ public class KeyboardCamController {
 		camera.setRotation(newRotation);
 		Vector3f pos = camera.getPos();
 		camera.setTranslationY(terrain.getHeight(pos.getX(), pos.getZ()));
-		camera.translateY(2f);
+		camera.translateY(5f);
 		
 	}
 	

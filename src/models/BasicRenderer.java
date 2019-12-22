@@ -94,6 +94,7 @@ public class BasicRenderer implements Renderer {
 		this.shader.setViewMatrix(cam.viewMatrix());
 		this.shader.setProjectionMatrix(cam.perspective());
 		this.shader.setSkyColor(new Vector3f(0f, 1f, 1f));
+
 		
 		for(Entity e: entities) {
 			this.shader.setTransformationMatrix(e.getTransform().getTransform());

@@ -20,6 +20,16 @@ public class TexturedMesh extends Mesh {
 		super.setMaterial(material);
 	}
 	
+	public TexturedMesh(RawModel texturedrectangle, Texture texture) {
+		
+		super(Mesh.TEXTURED);
+		super.setModel(texturedrectangle);
+		Material material = new Material();
+		material.setTexture(texture);
+		super.setMaterial(material);
+		
+	}
+
 	public void setUseFakeLighting(boolean useFakeLighting) {
 		this.useFakelighting = useFakeLighting;
 	}

@@ -93,6 +93,17 @@ public class ModelLoader {
     	
     }
     
+    public static RawModel load3DModel(float[] vertices) {
+    	
+    	RawModel model = new RawModel();
+    	model.setVAO_ID(createVAO());
+    	model.setBuffer(storeData(0, 3, vertices, true), RawModel.VBO);
+    	model.setVertexCount(vertices.length/3);
+    	GL30.glBindVertexArray(0);
+    	
+    	return model;
+    }
+    
     public static RawModel load3DModel(float[] vertices, float[] textureCoords, float[] vertexNormals, int[] indices) {
     	
     	RawModel model = new RawModel();

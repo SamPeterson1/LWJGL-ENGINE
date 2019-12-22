@@ -16,7 +16,6 @@ uniform vec3 color;
 uniform vec3 skyColor;
 
 void main(void) {
-	
 	//fragColor = texture(sampler, passTextCoords)
 	
 	vec3 unitNormal = normalize(faceNormal);

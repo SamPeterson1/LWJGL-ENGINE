@@ -18,6 +18,10 @@ public class Camera {
 		this.controller = new KeyboardCamController();
 	}
 	
+	public Transform getTransform() {
+		return this.transform;
+	}
+	
 	public void setTerrain(Terrain terrain) {
 		controller.setTerrain(terrain);
 	}
@@ -35,33 +39,11 @@ public class Camera {
 	}
 	
 	public Matrix perspective() {
-
-        float f = (float) (1f / Math.tan(Math.toRadians(this.camSpecs.getFov()) / 2f));
-
-        float a = f / this.camSpecs.getAspect();
-        float b = f;
-        float c = this.camSpecs.getSumZ()/this.camSpecs.getDiffZ();
-        float d = (2f * this.camSpecs.getzFar() * this.camSpecs.getzNear()) / this.camSpecs.getDiffZ();
-
-        return new Matrix(4, 
-        		a, 0, 0, 0,
-        		0, b, 0, 0,
-        		0, 0, c, -1,
-        		0, 0, d, 0			
-        );
+        return Matrix.perspective(this.camSpecs);
     }
 	
 	public Matrix viewMatrix() {
-		return new Matrix(4,
-				1, 0, 0, 0,
-				0, 1, 0, 0,
-				0, 0, 1, 0,
-				0, 0, 0, 1
-		)
-		.multiply(this.transform.xRotation(1))
-		.multiply(this.transform.yRotation(1))
-		.multiply(this.transform.zRotation(1))
-		.multiply(this.transform.calculateTranslation(true).multiply(this.transform.calculateScale()));
+		return Matrix.viewMatrix(this.transform);
 	}
 	
 }

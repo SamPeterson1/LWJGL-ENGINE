@@ -44,7 +44,7 @@ public class TerrainRenderer implements Renderer {
 		this.shader.loadLight(light);
 		this.shader.setViewMatrix(cam.viewMatrix());
 		this.shader.setProjectionMatrix(cam.perspective());
-		this.shader.setSkyColor(new Vector3f(0, 1f, 1f));
+		this.shader.setSkyColor(new Vector3f(0f, 1f, 1f));
 	}
 
 	@Override

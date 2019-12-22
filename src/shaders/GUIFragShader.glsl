@@ -17,13 +17,6 @@ void main(void) {
 	} else {
 		vec4 texColor = texture(sampler, passTextCoords);
 		fragColor = texColor;
-		if(texColor.w < 0.5) {
-			if(hasBackground == 1) {
-				fragColor = vec4(color, 1.0);
-			} else {
-			 	discard;
-			}
-		}
 	}
 	
 	gl_FragDepth = depth;

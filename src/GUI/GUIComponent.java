@@ -56,6 +56,15 @@ public class GUIComponent extends Mesh {
 		super.setModel(texturedRectangle);
 	}
 	
+	public GUIComponent(RawModel model, Texture texture) {
+		super(Mesh.GUI_TEXTURED);
+		super.setModel(model);
+		Material material = new Material();
+		material.setTexture(texture);
+		super.setMaterial(material);
+		this.entity = new Entity(this);
+	}
+	
 	public GUIComponent() {
 		super(Mesh.GUI_COLORED);
 		super.setModel(texturedRectangle);
