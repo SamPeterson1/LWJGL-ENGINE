@@ -18,6 +18,7 @@ import static org.lwjgl.opengl.GL11.glPixelStorei;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE_CUBE_MAP;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
@@ -94,6 +95,7 @@ public class Texture {
 	
 	private void loadBytes(ByteBuffer bytes, int width, int height) {
 		this.id = glGenTextures();
+		glActiveTexture(GL_TEXTURE0);
 	    glBindTexture(GL_TEXTURE_2D, id);
 
 	   // glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
@@ -106,6 +108,7 @@ public class Texture {
 	
 	public Texture(int width, int height) {
 		this.id = glGenTextures();
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, this.id);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, (ByteBuffer) null);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);

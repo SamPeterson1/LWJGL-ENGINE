@@ -151,13 +151,6 @@ public class MasterRenderer implements WindowListener {
 			}
 		}
 		
-		GUIComponent shadowMap = new GUIComponent(texturedRectangle, this.shadowRenderer.getShadowMap());
-		List<Entity> a = new ArrayList<>();
-		a.add(new Entity(shadowMap));
-		this.guiRenderer.begin();
-		this.guiRenderer.render(shadowMap, a);
-		this.guiRenderer.end();
-		
 	}
 
 	@Override

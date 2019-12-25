@@ -70,9 +70,9 @@ public class ShadowMapRenderer implements Renderer {
 		this.shader.bind();
 		shadowBox.update();
 		this.lightTransform.setTranslation(new Vector3f(cam.getPosition().getX(), 0, cam.getPosition().getZ()));
-		this.lightTransform.setRotation(new Vector3f(70, 0, 0));
+		this.lightTransform.setRotation(new Vector3f(50, 0, 0));
 		this.lightViewMatrix = Matrix4f.viewMatrix(lightTransform);
-		this.lightProjectionMatrix = Matrix4f.orthographic(50, 50, 50);
+		this.lightProjectionMatrix = Matrix4f.orthographic(200, 200, 200);
 		this.shader.loadViewMatrix(this.lightViewMatrix);
 		this.shader.loadProjectionMatrix(this.lightProjectionMatrix);
 		this.shadowMap.bindFBO();

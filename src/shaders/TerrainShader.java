@@ -57,7 +57,7 @@ public class TerrainShader extends Shader{
 	}
 	
 	public void setShadowSampler(int index) {
-		super.setUniform("shadowMap", index);
+		super.setUniformi("shadowMap", index);
 	}
 	
 	public void setTextured(boolean textured) {

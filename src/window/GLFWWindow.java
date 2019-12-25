@@ -47,8 +47,7 @@ public class GLFWWindow {
 		
 		GLFW.glfwSetWindowPos(window, (videoMode.width() - width)/2, (videoMode.height() - height)/2);
 		GLFW.glfwShowWindow(window);	
-		GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 8);
-		glEnable(GL_MULTISAMPLE); 
+
 	}
 	
 	public static void addListener(WindowListener listener) {

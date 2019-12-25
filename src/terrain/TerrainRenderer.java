@@ -64,12 +64,12 @@ public class TerrainRenderer{
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
         glActiveTexture(GL_TEXTURE0);
-        shadowMap.bind();
-        this.shader.setSampler(GL_TEXTURE0);
+        mesh.getMaterial().getTexture().bind();
+        this.shader.setSampler(0);
+		glActiveTexture(GL_TEXTURE1);
+		shadowMap.bind();
+		this.shader.setShadowSampler(1);
 		this.shader.setTextured(true);
-		//glActiveTexture(GL_TEXTURE0);
-		//mesh.getMaterial().getTexture().bind();
-		//this.shader.setSampler(GL_TEXTURE0);
 		
 	}
 	
