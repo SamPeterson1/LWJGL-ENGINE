@@ -1,5 +1,6 @@
 package math;
 
+
 public class Noise {
 	
 	public int seed;

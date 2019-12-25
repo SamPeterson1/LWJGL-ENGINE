@@ -30,6 +30,14 @@ public class TexturedMesh extends Mesh {
 		
 	}
 
+	public void setCastsShadow(boolean castsShadow) {
+		this.material.setCastsShadow(castsShadow);
+	}
+	
+	public void setRecievesShadow(boolean recievesShadow) {
+		this.material.setRecievesShadow(recievesShadow);
+	}
+	
 	public void setUseFakeLighting(boolean useFakeLighting) {
 		this.useFakelighting = useFakeLighting;
 	}

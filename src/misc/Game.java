@@ -5,8 +5,10 @@ import camera.Camera;
 import camera.CameraSpecs;
 import events.EventHandler;
 import lights.DirectionalLight;
+import math.Matrix4f;
 import math.Noise;
 import math.Vector3f;
+import math.Vector4f;
 import models.ColoredMesh;
 import models.Entity;
 import models.Mesh;
@@ -34,10 +36,11 @@ public class Game {
 	
 	public void init() {
 		
+
 		GLFWWindow.init(1440, 1080, "Test");
 		
 		light = new Light(new Vector3f(1f, 1f, 1f), new Vector3f(-1000f, 1000f, 100f));
-		DirectionalLight foo = new DirectionalLight(new Vector3f(0f, 10f, 0f), new Vector3f(74, 74, 74), new Vector3f(1f, 1f, 1f));
+		DirectionalLight foo = new DirectionalLight(new Vector3f(0f, -1f, 0f), new Vector3f(1f, 1f, 1f));
 		
 		CameraSpecs specs = new CameraSpecs();
 		specs.setAspect(1440f/1080f);
@@ -75,7 +78,7 @@ public class Game {
 		cam.getTransform().setRotation(new Vector3f(-90f, 90f, 0f));
 		cam.getPosition().setZ(20);
 		
-		terrain.getTransform().setTranslationX(10f);
+		//terrain.getTransform().setTranslationX(10f);
 		ModelBatch.addEntity(terrain);
 		
 		this.particles = new ParticleSystem(new CircularEmission(100f, 10f), 200, 1, 0f, 5000, "/assets/fireAtlas.png", 16, 4);

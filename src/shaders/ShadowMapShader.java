@@ -1,7 +1,6 @@
 package shaders;
 
-import math.Matrix;
-import math.Vector3f;
+import math.Matrix4f;
 
 public class ShadowMapShader extends Shader {
 
@@ -24,15 +23,15 @@ public class ShadowMapShader extends Shader {
 		super.createUniform("transformationMatrix");
 	}
 	
-	public void loadProjectionMatrix(Matrix projectionMatrix) {
+	public void loadProjectionMatrix(Matrix4f projectionMatrix) {
 		super.setUniform("projectionMatrix", projectionMatrix);
 	}
 	
-	public void loadViewMatrix(Matrix viewMatrix) {
+	public void loadViewMatrix(Matrix4f viewMatrix) {
 		super.setUniform("viewMatrix", viewMatrix);
 	}
 	
-	public void loadTransformationMatrix(Matrix transformationMatrix) {
+	public void loadTransformationMatrix(Matrix4f transformationMatrix) {
 		super.setUniform("transformationMatrix", transformationMatrix);
 	}
 

@@ -5,6 +5,8 @@ import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +45,15 @@ public class MasterRenderer implements WindowListener {
 	private Renderer testParticleRenderer;
 	private Camera cam;
 	
+	public static float NEAR_PLANE = 1f;
+	public static float FAR_PLANE = 1000f;
+	public static float FOV = 70f;
+	
 	private static final float[] rectVerts = new float[] {
-			0.5f, 0.5f,
-			0.5f, -0.5f,
-			-0.5f, -0.5f,
-			-0.5f, 0.5f
+			0.1f, 0.1f,
+			0.1f, -0.1f,
+			-0.1f, -0.1f,
+			-0.1f, 0.1f
 	};
 	
 	private static final int[] rectIndices = new int[] {
@@ -68,7 +74,7 @@ public class MasterRenderer implements WindowListener {
 	public MasterRenderer(Light light, Camera cam, DirectionalLight directionalLight) {
 		this.cam = cam;
 		this.skyboxRenderer = new SkyboxRenderer(cam);
-		this.shadowRenderer = new ShadowMapRenderer(cam);
+		this.shadowRenderer = new ShadowMapRenderer(cam, directionalLight);
 		this.terrainRenderer = new TerrainRenderer(light, cam);
 		this.renderer = new BasicRenderer(light, cam);
 		this.particleRenderer = new TestParticleRenderer(cam);
@@ -89,10 +95,20 @@ public class MasterRenderer implements WindowListener {
 	}
 	
 	public void render() {
-		System.out.println("YIAY!");
 		particleCt = 0;
 		Map<Mesh, List<Entity>> meshesMap = ModelBatch.getEntities();
 		this.cam.update();
+		System.out.println(this.cam.getTransform().getRotation().getY() + "ta");
+		
+		this.shadowRenderer.begin();
+		for(Mesh mesh: meshesMap.keySet()) {
+			if(mesh.isEnabled() && mesh.getMaterial().castsShadow()) {
+				List<Entity> entities = meshesMap.get(mesh);
+				this.shadowRenderer.render(mesh, entities);
+			}
+		}
+		this.shadowRenderer.end();
+		
 		for(Mesh mesh: meshesMap.keySet()) {
 			List<Entity> entities = meshesMap.get(mesh);
 			if(mesh.isEnabled()) {
@@ -100,16 +116,11 @@ public class MasterRenderer implements WindowListener {
 					this.renderer.begin();
 					this.renderer.render(mesh, entities);
 					this.renderer.end();
-					this.shadowRenderer.begin();
-					this.shadowRenderer.render(mesh, entities);
-					this.shadowRenderer.end();
 				} else if(mesh.getType() == Mesh.TERRAIN) {
 					this.terrainRenderer.begin();
-					this.terrainRenderer.render(mesh, entities);
+					this.terrainRenderer.setShadowMatrices(shadowRenderer.getLightProjectionMatrix(), shadowRenderer.getLightViewMatrix());
+					this.terrainRenderer.render(mesh, entities, this.shadowRenderer.getShadowMap());
 					this.terrainRenderer.end();
-					//this.shadowRenderer.begin();
-					//this.shadowRenderer.render(mesh, entities);
-					//this.shadowRenderer.end();
 				} else if(mesh.getType() == Mesh.GUI_COLORED || mesh.getType() == Mesh.GUI_TEXTURED) {
 					this.guiRenderer.begin();
 					this.guiRenderer.render(mesh, entities);
@@ -130,15 +141,6 @@ public class MasterRenderer implements WindowListener {
 				}
 			}
 		}
-		
-		this.shadowRenderer.begin();
-		for(Mesh mesh: meshesMap.keySet()) {
-			if(mesh.isEnabled() && (mesh.getType() == Mesh.TERRAIN || mesh.getType() == Mesh.TEXTURED)) {
-				List<Entity> entities = meshesMap.get(mesh);
-				this.shadowRenderer.render(mesh, entities);
-			}
-		}
-		this.shadowRenderer.end();
 		
 		for(Mesh mesh: ModelBatch.getText().keySet()) {
 			if(mesh.isEnabled()) {

@@ -1,6 +1,6 @@
 package shaders;
 
-import math.Matrix;
+import math.Matrix4f;
 import math.Vector3f;
 
 public class SkyboxShader extends Shader {
@@ -24,11 +24,11 @@ public class SkyboxShader extends Shader {
 		super.createUniform("sampler");
 	}
 	
-	public void loadProjectionMatrix(Matrix projectionMatrix) {
+	public void loadProjectionMatrix(Matrix4f projectionMatrix) {
 		super.setUniform("projectionMatrix", projectionMatrix);
 	}
 	
-	public void loadViewMatrix(Matrix viewMatrix) {
+	public void loadViewMatrix(Matrix4f viewMatrix) {
 		
 		super.setUniform("viewMatrix", viewMatrix);
 	}

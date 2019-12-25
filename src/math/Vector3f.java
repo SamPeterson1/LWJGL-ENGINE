@@ -12,6 +12,12 @@ public class Vector3f {
 		this.z = z;
 	}
 	
+	public Vector3f(Vector4f other) {
+		this.x = other.getX();
+		this.y = other.getY();
+		this.z = other.getZ();
+	}
+	
 	public Vector3f(Vector3f other) {
 		this.x = other.getX();
 		this.y = other.getY();
@@ -22,6 +28,12 @@ public class Vector3f {
 		this.x = 0;
 		this.y = 0;
 		this.z = 0;
+	}
+	
+	public void negate() {
+		this.x = -x;
+		this.y = -y;
+		this.z = -z;
 	}
 	
 	public Vector3f copyOf() {

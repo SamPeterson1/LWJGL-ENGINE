@@ -14,6 +14,13 @@ public class Vector4f {
 		this.w = w;
 	}
 	
+	public Vector4f(float[] vals) {
+		this.x = vals[0];
+		this.y = vals[1];
+		this.z = vals[2];
+		this.w = vals[3];
+	}
+	
 	public Vector4f() {
 		this.x = 0;
 		this.y = 0;

@@ -34,6 +34,7 @@ public class TerrainMesh extends Mesh {
 		super.setModel(this.generateTerrain());
 		Material material = new Material();
 		material.setTexture(new Texture(texturePath));
+		material.setRecievesShadow(true);
 		this.setMaterial(material);	
 		fern.setCullFace(false);
 		grass.setCullFace(false);
@@ -102,6 +103,8 @@ public class TerrainMesh extends Mesh {
 			scale = 1f;
 			decoration = fern;
 		}
+		decoration.getMaterial().setCastsShadow(true);
+		decoration.getMaterial().setRecievesShadow(true);
 		Entity e = new Entity(decoration);
 		e.getTransform().setTranslation(new Vector3f(x, y, z));
 		e.getTransform().setScale(new Vector3f(scale, scale, scale));

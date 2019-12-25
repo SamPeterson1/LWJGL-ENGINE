@@ -15,6 +15,10 @@ public class Vector2f {
 		this.y = 0;
 	}
 	
+	public float length() {
+		return (float) Math.sqrt(x*x + y*y);
+	}
+	
 	public float dotProduct(Vector2f other) {
 		return this.getX()*other.getX() + this.getY()*other.getY();
 	}

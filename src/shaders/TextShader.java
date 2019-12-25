@@ -1,6 +1,6 @@
 package shaders;
 
-import math.Matrix;
+import math.Matrix4f;
 import math.Vector3f;
 
 public class TextShader extends Shader {
@@ -25,7 +25,7 @@ public class TextShader extends Shader {
 		super.createUniform("t");
 	}
 	
-	public void setTransformationMatrix(Matrix matrix) {
+	public void setTransformationMatrix(Matrix4f matrix) {
 		super.setUniform("t", matrix);
 	}
 	

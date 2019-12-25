@@ -1,6 +1,6 @@
 package shaders;
 
-import math.Matrix;
+import math.Matrix4f;
 import math.Vector3f;
 import rendering.Light;
 
@@ -33,8 +33,16 @@ public class TerrainShader extends Shader{
 		super.createUniform("reflectivity");
 		super.createUniform("shineDamping");
 		super.createUniform("skyColor");
+		super.createUniform("shadowMapP");
+		super.createUniform("shadowMapV");
+		super.createUniform("shadowMap");
 	}
-
+	
+	public void loadShadowMapMatrices(Matrix4f viewMatrix, Matrix4f projectionMatrix) {
+		super.setUniform("shadowMapP", projectionMatrix);
+		super.setUniform("shadowMapV", viewMatrix);
+	}
+	
 	public void setMaterialReflectivity(float reflectivity, float shineDamper) {
 		super.setUniform("reflectivity", reflectivity);
 		super.setUniform("shineDamping", shineDamper);
@@ -48,6 +56,10 @@ public class TerrainShader extends Shader{
 		super.setUniformi("sampler", index);
 	}
 	
+	public void setShadowSampler(int index) {
+		super.setUniform("shadowMap", index);
+	}
+	
 	public void setTextured(boolean textured) {
 		super.setUniformi("textured", textured ? 1 : 0);
 	}
@@ -56,15 +68,15 @@ public class TerrainShader extends Shader{
 		super.setUniform3f("color", color);
 	}
 	
-	public void setProjectionMatrix(Matrix projection) {
+	public void setProjectionMatrix(Matrix4f projection) {
 		super.setUniform("p", projection);
 	}
 
-	public void setViewMatrix(Matrix viewMatrix) {
+	public void setViewMatrix(Matrix4f viewMatrix) {
 		super.setUniform("v", viewMatrix);
 	}
 	
-	public void setTransformationMatrix(Matrix transformationMatrix) {
+	public void setTransformationMatrix(Matrix4f transformationMatrix) {
 		super.setUniform("t", transformationMatrix);
 	}
 	

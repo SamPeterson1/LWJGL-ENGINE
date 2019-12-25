@@ -1,7 +1,7 @@
 package camera;
 
 import events.EventHandler;
-import math.Matrix;
+import math.Matrix4f;
 import math.Transform;
 import math.Vector3f;
 import terrain.Terrain;
@@ -38,12 +38,12 @@ public class Camera {
 		this.controller.update(this.transform);	
 	}
 	
-	public Matrix perspective() {
-        return Matrix.perspective(this.camSpecs);
+	public Matrix4f perspective() {
+        return Matrix4f.perspective(this.camSpecs);
     }
 	
-	public Matrix viewMatrix() {
-		return Matrix.viewMatrix(this.transform);
+	public Matrix4f viewMatrix() {
+		return Matrix4f.viewMatrix(this.transform);
 	}
 	
 }

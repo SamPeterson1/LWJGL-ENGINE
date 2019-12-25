@@ -8,18 +8,23 @@ out vec2 passTextCoords;
 out vec3 faceNormal;
 out vec3 toCamera;
 out vec3 toLight;
+out vec4 shadowCoords;
 out float visibility;
 
 const float fogDensity = 0.02;
 const float fogGradient = 1.5;
 
+uniform mat4 shadowMapP;
+uniform mat4 shadowMapV;
 uniform mat4 p;
 uniform mat4 v;
 uniform mat4 t;
 
 void main(void) {
 	
+	
 	vec4 worldPosition = t * vec4(position, 1.0);
+	shadowCoords = shadowMapP * shadowMapV * worldPosition;
 	vec4 posRelativeToCam = v * worldPosition;
 	gl_Position = p * posRelativeToCam;
 	passTextCoords = textCoords * 40.0;

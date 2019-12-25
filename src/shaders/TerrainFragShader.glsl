@@ -5,6 +5,7 @@ in vec2 passTextCoords;
 in vec3 faceNormal;
 in vec3 toLight;
 in vec3 toCamera;
+in vec4 shadowCoords;
 in float visibility;
 
 uniform int textured;
@@ -17,8 +18,19 @@ uniform vec3 skyColor;
 
 void main(void) {
 	
-	//fragColor = texture(sampler, passTextCoords)
+	vec2 shadowTexCoords = shadowCoords.xy;
+	shadowTexCoords.x *= 0.5;
+	shadowTexCoords.x += 0.5;
+	shadowTexCoords.y *= 0.5;
+	shadowTexCoords.y += 0.5;
+	float objectNearestLight = texture(sampler, shadowTexCoords).r;
 	
+	if(shadowTexCoords.y > 1 || shadowTexCoords.x > 1 || shadowTexCoords.y < 0 || shadowTexCoords.x < 0) {
+		fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	}
+	else fragColor = texture(sampler, shadowTexCoords);;
+
+	/*
 	vec3 unitNormal = normalize(faceNormal);
 	vec3 unitLightVector = normalize(toLight);
 	vec3 unitCamVector = normalize(toCamera);
@@ -34,14 +46,16 @@ void main(void) {
 	float dampedSpecular = pow(specular, shineDamping);
 	vec3 finalSpecular = dampedSpecular * lightColor * reflectivity;
 	
-	vec4 textureColor = texture(sampler, passTextCoords);
+	vec4 textureColor = texture(sampler, shadowTexCoords);
 	if(textureColor.w < 0.5) {
 		discard;
 	}
 	
 	if(textured == 1)
-		fragColor = texture(sampler, passTextCoords) * vec4(diffuse, 1.0);
+		fragColor = texture(sampler, shadowTexCoords) * vec4(diffuse, 1.0);
 	else
 		fragColor = vec4(diffuse, 1.0) * vec4(color, 1.0) + vec4(finalSpecular, 1.0);
-	fragColor = mix(vec4(skyColor, 1.0), fragColor, visibility);
+	fragColor = mix(vec4(skyColor, 1.0), fragColor, visibility) * lightFactor;
+	if(shadowCoords.y > 1) fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	*/
 }

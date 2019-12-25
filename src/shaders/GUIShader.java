@@ -1,6 +1,6 @@
 package shaders;
 
-import math.Matrix;
+import math.Matrix4f;
 import math.Vector3f;
 
 public class GUIShader extends Shader {
@@ -44,7 +44,7 @@ public class GUIShader extends Shader {
 		super.setUniform("depth", depth);
 	}
 	
-	public void setTransformationMatrix(Matrix matrix) {
+	public void setTransformationMatrix(Matrix4f matrix) {
 		super.setUniform("transformationMatrix", matrix);
 	}
 	

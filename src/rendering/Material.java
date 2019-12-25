@@ -6,6 +6,8 @@ public class Material {
 	
 	Vector3f color = null;
 	Texture texture = null;
+	boolean castsShadow = false;
+	boolean recievesShadow = false;
 	float reflectivity = 0;
 	float shineDamping = 0;
 	
@@ -18,6 +20,22 @@ public class Material {
 
 	public Material() {}
 
+	public boolean castsShadow() {
+		return this.castsShadow;
+	}
+	
+	public boolean recievesShadow() {
+		return this.recievesShadow;
+	}
+	
+	public void setCastsShadow(boolean castsShadow) {
+		this.castsShadow = castsShadow;
+	}
+	
+	public void setRecievesShadow(boolean recievesShadow) {
+		this.recievesShadow = recievesShadow;
+	}
+	
 	public boolean isTextured() {
 		return this.texture != null;
 	}

@@ -31,8 +31,8 @@ import window.GLFWWindow;
 
 public class ShadowMap {
 	
-	public static final int WIDTH = 1024;
-	public static final int HEIGHT = 1024;
+	public static final int WIDTH = 2048;
+	public static final int HEIGHT = 2048;
 	
 	private int depthMapFBO;
 	private Texture depthMap; 

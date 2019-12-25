@@ -1,6 +1,6 @@
 package shaders;
 
-import math.Matrix;
+import math.Matrix4f;
 import math.Vector3f;
 import rendering.Light;
 
@@ -61,15 +61,15 @@ public class BasicShader extends Shader {
 		super.setUniform3f("color", color);
 	}
 	
-	public void setProjectionMatrix(Matrix projection) {
+	public void setProjectionMatrix(Matrix4f projection) {
 		super.setUniform("p", projection);
 	}
 
-	public void setViewMatrix(Matrix viewMatrix) {
+	public void setViewMatrix(Matrix4f viewMatrix) {
 		super.setUniform("v", viewMatrix);
 	}
 	
-	public void setTransformationMatrix(Matrix transformationMatrix) {
+	public void setTransformationMatrix(Matrix4f transformationMatrix) {
 		super.setUniform("t", transformationMatrix);
 	}
 	

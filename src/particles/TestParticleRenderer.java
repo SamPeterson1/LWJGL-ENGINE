@@ -21,7 +21,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL40;
 
 import camera.Camera;
-import math.Matrix;
+import math.Matrix4f;
 import models.Entity;
 import models.Mesh;
 import rendering.Renderer;
@@ -56,7 +56,7 @@ public class TestParticleRenderer implements Renderer {
 		
 		this.loadMesh(mesh);
 		
-		Matrix viewMatrix = cam.viewMatrix();
+		Matrix4f viewMatrix = cam.viewMatrix();
 		float[] vboData = new float[entities.size() * 22];
 		this.shader.setProjectionMatrix(cam.perspective());
 		this.shader.setViewMatrix(viewMatrix);

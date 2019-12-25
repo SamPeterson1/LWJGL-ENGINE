@@ -102,11 +102,11 @@ public class Transform {
 		this.rotation = rotation;
 	}
 	
-	public Matrix xRotation(int i) {
+	public Matrix4f xRotation(int i) {
 		float rad = (float)Math.toRadians(i*this.rotation.getX());
 		float cos = (float)Math.cos(rad);
 		float sin = (float)Math.sin(rad);
-		return new Matrix(4,
+		return new Matrix4f(
 				1,   0,   0,  0,
 				0,  cos, sin, 0,
 				0, -sin, cos, 0,
@@ -114,11 +114,11 @@ public class Transform {
 		);
 	}
 	
-	public Matrix yRotation(int i) {
+	public Matrix4f yRotation(int i) {
 		float rad = (float)Math.toRadians(i*this.rotation.getY());
 		float cos = (float)Math.cos(rad);
 		float sin = (float)Math.sin(rad);
-		return new Matrix(4,
+		return new Matrix4f(
 				cos, 0, -sin, 0,
 				0,   1,   0,  0,
 				sin, 0, cos,  0,
@@ -126,13 +126,23 @@ public class Transform {
 		);
 	}
 	
-	public Matrix zRotation(int i) {
-		int j = 1;
-		if(i == -1) j = 0;
-		float rad = (float)Math.toRadians(j*i*this.rotation.getZ());
+	public static Matrix4f xRotation(float deg) {
+		float rad = (float)Math.toRadians(deg);
 		float cos = (float)Math.cos(rad);
 		float sin = (float)Math.sin(rad);
-		return new Matrix(4,
+		return new Matrix4f(
+				1,   0,   0,  0,
+				0,  cos, sin, 0,
+				0, -sin, cos, 0,
+				0,   0,   0,  1
+		);
+	}
+	
+	public Matrix4f zRotation(float deg) {
+		float rad = (float)Math.toRadians(deg);
+		float cos = (float)Math.cos(rad);
+		float sin = (float)Math.sin(rad);
+		return new Matrix4f(
 				cos,  sin, 0,   0,
 				-sin, cos, 0,   0,
 				0,    0,   1,   0,
@@ -140,11 +150,37 @@ public class Transform {
 		);
 	}
 	
-	public Matrix calculateRotation(boolean inv) {
+	public static Matrix4f yRotation(float deg) {
+		float rad = (float)Math.toRadians(deg);
+		float cos = (float)Math.cos(rad);
+		float sin = (float)Math.sin(rad);
+		return new Matrix4f(
+				cos, 0, -sin, 0,
+				0,   1,   0,  0,
+				sin, 0, cos,  0,
+				0,   0,   0,  1
+		);
+	}
+	
+	public Matrix4f zRotation(int i) {
+		int j = 1;
+		if(i == -1) j = 0;
+		float rad = (float)Math.toRadians(j*i*this.rotation.getZ());
+		float cos = (float)Math.cos(rad);
+		float sin = (float)Math.sin(rad);
+		return new Matrix4f(
+				cos,  sin, 0,   0,
+				-sin, cos, 0,   0,
+				0,    0,   1,   0,
+				0,    0,   0,   1
+		);
+	}
+	
+	public Matrix4f calculateRotation(boolean inv) {
 		
 		int i = inv ? -1 : 1;
 		
-		Matrix rotationMatrix = Matrix.getIdentity(4, 4);
+		Matrix4f rotationMatrix = Matrix4f.getIdentity();
 		rotationMatrix.multiply(this.xRotation(i));
 		rotationMatrix.multiply(this.yRotation(i));
 		rotationMatrix.multiply(this.zRotation(i));
@@ -153,9 +189,18 @@ public class Transform {
 		
 	}
 	
-	public Matrix calculateTranslation(boolean inv) {
+	public static Matrix4f translation(Vector3f translation) {
+		return new Matrix4f(
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				translation.getX(), translation.getY(), translation.getZ(), 1
+		);	
+	}
+	
+	public Matrix4f calculateTranslation(boolean inv) {
 		int i = inv ? -1 : 1;
-		return new Matrix(4,
+		return new Matrix4f(
 				1, 0, 0, 0,
 				0, 1, 0, 0,
 				0, 0, 1, 0,
@@ -163,8 +208,8 @@ public class Transform {
 		);			
 	}
 	
-	public Matrix calculateScale() {
-		return new Matrix(4,
+	public Matrix4f calculateScale() {
+		return new Matrix4f(
 				this.scale.getX(), 0, 0, 0,
 				0, this.scale.getY(), 0, 0,
 				0, 0, this.scale.getZ(), 0,
@@ -172,16 +217,16 @@ public class Transform {
 		);
 	}
 	
-	public Matrix getTransposedTransform(Matrix viewMatrix) {
-		Matrix retVal = this.calculateTranslation(false);
+	public Matrix4f getTransposedTransform(Matrix4f viewMatrix) {
+		Matrix4f retVal = this.calculateTranslation(false);
 		retVal.multiply(this.calculateRotation(false))
 		.multiply(this.calculateScale());
 		retVal.transpose3x3(viewMatrix);
 		return retVal;
 	}
 	
-	public Matrix getTransform() {
-
+	public Matrix4f getTransform() {
+		
 		return this.calculateTranslation(false)
 		.multiply(this.calculateRotation(false))
 		.multiply(this.calculateScale());

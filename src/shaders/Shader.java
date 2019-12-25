@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import files.TextFile;
-import math.Matrix;
+import math.Matrix4f;
 import math.Vector2f;
 import math.Vector3f;
 import math.Vector4f;
@@ -95,7 +95,7 @@ public abstract class Shader {
 		GL20.glBindAttribLocation(this.programID, index, path);
 	}
 	
-	public void setUniform(String name, Matrix value) {
+	public void setUniform(String name, Matrix4f value) {
 		float[] vals = value.getFloats();
 		glUniformMatrix4fv(uniforms.get(name), false, vals);
 	}

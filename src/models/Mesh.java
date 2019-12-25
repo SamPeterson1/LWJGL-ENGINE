@@ -17,9 +17,11 @@ public class Mesh {
 	protected int type;
 	protected Material material;
 	protected RawModel model;
+	protected boolean castsShadow = false;
 	protected boolean enabled = true;
 	
-	public Mesh() {}
+	public Mesh() {
+	}
 	
 	public Mesh(int type) {
 		this.type = type;
@@ -31,6 +33,10 @@ public class Mesh {
 		this.material.setTexture(t);
 	}
 
+	public boolean castsShadow() {
+		return this.castsShadow;
+	}
+	
 	public void disable() {
 		this.enabled = false;
 	}
