@@ -66,7 +66,7 @@ public class ShadowMapRenderer implements Renderer {
 	@Override
 	public void begin() {
 		
-		
+		/* taco test */
 		this.shader.bind();
 		shadowBox.update();
 		this.lightTransform.setTranslation(new Vector3f(cam.getPosition().getX(), 0, cam.getPosition().getZ()));
