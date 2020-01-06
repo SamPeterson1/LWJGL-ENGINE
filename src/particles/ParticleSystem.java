@@ -34,7 +34,6 @@ public class ParticleSystem {
 		this.numRows = numRows;
 		this.emission = emission;
 		this.stages = stages;
-		ParticleMaster.addParticle(this);
 		
 	}
 	

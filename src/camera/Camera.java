@@ -22,6 +22,18 @@ public class Camera {
 		return this.transform;
 	}
 	
+	public void setPitch(float pitch) {
+		this.transform.setRotationX(pitch);
+	}
+	
+	public void setYaw(float yaw) {
+		this.transform.setRotationY(yaw);
+	}
+	
+	public void setRoll(float roll) {
+		this.transform.setRotationZ(roll);
+	}
+	
 	public void setTerrain(Terrain terrain) {
 		controller.setTerrain(terrain);
 	}

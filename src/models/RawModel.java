@@ -20,6 +20,8 @@ public class RawModel {
 	private HashMap<Integer, Integer> ids = new HashMap<>();
 	private List<Integer> vbos = new ArrayList<>();
 	private int vertexCount;
+	private float[] normals;
+	
 	
 	public static final int VAO = 0;
 	public static final int VBO = 1;
@@ -29,6 +31,14 @@ public class RawModel {
 	
 	public void setVertexCount(int vertexCount) {
 		this.vertexCount = vertexCount;
+	}
+	
+	public void setNormals(float[] normals) {
+		this.normals = normals;
+	}
+	
+	public float[] getNormals() {
+		return this.normals;
 	}
 	
 	public int getVertexCount() {

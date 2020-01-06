@@ -25,7 +25,7 @@ public class GLFWWindow {
 	public static void init(int width, int height, String title) {
 		
 		GLFWWindow.width = width;
-		GLFWWindow.height = height;
+		GLFWWindow.height = height; 
 		
 		if(!GLFW.glfwInit()) {
 			System.err.println("Couldn't initialize GLFW window");
@@ -44,6 +44,9 @@ public class GLFWWindow {
 		GL.createCapabilities();
 		
 		GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+		
+		GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
+		glEnable(GL_MULTISAMPLE); 
 		
 		GLFW.glfwSetWindowPos(window, (videoMode.width() - width)/2, (videoMode.height() - height)/2);
 		GLFW.glfwShowWindow(window);	

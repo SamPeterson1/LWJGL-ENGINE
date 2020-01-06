@@ -4,7 +4,6 @@ import GUI.MasterGUI;
 import camera.Camera;
 import camera.CameraSpecs;
 import events.EventHandler;
-import lights.DirectionalLight;
 import math.Matrix4f;
 import math.Noise;
 import math.Vector3f;
@@ -27,7 +26,6 @@ import window.GLFWWindow;
 
 public class Game {
 	
-	private Light light;
 	private Camera cam;
 	private MasterRenderer renderer;
 	private BasicShader basicShader;
@@ -39,9 +37,6 @@ public class Game {
 
 		GLFWWindow.init(1440, 1080, "Test");
 		
-		light = new Light(new Vector3f(1f, 1f, 1f), new Vector3f(-1000f, 1000f, 100f));
-		DirectionalLight foo = new DirectionalLight(new Vector3f(0f, -1f, 0f), new Vector3f(1f, 1f, 1f));
-		
 		CameraSpecs specs = new CameraSpecs();
 		specs.setAspect(1440f/1080f);
 		specs.setFov(70f);
@@ -49,7 +44,7 @@ public class Game {
 		specs.setzNear(0.01f);
 		
 		cam = new Camera(specs);
-		renderer = new MasterRenderer(light, cam, foo);
+		renderer = new MasterRenderer(cam);
 		
 		Noise noise = new Noise(130);
 		
@@ -82,6 +77,7 @@ public class Game {
 		ModelBatch.addEntity(terrain);
 		
 		this.particles = new ParticleSystem(new CircularEmission(100f, 10f), 200, 1, 0f, 5000, "/assets/fireAtlas.png", 16, 4);
+		ParticleMaster.addParticleSystem(particles);
 		EventHandler.enableCursor();
 		
 		

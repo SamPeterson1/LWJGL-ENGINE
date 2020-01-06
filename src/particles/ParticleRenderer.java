@@ -27,7 +27,7 @@ import models.Mesh;
 import rendering.Renderer;
 import shaders.ParticleShader;
 
-public class TestParticleRenderer implements Renderer {
+public class ParticleRenderer implements Renderer {
 	
 	private ParticleShader shader;
 	private Camera cam;
@@ -36,7 +36,7 @@ public class TestParticleRenderer implements Renderer {
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(MAX_PARTICLES*FLOATS_PER_PARTICLE);
 	private int pointer = 0;
 	
-	public TestParticleRenderer(Camera cam) {
+	public ParticleRenderer(Camera cam) {
 		this.shader = new ParticleShader();
 		this.shader.create();
 		this.shader.createUniforms();

@@ -1,4 +1,4 @@
-package models;
+package rendering;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
@@ -15,23 +15,21 @@ import org.lwjgl.opengl.GL30;
 
 import camera.Camera;
 import math.Vector3f;
-import rendering.Light;
-import rendering.MasterRenderer;
-import rendering.Renderer;
+import models.Entity;
+import models.Mesh;
+import models.TexturedMesh;
 import shaders.BasicShader;
 
 public class BasicRenderer implements Renderer {
 
 	private BasicShader shader;
-	private Light light;
 	private Camera cam;
 	
-	public BasicRenderer(Light light, Camera cam) {
+	public BasicRenderer(Camera cam) {
 		this.shader = new BasicShader();
 		this.shader.create();	
 		this.shader.createUniforms();
 		this.shader.bindAllAttributes();
-		this.light = light;
 		this.cam = cam;
 	}
 	
@@ -39,6 +37,10 @@ public class BasicRenderer implements Renderer {
 	public void begin() {
 		this.shader.bind();
 		glEnable(GL_DEPTH_TEST);
+		this.shader.setSkyColor(Environment.fogColor);
+		this.shader.loadLights();
+		this.shader.setViewMatrix(cam.viewMatrix());
+		this.shader.setProjectionMatrix(cam.perspective());
 	}
 
 	@Override
@@ -67,6 +69,7 @@ public class BasicRenderer implements Renderer {
 	}
 	
 	private void loadTexturedMesh(Mesh mesh) {
+		
 		TexturedMesh texturedMesh = (TexturedMesh) mesh;
 		MasterRenderer.setDoCull(texturedMesh.cullFace());
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
@@ -89,12 +92,6 @@ public class BasicRenderer implements Renderer {
 		} else {
 			this.loadColoredMesh(mesh);
 		}
-		
-		this.shader.loadLight(light);
-		this.shader.setViewMatrix(cam.viewMatrix());
-		this.shader.setProjectionMatrix(cam.perspective());
-		this.shader.setSkyColor(new Vector3f(0f, 1f, 1f));
-
 		
 		for(Entity e: entities) {
 			this.shader.setTransformationMatrix(e.getTransform().getTransform());

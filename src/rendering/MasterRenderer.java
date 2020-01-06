@@ -5,27 +5,21 @@ import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL20;
 
-import GUI.GUIComponent;
 import GUI.GUIRenderer;
 import camera.Camera;
-import lights.DirectionalLight;
+import lights.PointLight;
 import math.Vector3f;
-import models.BasicRenderer;
+import models.ColoredMesh;
 import models.Entity;
 import models.Mesh;
 import models.ModelBatch;
-import models.ModelLoader;
-import models.RawModel;
-import particles.TestParticleRenderer;
+import particles.ParticleRenderer;
 import shadows.ShadowMapRenderer;
 import terrain.TerrainRenderer;
 import text.TextRenderer;
@@ -41,49 +35,42 @@ public class MasterRenderer implements WindowListener {
 	private GUIRenderer guiRenderer;
 	private ShadowMapRenderer shadowRenderer;
 	private SkyboxRenderer skyboxRenderer;
-	private Renderer particleRenderer;
-	private Renderer testParticleRenderer;
+	private ParticleRenderer particleRenderer;
 	private Camera cam;
+	private boolean foo;
+	private int index;
 	
 	public static float NEAR_PLANE = 1f;
 	public static float FAR_PLANE = 1000f;
 	public static float FOV = 70f;
 	
+	
 	private static final float[] rectVerts = new float[] {
-			0.1f, 0.1f,
-			0.1f, -0.1f,
-			-0.1f, -0.1f,
-			-0.1f, 0.1f
+			1f, 1f,
+			1f, -1f,
+			-1f, -1f,
+			-1f, 1f
 	};
 	
-	private static final int[] rectIndices = new int[] {
-			0, 1, 2,
-			0, 3, 2
-	};
-	
-	private static final float[] rectTextCoords = new float[] {
-			1.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f, 1.0f,
-			0.0f, 0.0f
-	};
-	
-	private static final RawModel rectangle = ModelLoader.loadColoredGUIModel(rectVerts, rectIndices);
-	private static final RawModel texturedRectangle = ModelLoader.load2DModel(rectVerts, rectTextCoords, rectIndices, true);
-	
-	public MasterRenderer(Light light, Camera cam, DirectionalLight directionalLight) {
+	public MasterRenderer(Camera cam) {
 		this.cam = cam;
 		this.skyboxRenderer = new SkyboxRenderer(cam);
-		this.shadowRenderer = new ShadowMapRenderer(cam, directionalLight);
-		this.terrainRenderer = new TerrainRenderer(light, cam);
-		this.renderer = new BasicRenderer(light, cam);
-		this.particleRenderer = new TestParticleRenderer(cam);
+		this.shadowRenderer = new ShadowMapRenderer(cam);
+		this.terrainRenderer = new TerrainRenderer(cam);
+		this.renderer = new BasicRenderer(cam);
+		this.particleRenderer = new ParticleRenderer(cam);
 		this.textRenderer = new TextRenderer();
 		this.guiRenderer = new GUIRenderer();
-		this.testParticleRenderer = new TestParticleRenderer(cam);
+		this.particleRenderer = new ParticleRenderer(cam);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		GLFWWindow.addListener(this);
+		Environment.pointLights.add(new PointLight(new Vector3f(50, 5, 50), new Vector3f(0f,0f, 1f), new Vector3f(0.01f, 0.02f, 0.0f)));
+		Environment.pointLights.add(new PointLight(new Vector3f(80, 5, 80), new Vector3f(1f,0f, 0f), new Vector3f(0.01f, 0.02f, 0.0f)));
+		ColoredMesh foo = new ColoredMesh("/assets/tree.obj", new Vector3f(1f, 1f, 1f));
+		Entity foo2 = new Entity(foo);
+		foo2.getTransform().setTranslation(new Vector3f(5f, 5f, 5f));
+		ModelBatch.addEntity(foo2);
 	}
 	
 	public static void setDoCull(boolean cull) {
@@ -95,6 +82,19 @@ public class MasterRenderer implements WindowListener {
 	}
 	
 	public void render() {
+		
+		/* for dadoo
+		index ++;
+		if(index % 5 == 0) {
+			foo = !foo;
+			if(foo) {
+				Environment.pointLights.get(0).toggle();
+			} else {
+				Environment.pointLights.get(1).toggle();
+			}
+		}
+		*/
+		
 		particleCt = 0;
 		Map<Mesh, List<Entity>> meshesMap = ModelBatch.getEntities();
 		this.cam.update();
@@ -150,7 +150,7 @@ public class MasterRenderer implements WindowListener {
 				this.textRenderer.end();
 			}
 		}
-		
+
 	}
 
 	@Override

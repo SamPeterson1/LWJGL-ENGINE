@@ -1,5 +1,7 @@
 package shaders;
 
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+
 import math.Matrix4f;
 
 public class ShadowMapShader extends Shader {
@@ -14,6 +16,7 @@ public class ShadowMapShader extends Shader {
 	@Override
 	public void bindAllAttributes() {
 		super.bindAttribute(0, "position");
+		super.bindAttribute(1, "textureCoords");
 	}
 
 	@Override
@@ -21,10 +24,15 @@ public class ShadowMapShader extends Shader {
 		super.createUniform("projectionMatrix");
 		super.createUniform("viewMatrix");
 		super.createUniform("transformationMatrix");
+		super.createUniform("modelTexture");
 	}
 	
 	public void loadProjectionMatrix(Matrix4f projectionMatrix) {
 		super.setUniform("projectionMatrix", projectionMatrix);
+	}
+	
+	public void setSampler(int index) {
+		super.setUniformi("modelTexture", GL_TEXTURE0);
 	}
 	
 	public void loadViewMatrix(Matrix4f viewMatrix) {

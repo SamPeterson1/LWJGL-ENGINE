@@ -2,18 +2,17 @@
 
 in vec3 position;
 in vec3 normals;
-uniform vec3 lightPosition;
 in vec2 textCoords;
 out vec2 passTextCoords;
 out vec3 faceNormal;
-out vec3 toCamera;
-out vec3 toLight;
+out vec3 toLight[4];
 out vec4 shadowCoords;
 out float visibility;
-out float depth;
 
-const float fogDensity = 0.02;
+const float fogDensity = 0;
 const float fogGradient = 1.5;
+
+uniform vec3 lightPosition[4];
 
 uniform mat4 shadowMapP;
 uniform mat4 shadowMapV;
@@ -28,14 +27,15 @@ void main(void) {
 	shadowCoords = shadowMapP * shadowMapV * worldPosition * 0.5 + 0.5;
 	vec4 posRelativeToCam = v * worldPosition;
 	gl_Position = p * posRelativeToCam;
-	passTextCoords = textCoords * 40.0;
+	passTextCoords = textCoords * 40;
 	
 	faceNormal = vec3(t * vec4(normals, 0.0));
-
-	toLight = lightPosition - worldPosition.xyz;
-	toCamera = (inverse(v) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 	
-	float distance = length(posRelativeToCam.xyz);
+	for(int i = 0; i < lightPosition.length; i ++) {
+		toLight[i] = lightPosition[i] - worldPosition.xyz;
+	}
+	
+	//float distance = length(posRelativeToCam.xyz);
 	//visibility = exp(-pow((distance*fogDensity), fogGradient));
 	visibility = 1;
 }

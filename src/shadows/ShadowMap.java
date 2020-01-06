@@ -41,9 +41,7 @@ public class ShadowMap {
 		
 		this.depthMapFBO = glGenFramebuffers();
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		GL11.glDrawBuffer(GL11.GL_NONE);
-        GL11.glReadBuffer(GL11.GL_NONE);
-		
+
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
 		

@@ -53,7 +53,7 @@ public class OBJFile {
 				textures.add(texture);
 			} else if(tokens[0].equals("vn")) {
 				Vector3f normal = new Vector3f(Float.parseFloat(tokens[1]), 
-						Float.parseFloat(tokens[2]), Float.parseFloat(tokens[2]));
+						Float.parseFloat(tokens[2]), Float.parseFloat(tokens[3]));
 				normals.add(normal);
 			} else if(tokens[0].equals("f")) {
 				textureArray = new float[vertices.size()*2];

@@ -7,7 +7,7 @@ public class ParticleMaster {
 	
 	private static List<ParticleSystem> systems = new ArrayList<>();
 	
-	public static void addParticle(ParticleSystem system) {
+	public static void addParticleSystem(ParticleSystem system) {
 		systems.add(system);
 	}
 	

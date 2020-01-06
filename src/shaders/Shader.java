@@ -5,11 +5,14 @@ import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniform2f;
 import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform3fv;
 import static org.lwjgl.opengl.GL20.glUniform4f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -31,6 +34,13 @@ public abstract class Shader {
 		this.vertexFile = new TextFile(vertexFile);
 		this.fragmentFile = new TextFile(fragmentFile);
 		//System.out.println(this.vertexFile.read());
+	}
+	
+	public void createUniform(String name, int length) {
+		for(int i = 0; i < length; i ++) {
+			String indexedName = name + "[" + String.valueOf(i) + "]";
+			this.createUniform(indexedName);
+		}
 	}
 	
 	public void createUniform(String name) {
@@ -118,6 +128,15 @@ public abstract class Shader {
 	
 	public void setUniform4f(String name, Vector4f value) {
 		glUniform4f(this.uniforms.get(name), value.getX(), value.getY(), value.getZ(), value.getW());
+	}
+	
+	public void setUniform3farr(String name, Vector3f[] values) {
+		int index = 0;
+		for(Vector3f val: values) {
+			String indexedName = name + "[" + String.valueOf(index) + "]";
+			glUniform3f(this.uniforms.get(indexedName), val.getX(), val.getY(), val.getZ());
+			index ++;
+		}
 	}
 	
 	public abstract void bindAllAttributes();

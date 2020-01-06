@@ -30,6 +30,8 @@ import java.awt.image.DataBufferByte;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
@@ -44,6 +46,25 @@ public class Texture {
 	private int GL_CLAMP_TO_EDGE;
 	
 	public Texture() {}
+	
+	public void emptyDepthCubemap(int res) {
+		
+		this.id = glGenTextures();
+		glActiveTexture(GL_TEXTURE0);
+	    glBindTexture(GL_TEXTURE_CUBE_MAP, id);
+
+	    for(int i = 0; i < 6; i ++) {
+	    	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, res, res, 0, GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
+	    }
+	    
+	    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+	    
+	    GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+	    GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+	    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		
+	}
 	
 	public Texture(int width, int height, int format) {
 		this.id = glGenTextures();
@@ -99,6 +120,13 @@ public class Texture {
 	    glBindTexture(GL_TEXTURE_2D, id);
 
 	   // glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+	    
+	    if(GL.getCapabilities().GL_EXT_texture_filter_anisotropic) {
+	    	float amount = Math.min(4f, GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT));
+	    	GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, amount);
+	    } else {
+	    	System.out.println("Anisotropic filtering not supported");
+	    }
 	    
 	    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_NEAREST);
 	    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);

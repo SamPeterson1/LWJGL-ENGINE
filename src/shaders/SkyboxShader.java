@@ -22,6 +22,11 @@ public class SkyboxShader extends Shader {
 		super.createUniform("projectionMatrix");
 		super.createUniform("viewMatrix");
 		super.createUniform("sampler");
+		super.createUniform("fogColor");
+	}
+	
+	public void loadFogColor(Vector3f fogColor) {
+		super.setUniform3f("fogColor", fogColor);
 	}
 	
 	public void loadProjectionMatrix(Matrix4f projectionMatrix) {
@@ -29,7 +34,6 @@ public class SkyboxShader extends Shader {
 	}
 	
 	public void loadViewMatrix(Matrix4f viewMatrix) {
-		
 		super.setUniform("viewMatrix", viewMatrix);
 	}
 	

@@ -94,7 +94,7 @@ public class Transform {
 		this.rotation.setY(deg);
 	}
 	
-	public void setTranslation(float deg) {
+	public void setRotationZ(float deg) {
 		this.rotation.setZ(deg);
 	}
 	
@@ -232,6 +232,5 @@ public class Transform {
 		.multiply(this.calculateScale());
 		
 	}
-	
 	
 }

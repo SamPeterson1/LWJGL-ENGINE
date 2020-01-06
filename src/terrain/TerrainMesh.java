@@ -51,7 +51,7 @@ public class TerrainMesh extends Mesh {
 		for(int i=0;i<VERTEX_COUNT;i++){
 			for(int j=0;j<VERTEX_COUNT;j++){
 				float x = (float)j/((float)VERTEX_COUNT - 1) * SIZE;
-				float y = noise.interpolateNoise2D(i/4f, j/4f) * 10;
+				float y = noise.interpolateNoise2D(i/4f, j/4f) * 10;;
 				float z = (float)i/((float)VERTEX_COUNT - 1) * SIZE;
 				
 				vertices[vertexPointer*3] = x;
@@ -62,9 +62,9 @@ public class TerrainMesh extends Mesh {
 				float zOff = rand.nextFloat()/2f - 1;
 				float x2 = (float)(j+xOff)/((float)VERTEX_COUNT - 1) * SIZE;
 				float z2 = (float)(i+zOff)/((float)VERTEX_COUNT - 1) * SIZE;
-				float height2 = noise.interpolateNoise2D((i+zOff)/4f, (j+xOff)/4f) * 10;
+
 				if(rand.nextInt(50) == 0)
-					this.randomDecoration(x2, height2-0.1f, z2);
+					this.randomDecoration(x2, y-0.1f, z2);
 				normals[vertexPointer*3] = 0;
 				normals[vertexPointer*3+1] = 1;
 				normals[vertexPointer*3+2] = 0;

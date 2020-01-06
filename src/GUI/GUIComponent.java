@@ -147,7 +147,7 @@ public class GUIComponent extends Mesh {
 		}
 		
 	}
-	
+
 	public void setTag(String tag) {
 		this.tag = tag;
 	}

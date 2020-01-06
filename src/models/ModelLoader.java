@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL33;
 
-import particles.TestParticleRenderer;
+import particles.ParticleRenderer;
 
 public class ModelLoader {
 	
@@ -78,7 +78,7 @@ public class ModelLoader {
     	model.setBuffer(bindIndicesBuffer(indices, true), RawModel.IBO);
     	model.setVertexCount(indices.length);
     	 
-    	model.addVBO(createEmptyVBO(TestParticleRenderer.MAX_PARTICLES*TestParticleRenderer.FLOATS_PER_PARTICLE));
+    	model.addVBO(createEmptyVBO(ParticleRenderer.MAX_PARTICLES*ParticleRenderer.FLOATS_PER_PARTICLE));
     	vbo = model.getVBO(0);
     	addInstancedAttribute(model.getVAO_ID(), vbo, 1, 4, 22, 0);
     	addInstancedAttribute(model.getVAO_ID(), vbo, 2, 4, 22, 4);
@@ -110,8 +110,10 @@ public class ModelLoader {
     	model.setVAO_ID(createVAO());
     	model.setBuffer(bindIndicesBuffer(indices, true), RawModel.IBO);
     	model.setBuffer(storeData(0, 3, vertices, true), RawModel.VBO);
-    	model.setBuffer(storeData(1, 3, vertexNormals, true), RawModel.NBO);
-    	model.setBuffer(storeData(2, 2, textureCoords, true), RawModel.TBO);
+    	model.setBuffer(storeData(1, 2, textureCoords, true), RawModel.TBO);
+    	System.out.println("loading 3D model" + vertexNormals[1] + " " + vertexNormals[2]);
+    	model.setBuffer(storeData(2, 3, vertexNormals, true), RawModel.NBO);
+    	model.setNormals(vertexNormals);
     	model.setVertexCount(indices.length);
     	GL30.glBindVertexArray(0);
     	

@@ -18,6 +18,9 @@ public class SkyboxRenderer implements Renderer {
 	private SkyboxShader shader;
 	private Camera cam;
 	
+	private static float FOG_UPPER = 0.4f;
+	private static float FOG_LOWER = 0.1f;
+	
 	public SkyboxRenderer(Camera cam) {
 		this.shader = new SkyboxShader();
 		this.shader.create();
@@ -31,6 +34,7 @@ public class SkyboxRenderer implements Renderer {
 		this.shader.bind();
 		this.shader.loadViewMatrix(cam.viewMatrix());
 		this.shader.loadProjectionMatrix(cam.perspective());
+		this.shader.loadFogColor(Environment.fogColor);
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import rendering.Material;
 
 public class ColoredMesh extends Mesh {
 	
+	float[] normals;
+	
 	public ColoredMesh(String objFilePath, Vector3f color) {
 		
 		super(Mesh.UNTEXTURED);
