@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class TerrainRenderer{
 		glDisable(GL_CULL_FACE);
 	}
 
-	public void loadMesh(Mesh mesh, Texture shadowMap) {
+	public void loadMesh(Mesh mesh, Texture shadowMap, Texture shadowCubeMap) {
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
@@ -66,7 +67,10 @@ public class TerrainRenderer{
         this.shader.setSampler(0);
 		glActiveTexture(GL_TEXTURE1);
 		shadowMap.bind();
-		this.shader.setShadowSampler(1);		
+		this.shader.setShadowSampler(1);
+		glActiveTexture(GL_TEXTURE2);
+		shadowCubeMap.bindAsCubemap();
+		this.shader.setShadowCubeSampler(2);
 	}
 	
 	public void unloadMesh() {
@@ -76,8 +80,8 @@ public class TerrainRenderer{
         GL30.glBindVertexArray(0);
 	}
 	
-	public void render(Mesh mesh, List<Entity> entities, Texture shadowMap) {
-		this.loadMesh(mesh, shadowMap);
+	public void render(Mesh mesh, List<Entity> entities, Texture shadowMap, Texture shadowCubeMap) {
+		this.loadMesh(mesh, shadowMap, shadowCubeMap);
 		for(Entity e: entities) {
 			this.shader.setTransformationMatrix(e.getTransform().getTransform());
 			GL11.glDrawElements(GL11.GL_TRIANGLES, e.getMesh().getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);

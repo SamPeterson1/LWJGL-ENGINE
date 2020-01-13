@@ -38,6 +38,7 @@ public class TerrainShader extends Shader{
 		super.createUniform("shadowMapP");
 		super.createUniform("shadowMapV");
 		super.createUniform("shadowMap");
+		super.createUniform("depthMap");
 	}
 	
 	public void loadLights() {
@@ -83,6 +84,10 @@ public class TerrainShader extends Shader{
 	
 	public void setShadowSampler(int index) {
 		super.setUniformi("shadowMap", index);
+	}
+	
+	public void setShadowCubeSampler(int index) {
+		super.setUniformi("depthMap", index);
 	}
 	
 	public void setProjectionMatrix(Matrix4f projection) {

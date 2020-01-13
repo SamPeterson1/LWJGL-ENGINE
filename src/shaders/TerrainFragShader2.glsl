@@ -7,9 +7,11 @@ in vec3 toLight[4];
 in vec3 toCamera;
 in vec4 shadowCoords;
 in float visibility;
+in float depth;
 
 uniform sampler2D sampler;
 uniform sampler2D shadowMap;
+uniform samplerCube depthMap;
 uniform vec3 sunColor;
 uniform vec3 sunDirection;
 uniform vec3 lightColor[4];
@@ -63,7 +65,6 @@ void main(void) {
 	vec3 textureColor = texture(sampler, passTextCoords).rgb;
 	vec3 diffuse = totalDiffuse;
 	diffuse *= textureColor * shadowLighting;
-	
 	fragColor = vec4(mix(skyColor, diffuse, visibility), 1.0);
-	
+	fragColor = texture(depthMap, 
 }

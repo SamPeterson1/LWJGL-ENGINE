@@ -8,6 +8,7 @@ out vec3 faceNormal;
 out vec3 toLight[4];
 out float visibility;
 out vec3 rawNormals;
+out float depth;
 
 const float fogDensity = 0.02;
 const float fogGradient = 1.5;
@@ -23,6 +24,7 @@ void main(void) {
 	vec4 worldPosition = t * vec4(position, 1.0);
 	vec4 posRelativeToCam = v * worldPosition;
 	gl_Position = p * posRelativeToCam;
+	depth = gl_Position.z;
 	passTextCoords = textCoords;
 	
 	faceNormal = vec3(t * vec4(normals, 0.0));

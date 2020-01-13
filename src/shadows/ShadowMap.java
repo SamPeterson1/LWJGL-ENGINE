@@ -66,8 +66,7 @@ public class ShadowMap {
 	}
 	
 	public void bindFBO() {
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, depthMapFBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glViewport(0, 0, WIDTH, HEIGHT);
 	}
 	

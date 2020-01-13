@@ -46,7 +46,7 @@ public class Matrix4f {
         		0, 0, c, -1,
         		0, 0, d, 0			
         );
-		
+
 	}
 	
 	public static Matrix4f orthographic(float width, float height, float length) {

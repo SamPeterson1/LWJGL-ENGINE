@@ -35,7 +35,7 @@ public class Game {
 	public void init() {
 		
 
-		GLFWWindow.init(1440, 1080, "Test");
+		GLFWWindow.init(1440, 1440, "Test");
 		
 		CameraSpecs specs = new CameraSpecs();
 		specs.setAspect(1440f/1080f);
@@ -65,10 +65,7 @@ public class Game {
 		element3.getTransform().setScale(new Vector3f(0.5f, 0.5f, 0.5f));
 		element3.getTransform().setTranslationZ(3);
 		
-		Skybox skybox = new Skybox(500, "hills");
-		ModelBatch.addEntity(new Entity(skybox));
-		
-		Terrain terrain = new Terrain("/assets/grass.png", noise);
+		Terrain terrain = new Terrain("/assets/grassTexture.png", noise);
 		cam.setTerrain(terrain);
 		cam.getTransform().setRotation(new Vector3f(-90f, 90f, 0f));
 		cam.getPosition().setZ(20);

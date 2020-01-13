@@ -107,6 +107,9 @@ public abstract class Shader {
 	
 	public void setUniform(String name, Matrix4f value) {
 		float[] vals = value.getFloats();
+		//for(float val: vals) {
+			//System.out.println("matVal" + val);
+		//}
 		glUniformMatrix4fv(uniforms.get(name), false, vals);
 	}
 	

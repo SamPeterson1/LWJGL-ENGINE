@@ -19,7 +19,9 @@ import models.ColoredMesh;
 import models.Entity;
 import models.Mesh;
 import models.ModelBatch;
+import models.Skybox;
 import particles.ParticleRenderer;
+import shadows.ShadowCubemapRenderer;
 import shadows.ShadowMapRenderer;
 import terrain.TerrainRenderer;
 import text.TextRenderer;
@@ -36,6 +38,7 @@ public class MasterRenderer implements WindowListener {
 	private ShadowMapRenderer shadowRenderer;
 	private SkyboxRenderer skyboxRenderer;
 	private ParticleRenderer particleRenderer;
+	private ShadowCubemapRenderer cubemapRenderer;
 	private Camera cam;
 	private boolean foo;
 	private int index;
@@ -54,8 +57,10 @@ public class MasterRenderer implements WindowListener {
 	
 	public MasterRenderer(Camera cam) {
 		this.cam = cam;
+		Skybox skybox = new Skybox(100, "hills");
+		ModelBatch.addEntity(new Entity(skybox));
 		this.skyboxRenderer = new SkyboxRenderer(cam);
-		this.shadowRenderer = new ShadowMapRenderer(cam);
+		this.shadowRenderer = new ShadowMapRenderer(cam);		
 		this.terrainRenderer = new TerrainRenderer(cam);
 		this.renderer = new BasicRenderer(cam);
 		this.particleRenderer = new ParticleRenderer(cam);
@@ -65,12 +70,13 @@ public class MasterRenderer implements WindowListener {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		GLFWWindow.addListener(this);
-		Environment.pointLights.add(new PointLight(new Vector3f(50, 5, 50), new Vector3f(0f,0f, 1f), new Vector3f(0.01f, 0.02f, 0.0f)));
-		Environment.pointLights.add(new PointLight(new Vector3f(80, 5, 80), new Vector3f(1f,0f, 0f), new Vector3f(0.01f, 0.02f, 0.0f)));
-		ColoredMesh foo = new ColoredMesh("/assets/tree.obj", new Vector3f(1f, 1f, 1f));
-		Entity foo2 = new Entity(foo);
-		foo2.getTransform().setTranslation(new Vector3f(5f, 5f, 5f));
-		ModelBatch.addEntity(foo2);
+		Environment.pointLights.add(new PointLight(new Vector3f(50, 5, 50), new Vector3f(0f,0f, 1f), new Vector3f(0.7f, 0.02f, 0.0f)));
+		this.cubemapRenderer = new ShadowCubemapRenderer(skybox, Environment.pointLights.get(0), cam);
+		Environment.pointLights.add(new PointLight(new Vector3f(80, 5, 80), new Vector3f(1f,0f, 0f), new Vector3f(0.7f, 0.02f, 0.0f)));
+		//ColoredMesh foo = new ColoredMesh("/assets/tree.obj", new Vector3f(1f, 1f, 1f));
+		//Entity foo2 = new Entity(foo);
+		////foo2.getTransform().setTranslation(new Vector3f(5f, 5f, 5f));
+		//ModelBatch.addEntity(foo2);
 	}
 	
 	public static void setDoCull(boolean cull) {
@@ -83,22 +89,11 @@ public class MasterRenderer implements WindowListener {
 	
 	public void render() {
 		
-		/* for dadoo
-		index ++;
-		if(index % 5 == 0) {
-			foo = !foo;
-			if(foo) {
-				Environment.pointLights.get(0).toggle();
-			} else {
-				Environment.pointLights.get(1).toggle();
-			}
-		}
-		*/
-		
 		particleCt = 0;
 		Map<Mesh, List<Entity>> meshesMap = ModelBatch.getEntities();
 		this.cam.update();
 		System.out.println(this.cam.getTransform().getRotation().getY() + "ta");
+		
 		
 		this.shadowRenderer.begin();
 		for(Mesh mesh: meshesMap.keySet()) {
@@ -108,6 +103,18 @@ public class MasterRenderer implements WindowListener {
 			}
 		}
 		this.shadowRenderer.end();
+		
+		
+		this.cubemapRenderer.begin();
+		for(Mesh mesh: meshesMap.keySet()) {
+			if(mesh.isEnabled() && mesh.getMaterial().castsShadow()) {
+				System.out.println("GOPO");
+				List<Entity> entities = meshesMap.get(mesh);
+				this.cubemapRenderer.render(mesh, entities);
+			}
+		}
+		this.cubemapRenderer.end();
+		
 		
 		for(Mesh mesh: meshesMap.keySet()) {
 			List<Entity> entities = meshesMap.get(mesh);
@@ -119,7 +126,7 @@ public class MasterRenderer implements WindowListener {
 				} else if(mesh.getType() == Mesh.TERRAIN) {
 					this.terrainRenderer.begin();
 					this.terrainRenderer.setShadowMatrices(shadowRenderer.getLightProjectionMatrix(), shadowRenderer.getLightViewMatrix());
-					this.terrainRenderer.render(mesh, entities, this.shadowRenderer.getShadowMap());
+					this.terrainRenderer.render(mesh, entities, this.shadowRenderer.getShadowMap(), this.cubemapRenderer.getTexture());
 					this.terrainRenderer.end();
 				} else if(mesh.getType() == Mesh.GUI_COLORED || mesh.getType() == Mesh.GUI_TEXTURED) {
 					this.guiRenderer.begin();
