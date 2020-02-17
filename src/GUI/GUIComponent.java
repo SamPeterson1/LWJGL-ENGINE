@@ -7,6 +7,7 @@ import java.util.Map;
 
 import math.Vector2f;
 import math.Vector3f;
+import math.Vector4f;
 import models.Entity;
 import models.Mesh;
 import models.ModelLoader;
@@ -108,7 +109,7 @@ public class GUIComponent extends Mesh {
 	
 	public GUIComponent(XMLElement xml) {
 		
-		Vector3f color = new Vector3f(0f, 1f, 0f);
+		Vector4f color = new Vector4f(0f, 1f, 0f, 1f);
 		Material material = new Material();
 		this.entity = new Entity(this);
 		
@@ -118,6 +119,7 @@ public class GUIComponent extends Mesh {
 			color.setX(colorElement.getAttribute("r").getFloat());
 			color.setY(colorElement.getAttribute("g").getFloat());
 			color.setZ(colorElement.getAttribute("b").getFloat());
+			if(colorElement.hasAttribute("a")) color.setW(colorElement.getAttribute("a").getFloat());
 			material.setColor(color);
 			
 		}
@@ -147,7 +149,11 @@ public class GUIComponent extends Mesh {
 		}
 		
 	}
-
+	
+	public Constraint getConstraint(int axis) {
+		return this.constraints.get(axis);
+	}
+	
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
@@ -287,6 +293,7 @@ public class GUIComponent extends Mesh {
 			if(type.equals("pixel")) {
 				this.addConstraint(new PixelConstraint((int) value, axis, reference));
 			} else if(type.equals("relative")) {
+				System.out.println("NEW RELATIVE CONSTRAINT" + axis + " " + value);
 				this.addConstraint(new RelativeConstraint(value, axis, reference));
 			} else if(type.equals("aspect")) {
 				this.addConstraint(new AspectConstraint(value, axis));

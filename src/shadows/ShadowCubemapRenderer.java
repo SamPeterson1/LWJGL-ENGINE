@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
@@ -21,67 +22,76 @@ import lights.PointLight;
 import math.Matrix4f;
 import models.Entity;
 import models.Mesh;
-import models.Skybox;
-import rendering.Texture;
 import shaders.ShadowMapShader2;
 import window.GLFWWindow;
 
 public class ShadowCubemapRenderer {
 	
 	private static final int CUBEMAP_SIZE = 512;
-	private ShadowCubeMap cubeMap;
-	private ShadowMapShader2 shader;
-	private Camera cam2;
-	private Camera cam;
-	private CameraSpecs camSpecs;
+	private static ShadowMapShader2 shader;
+	private static Camera cam;
+	private static CameraSpecs camSpecs;
 	
-	public ShadowCubemapRenderer(Skybox skybox, PointLight light, Camera cam2) {
-		this.cubeMap = new ShadowCubeMap(1024);
-		this.shader = new ShadowMapShader2();
-		this.shader.create();
-		this.shader.bindAllAttributes();
-		this.shader.createUniforms();
+	private static ShadowCubeMap cubeMap;
+	private static PointLight light;
+	
+	public static void init() {
+		shader = new ShadowMapShader2();
+		shader.create();
+		shader.bindAllAttributes();
+		shader.createUniforms();
 		camSpecs = new CameraSpecs();
 		camSpecs.setAspect(1);
 		camSpecs.setFov(90f);
 		camSpecs.setzFar(100f);
 		camSpecs.setzNear(0.01f);
-		this.cam2 = cam2;
-		this.cam = new Camera(camSpecs);
-		this.cam.getTransform().setTranslation(light.getPosition());
-		skybox.getMaterial().setTexture(this.cubeMap.getTexture());
+		cam = new Camera(camSpecs);
+	}
+	
+	public ShadowCubemapRenderer(PointLight light) {
+		this.cubeMap = new ShadowCubeMap(1024);
+		
+		this.light = light;
+		
 
 	}
 	
-	public void begin() {
-		this.shader.bind();
-		this.shader.loadProjectionMatrix(Matrix4f.perspective(camSpecs));
-		//this.shader.setSampler(GL_TEXTURE0);
-		this.cubeMap.bindFBO();
+	public static void begin(PointLight light) {
+		
+		cubeMap = light.getShadowMap();
+		ShadowCubemapRenderer.light = light;
+		cubeMap.bindFBO();
+		cam.getTransform().setTranslation(light.getPosition());
+		shader.bind();
+		shader.loadProjectionMatrix(Matrix4f.perspective(camSpecs));
 		for(int face = 0; face < 6; face ++) {
-			this.cubeMap.bindCubeMapFace(face);
+			cubeMap.bindCubeMapFace(face);
 			glClear(GL_DEPTH_BUFFER_BIT);
 		}
 		glEnable(GL_DEPTH_TEST);
-	}
-	
-	public Texture getTexture() {
-		return this.cubeMap.getTexture();
-	}
-	
-	public void render(Mesh mesh, List<Entity> entities) {
 		
-		//mesh.getMaterial().getTexture().bind();
+	}
+		
+	public void begin() {
+		
+		
+	}
+	
+	public static void render(Mesh mesh, List<Entity> entities) {
+	
 		glBindVertexArray(mesh.getModel().getVAO_ID());
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
-		cam.getTransform().setTranslation(cam2.getPosition());
+		cam.getTransform().setTranslation(light.getPosition());
+		cam.getTransform().setRotationZ(180);
+		mesh.getMaterial().getTexture().bind();
+		shader.setSampler(GL_TEXTURE0);
 		for(int face = 0; face < 6; face ++) {
-			this.switchToFace(face);
-			this.cubeMap.bindCubeMapFace(face);
-			this.shader.loadViewMatrix(cam.viewMatrix());
+			switchToFace(face);
+			cubeMap.bindCubeMapFace(face);
+			shader.loadViewMatrix(cam.viewMatrix());
 			for(Entity e: entities) {
-				this.shader.loadTransformationMatrix(e.getTransform().getTransform());
+				shader.loadTransformationMatrix(e.getTransform().getTransform());
 				GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
 		}
@@ -91,13 +101,13 @@ public class ShadowCubemapRenderer {
 		glDisableVertexAttribArray(1);
 	}
 	
-	public void end() {
-		this.shader.unbind();
+	public static void end() {
+		shader.unbind();
 		glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 	    glViewport(0, 0, GLFWWindow.getWidth(), GLFWWindow.getHeight());
 	}
 	
-	public void switchToFace(int face) {
+	public static void switchToFace(int face) {
 		switch(face) {
 		case 0:
 			cam.setPitch(0);

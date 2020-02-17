@@ -29,7 +29,7 @@ public class ColoredMesh extends Mesh {
 	}
 	
 	public Vector3f getColor() {
-		return this.material.getColor();
+		return this.material.getRGB();
 	}
 
 	public float getShineDamper() {

@@ -1,7 +1,7 @@
 package shaders;
 
 import math.Matrix4f;
-import math.Vector3f;
+import math.Vector4f;
 
 public class GUIShader extends Shader {
 
@@ -48,8 +48,8 @@ public class GUIShader extends Shader {
 		super.setUniform("transformationMatrix", matrix);
 	}
 	
-	public void setColor(Vector3f color) {
-		super.setUniform3f("color", color);
+	public void setColor(Vector4f color) {
+		super.setUniform4f("color", color);
 	}
 
 }

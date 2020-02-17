@@ -19,8 +19,12 @@ const vec3 ambientLight = vec3(1.0, 1.0, 1.0);
 const float ambientLightIntensity = 0.2;
 
 void main(void) {
-
-	vec4 textureColor = texture(sampler, passTextCoords);
+	
+	vec4 textureColor = vec4(color, 1.0);
+	if(textured == 1) {
+		textureColor = texture(sampler, passTextCoords);
+	}
+	//textureColor = vec4(1.0, 0.0, 0.0,1.0);
 	if(textureColor.w < 0.8) discard;
 	
 	vec3 toSunNormal = normalize(sunDirection);
@@ -42,7 +46,9 @@ void main(void) {
 		}
 	}
 
-	vec3 diffuse = textureColor.rgb * sumDiffuse;
+	vec3 diffuse = textureColor.rgb * sumDiffuse * vec3(passTextCoords.x, passTextCoords.y, 0.0);
 	fragColor = vec4(diffuse, 1.0);
+	
+	//fragColor = vec4(faceNormal, 1.0);
 	
 }

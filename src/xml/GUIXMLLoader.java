@@ -7,6 +7,7 @@ import GUI.GUIComponent;
 import GUI.MasterGUI;
 import models.ModelBatch;
 import text.Text;
+import window.GLFWWindow;
 
 public class GUIXMLLoader {
 	
@@ -48,6 +49,10 @@ public class GUIXMLLoader {
 				ModelBatch.addEntity(guiComponent.getEntity());
 				this.loadToGUI(child, guiComponent);
 			}
+		}
+		
+		if(parentComponent instanceof MasterGUI) {
+			((MasterGUI)parentComponent).onResize(GLFWWindow.getWidth(), GLFWWindow.getHeight());
 		}
 		
 	}

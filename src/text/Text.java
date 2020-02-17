@@ -105,7 +105,7 @@ public class Text extends GUIComponent {
 	}
 
 	public Vector3f getColor() {
-		return this.material.getColor();
+		return this.material.getRGB();
 	}
 	
 	public Texture getTexture() {

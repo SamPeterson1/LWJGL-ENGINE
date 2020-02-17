@@ -8,6 +8,7 @@ in vec3 toCamera;
 in vec4 shadowCoords;
 in float visibility;
 in float depth;
+in vec3 toShadowLight;
 
 uniform sampler2D sampler;
 uniform sampler2D shadowMap;
@@ -35,13 +36,19 @@ void main(void) {
 				offsetTexCoords.x += i/shadowMapSize;
 				offsetTexCoords.y += ii/shadowMapSize;
 				float objectNearestLight = texture(shadowMap, offsetTexCoords).r;
-				if(objectNearestLight < shadowCoords.z) {
+				if(objectNearestLight < shadowCoords.z - 0.001) {
 					inShadow ++;
 				}
 			}
 		}
 		shadowLighting = 1.0 - inShadow*0.6/4.0;
 	}
+	
+	vec3 foo = vec3(toShadowLight.x, toShadowLight.y, -toShadowLight.z);
+	float closestDepth = texture(depthMap, foo).r * 100;
+	//fragColor *= vec4(vec3(1-(length(toShadowLight)/50)), 1.0);
+	float pointShadow = 1;
+	if(closestDepth < length(toShadowLight) - 0.05) pointShadow = 0;
 	
 	vec3 toSunNormal = normalize(sunDirection);
 	float sunDotProduct = dot(toSunNormal, faceNormal);
@@ -56,6 +63,7 @@ void main(void) {
 		vec3 faceNormal = normalize(faceNormal);
 		float dotProduct = dot(toLightNormal, faceNormal);
 		float pointLighting = min(1.0, max(0.0, dotProduct));
+		if(i == 0) pointLighting *= pointShadow;
 		if(attenuationFactor != 0) {
 			pointLighting /= attenuationFactor;
 			totalDiffuse += lightColor[i] * pointLighting;
@@ -63,8 +71,7 @@ void main(void) {
 	}
 
 	vec3 textureColor = texture(sampler, passTextCoords).rgb;
-	vec3 diffuse = totalDiffuse;
-	diffuse *= textureColor * shadowLighting;
+	vec3 diffuse = totalDiffuse * shadowLighting;
+	diffuse *= textureColor;
 	fragColor = vec4(mix(skyColor, diffuse, visibility), 1.0);
-	fragColor = texture(depthMap, 
 }

@@ -29,46 +29,6 @@ import window.GLFWWindow;
 
 public class ShadowCubeMap {
 	
-	/*
-	private Texture depthCubeMap;
-	private int depthFBO;
-	private int res;
-	
-	public Texture getTexture() {
-		return this.depthCubeMap;
-	}
-	
-	public ShadowCubeMap(int res) {
-		
-		this.depthFBO = glGenFramebuffers();
-		glBindFramebuffer(GL_FRAMEBUFFER, this.depthFBO);
-		glDrawBuffer(GL_NONE);
-		glReadBuffer(GL_NONE);
-		
-		this.depthCubeMap = new Texture();
-		this.depthCubeMap.emptyDepthCubemap(res);
-		
-		this.res = res;
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		GL11.glViewport(0, 0, GLFWWindow.getWidth(), GLFWWindow.getHeight());
-		
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			System.err.println("Could not create FrameBuffer");
-		}
-		
-	}
-	
-	public void bindFBO() {
-		glBindFramebuffer(GL_FRAMEBUFFER, depthFBO);
-		glViewport(0, 0, res, res);
-	}
-	
-	public void bindCubeMapFace(int face) {
-		this.depthCubeMap.bindAsCubemap();
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, this.depthCubeMap.getID(), 0);
-	}
-	*/
-
 	private int depthMapFBO;
 	private Texture depthMap; 
 	private int res;

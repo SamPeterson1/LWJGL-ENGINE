@@ -13,6 +13,7 @@ public abstract class Constraint {
 	public static int Y = 3;
 	
 	protected int constraintValue;
+	protected float value;
 	
 	public Constraint(int constraintValue) {
 		this.constraintValue = constraintValue;
@@ -20,6 +21,10 @@ public abstract class Constraint {
 	
 	public int getValue() {
 		return this.constraintValue;
+	}
+	
+	public void setValue(float value) {
+		this.value = value;
 	}
 	
 	protected boolean usesWidth() {

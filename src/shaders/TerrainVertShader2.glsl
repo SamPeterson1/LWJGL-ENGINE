@@ -9,6 +9,7 @@ out vec3 toLight[4];
 out vec4 shadowCoords;
 out float visibility;
 out float depth;
+out vec3 toShadowLight;
 
 const float fogDensity = 0;
 const float fogGradient = 1.5;
@@ -35,6 +36,8 @@ void main(void) {
 	gl_Position = p * posRelativeToCam;
 	passTextCoords = textCoords * 40;
 	faceNormal = vec3(t * vec4(normals, 0.0));
+	
+	toShadowLight = vec3(50, 5, 50) - worldPosition.xyz;
 	
 	for(int i = 0; i < lightPosition.length; i ++) {
 		toLight[i] = lightPosition[i] - worldPosition.xyz;

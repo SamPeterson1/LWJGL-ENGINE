@@ -1,5 +1,6 @@
 package models;
 
+import math.Vector3f;
 import rendering.Material;
 import rendering.Texture;
 
@@ -13,6 +14,7 @@ public class Mesh {
 	public static final int GUI_TEXTURED = 5;
 	public static final int PARTICLE = 6;
 	public static final int SKYBOX = 7;
+	public static final int PLANET = 8;
 	
 	protected int type;
 	protected Material material;
@@ -25,6 +27,13 @@ public class Mesh {
 	
 	public Mesh(int type) {
 		this.type = type;
+	}
+	
+	public Mesh(int type, RawModel model) {
+		this.material = new Material();
+		this.material.setColor(new Vector3f(1f, 0f, 0f));
+		this.type = type;
+		this.model = model;
 	}
 	
 	public Mesh(RawModel model, Texture t) {

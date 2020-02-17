@@ -10,4 +10,5 @@ uniform sampler2D modelTexture;
 void main(void) {
 	gl_FragDepth = depth;
 	fragColor = vec4(1.0);
+	if(texture(modelTexture, passTextCoords).a < 0.5) discard;
 }

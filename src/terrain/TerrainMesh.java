@@ -34,6 +34,7 @@ public class TerrainMesh extends Mesh {
 		super.setModel(this.generateTerrain());
 		Material material = new Material();
 		material.setTexture(new Texture(texturePath));
+		material.setCastsShadow(true);
 		material.setRecievesShadow(true);
 		this.setMaterial(material);	
 		fern.setCullFace(false);
@@ -148,7 +149,6 @@ public class TerrainMesh extends Mesh {
 			normals[pointer++] = vec.getY();
 			normals[pointer++] = vec.getZ();
 		}
-		
 		return normals;
 	}
 

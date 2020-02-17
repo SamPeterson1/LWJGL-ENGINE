@@ -1,28 +1,30 @@
 package misc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import GUI.MasterGUI;
 import camera.Camera;
 import camera.CameraSpecs;
 import events.EventHandler;
-import math.Matrix4f;
 import math.Noise;
 import math.Vector3f;
-import math.Vector4f;
 import models.ColoredMesh;
 import models.Entity;
 import models.Mesh;
 import models.ModelBatch;
-import models.Skybox;
 import models.TexturedMesh;
 import particles.CircularEmission;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
-import rendering.Light;
+import player.Player;
 import rendering.MasterRenderer;
 import shaders.BasicShader;
 import shaders.TextShader;
 import terrain.Terrain;
+import terrain.TerrainSphere;
 import window.GLFWWindow;
+import xml.GUIXMLLoader;
 
 public class Game {
 	
@@ -31,20 +33,23 @@ public class Game {
 	private BasicShader basicShader;
 	private TextShader textShader;
 	private ParticleSystem particles;
+	private Player player;
+	
+	private static List<FrameListener> frameListeners = new ArrayList<>();
 	
 	public void init() {
 		
-
-		GLFWWindow.init(1440, 1440, "Test");
 		
+		GLFWWindow.init(1920, 1080, "Test");
 		CameraSpecs specs = new CameraSpecs();
-		specs.setAspect(1440f/1080f);
+		new GUIXMLLoader("src/xml/fpsCount.xml");
+		this.player = new Player();
+		specs.setAspect(1920/1080f);
 		specs.setFov(70f);
 		specs.setzFar(1000f);
 		specs.setzNear(0.01f);
 		
 		cam = new Camera(specs);
-		renderer = new MasterRenderer(cam);
 		
 		Noise noise = new Noise(130);
 		
@@ -70,31 +75,46 @@ public class Game {
 		cam.getTransform().setRotation(new Vector3f(-90f, 90f, 0f));
 		cam.getPosition().setZ(20);
 		
-		//terrain.getTransform().setTranslationX(10f);
-		ModelBatch.addEntity(terrain);
+		ModelBatch.addEntity(new Entity(new TerrainSphere(25)));
 		
+		//terrain.getTransform().setTranslationX(10f);
+		//ModelBatch.addEntity(terrain);
+		renderer = new MasterRenderer(cam);
 		this.particles = new ParticleSystem(new CircularEmission(100f, 10f), 200, 1, 0f, 5000, "/assets/fireAtlas.png", 16, 4);
 		ParticleMaster.addParticleSystem(particles);
 		EventHandler.enableCursor();
 		
 		
 	}
+	
+	public static void addFrameListener(FrameListener listener) {
+		frameListeners.add(listener);
+	}
 		
 	public void render() {
+		
+		for(FrameListener listener: frameListeners) {
+			listener.beginFrame();
+		}
 		
 		cam.update();
 		long time = System.currentTimeMillis();
 		renderer.render();
 		MasterGUI.updateComponents();
 		ParticleMaster.update();
+		player.update();
+		System.out.println("Oxygen: " + player.getOxygen() + "\nHealth: " + player.getHealth());
 		System.out.println(1000f/(System.currentTimeMillis() - time));
+		
+		for(FrameListener listener: frameListeners) {
+			listener.endFrame();
+		}
+		
 	}
 	
 	public void dispose() {
-		
 		basicShader.remove();
 		textShader.remove();
-		
 	}
 	
 }

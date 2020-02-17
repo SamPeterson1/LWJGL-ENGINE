@@ -76,6 +76,42 @@ public class Vector3f {
 		this.z *= other.getZ();
 	}
 	
+	public static Vector3f cross(Vector3f a, Vector3f b) {
+		float x = a.getY()*b.getZ() - a.getZ()*b.getY();
+		float y = a.getZ()*b.getX() - a.getX()*b.getZ();
+		float z = a.getX()*b.getY() - a.getY()*b.getX();
+		
+		return new Vector3f(x, y, z);
+	}
+	
+	public static Vector3f scale(Vector3f a, float b) {
+		Vector3f retVal = a.copyOf();
+		retVal.multiplyScalar(b);
+		return retVal;
+	}
+	
+	public static Vector3f add(Vector3f a, Vector3f b) {
+		Vector3f retVal = a.copyOf();
+		retVal.add(b);
+		return retVal;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		
+		if(o == this) return true;
+		
+		if(!(o instanceof Vector3f)) return false;
+		Vector3f other = (Vector3f) o;
+		if(near(x, other.getX(), 0.001f) && near(y,other.getY(), 0.001f) && near(z,other.getZ(), 0.001f)) return true;
+		return false;
+		
+	}
+	
+	private boolean near(float a, float b, float bias) {
+		return (a < b + bias && a > b - bias);
+	}
+	 
 	public void addX(float dx) {
 		this.x += dx;
 	}

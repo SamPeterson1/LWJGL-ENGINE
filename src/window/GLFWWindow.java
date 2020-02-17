@@ -45,9 +45,6 @@ public class GLFWWindow {
 		
 		GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 		
-		GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
-		glEnable(GL_MULTISAMPLE); 
-		
 		GLFW.glfwSetWindowPos(window, (videoMode.width() - width)/2, (videoMode.height() - height)/2);
 		GLFW.glfwShowWindow(window);	
 

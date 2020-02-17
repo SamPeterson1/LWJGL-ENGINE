@@ -61,23 +61,19 @@ public class BasicRenderer implements Renderer {
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
-        GL20.glEnableVertexAttribArray(2);
-		this.shader.setMaterialReflectivity(mesh.getMaterial().getReflectivity(), mesh.getMaterial().getShineDamping());
 		this.shader.setUseFakeLighting(false);
 		this.shader.setTextured(false);
-		this.shader.setColor(mesh.getMaterial().getColor());
+		this.shader.setColor(mesh.getMaterial().getRGB());
 	}
 	
 	private void loadTexturedMesh(Mesh mesh) {
 		
-		TexturedMesh texturedMesh = (TexturedMesh) mesh;
-		MasterRenderer.setDoCull(texturedMesh.cullFace());
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
 		this.shader.setTextured(true);
-		this.shader.setUseFakeLighting(texturedMesh.usesFakeLighting());
+		this.shader.setUseFakeLighting(false);
 		glActiveTexture(GL_TEXTURE0);
 		mesh.getMaterial().getTexture().bind();
 		this.shader.setSampler(GL_TEXTURE0);

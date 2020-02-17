@@ -1,7 +1,13 @@
 package GUI;
 
+import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_GREATER;
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.glAlphaFunc;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
@@ -33,8 +39,12 @@ public class GUIRenderer implements Renderer {
 	
 	@Override
 	public void begin() {
+		
+		glBlendFunc(GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+		glAlphaFunc(GL_GREATER,0);
+		
 		glEnable(GL_DEPTH_TEST);
-		//glEnable(GL_BLEND);
+		glEnable(GL_BLEND);
 		glDisable(GL_CULL_FACE);
 		this.shader.bind();
 	}
@@ -42,7 +52,7 @@ public class GUIRenderer implements Renderer {
 	@Override
 	public void end() {
 		this.shader.unbind();
-		//glDisable(GL_BLEND);
+		glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);
 	}
 

@@ -50,7 +50,7 @@ public class TextRenderer implements Renderer {
 		GL30.glBindVertexArray(mesh.getModel().getVAO_ID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
-        this.shader.setTextColor(mesh.getMaterial().getColor());
+        this.shader.setTextColor(mesh.getMaterial().getRGB());
 		glActiveTexture(GL_TEXTURE0);
 		mesh.getMaterial().getTexture().bind();
 		this.shader.setSampler(GL_TEXTURE0);
