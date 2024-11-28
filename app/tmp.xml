@@ -1,0 +1,10 @@
+<display>
+	<text size="0.05" text="0" tag="fps">
+		<color r="1.0" g="1.0" b="0.0"></color>
+		<constraints>
+			<x type="relative" value="1" reference="corner"></x>
+			<y type="pixel" value="0" reference="corner"></y>
+		</constraints>
+	</text>
+</display>
+		

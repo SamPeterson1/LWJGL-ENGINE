@@ -29,19 +29,15 @@ public class GUIXMLLoader {
 			} else if(name.equals("text")) {
 				guiComponent = new Text(child);
 			} else if(name.equals("dropdown")) {
-				System.out.println("oh you foot you");
 				guiComponent = new DropdownBox(child, parentComponent);
 			} else if(name.equals("checkbox")) {
 				guiComponent = new CheckBox(child);
 			} else if(name.equals("rectangle")) {
-				System.out.println("loaded rectangle");
 				guiComponent = new GUIComponent(child);
 			}
 			
 			if(guiComponent != null) {
-				System.out.println("FOOOOOOOOOOOOOo0");
 				if(child.hasAttribute("tag")) {
-					System.out.println("YAAAAAAAAAAAAAAA");
 					guiComponent.setTag(child.getAttribute("tag").getString());
 				}
 				MasterGUI.addComponentByTag(guiComponent);

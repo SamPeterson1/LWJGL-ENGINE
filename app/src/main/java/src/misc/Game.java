@@ -33,7 +33,6 @@ public class Game {
 	private BasicShader basicShader;
 	private TextShader textShader;
 	private ParticleSystem particles;
-	private Player player;
 	
 	private static List<FrameListener> frameListeners = new ArrayList<>();
 	
@@ -43,7 +42,7 @@ public class Game {
 		GLFWWindow.init(1920, 1080, "Test");
 		CameraSpecs specs = new CameraSpecs();
 		new GUIXMLLoader("xml/fpsCount.xml");
-		this.player = new Player();
+
 		specs.setAspect(1920/1080f);
 		specs.setFov(70f);
 		specs.setzFar(1000f);
@@ -76,7 +75,9 @@ public class Game {
 		cam.getTransform().setRotation(new Vector3f(-90f, 90f, 0f));
 		cam.getPosition().setZ(20);
 		
-		//ModelBatch.addEntity(new Entity(new TerrainSphere(25)));
+		ModelBatch.addEntity(terrain);
+
+		ModelBatch.addEntity(new Entity(new TerrainSphere(25)));
 		
 		//terrain.getTransform().setTranslationX(10f);
 		ModelBatch.addEntity(terrain);
@@ -86,8 +87,6 @@ public class Game {
 		this.particles = new ParticleSystem(new CircularEmission(100f, 10f), 200, 1, 0f, 5000, "fireAtlas.png", 16, 4);
 		ParticleMaster.addParticleSystem(particles);
 		EventHandler.enableCursor();
-		
-		
 	}
 	
 	public static void addFrameListener(FrameListener listener) {
@@ -105,10 +104,7 @@ public class Game {
 		renderer.render();
 		MasterGUI.updateComponents();
 		ParticleMaster.update();
-		player.update();
-		System.out.println("Oxygen: " + player.getOxygen() + "\nHealth: " + player.getHealth());
-		System.out.println(1000f/(System.currentTimeMillis() - time));
-		
+
 		for(FrameListener listener: frameListeners) {
 			listener.endFrame();
 		}
