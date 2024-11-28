@@ -18,7 +18,7 @@ public class PNGFile {
 	
 	private void createPNGDecoder() {
 		try {
-			this.decoder = new PNGDecoder(Texture.class.getResourceAsStream(path));
+			this.decoder = new PNGDecoder(ResourceLoader.getResourceStream(path));
 		} catch (IOException e1) {
 			System.err.println("Couldn't find texture");
 		}

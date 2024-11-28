@@ -5,8 +5,8 @@ import math.Vector3f;
 
 public class TextShader extends Shader {
 	
-	private static final String VERTEX_FILE = "/shaders/TextVertexShader.glsl";
-	private static final String FRAGMENT_FILE = "/shaders/TextFragmentShader.glsl";
+	private static final String VERTEX_FILE = "shaders/TextVertexShader.glsl";
+	private static final String FRAGMENT_FILE = "shaders/TextFragmentShader.glsl";
 	
 	public TextShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);

@@ -21,9 +21,9 @@ public class TerrainMesh extends Mesh {
 	public static final int VERTEX_COUNT = 256;
 	
 	private Noise noise;
-	private TexturedMesh tree = new TexturedMesh("/assets/tree.obj", "/assets/tree.png");
-	TexturedMesh fern = new TexturedMesh("/assets/fern.obj", "/assets/fern.png");
-	TexturedMesh grass = new TexturedMesh("/assets/fern.obj", "/assets/grassTexture.png");
+	private TexturedMesh tree = new TexturedMesh("tree.obj", "tree.png");
+	TexturedMesh fern = new TexturedMesh("fern.obj", "fern.png");
+	TexturedMesh grass = new TexturedMesh("fern.obj", "grassTexture.png");
 	private SecureRandom rand;
 	public float[][] heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 	

@@ -10,8 +10,8 @@ import rendering.Light;
 
 public class BasicShader extends Shader {
 
-	private static final String VERTEX_FILE = "/shaders/BaseVertShader2.glsl";
-	private static final String FRAGMENT_FILE = "/shaders/BaseFragShader2.glsl";
+	private static final String VERTEX_FILE = "shaders/BaseVertShader2.glsl";
+	private static final String FRAGMENT_FILE = "shaders/BaseFragShader2.glsl";
 	
 	public BasicShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);	

@@ -1,6 +1,7 @@
 package files;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,8 +17,12 @@ public class TextFile {
 	}
 	
 	private void createReader() {
-		InputStream in = Class.class.getResourceAsStream(path);
-		this.reader = new BufferedReader(new InputStreamReader(in));
+		try {
+			System.out.println("loading text file: " + path);
+			this.reader = new BufferedReader(new InputStreamReader(ResourceLoader.getResourceStream(path)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String readLine() {

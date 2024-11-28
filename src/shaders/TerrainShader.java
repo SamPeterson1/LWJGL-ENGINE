@@ -9,8 +9,8 @@ import rendering.Environment;
 
 public class TerrainShader extends Shader{
 
-	private static final String VERTEX_FILE = "/shaders/TerrainVertShader2.glsl";
-	private static final String FRAGMENT_FILE = "/shaders/TerrainFragShader2.glsl";
+	private static final String VERTEX_FILE = "shaders/TerrainVertShader2.glsl";
+	private static final String FRAGMENT_FILE = "shaders/TerrainFragShader2.glsl";
 	
 	public TerrainShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);

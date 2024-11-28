@@ -5,8 +5,8 @@ import math.Vector4f;
 
 public class GUIShader extends Shader {
 
-	private static final String VERTEX_FILE = "/shaders/GUIVertShader.glsl";
-	private static final String FRAGMENT_FILE = "/shaders/GUIFragShader.glsl";
+	private static final String VERTEX_FILE = "shaders/GUIVertShader.glsl";
+	private static final String FRAGMENT_FILE = "shaders/GUIFragShader.glsl";
 	
 	public GUIShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);

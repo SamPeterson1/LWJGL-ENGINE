@@ -33,7 +33,7 @@ public class Particle extends Entity {
 	
 	public Particle(Vector3f pos, Vector3f velocity) {
 		
-		this(pos, velocity, 0.01f, 3000, new ParticleMesh(new Texture("/assets/particleAtlas.png")));
+		this(pos, velocity, 0.01f, 3000, new ParticleMesh(new Texture("particleAtlas.png")));
 		
 		//this.velocity = velocity;
 		//this.birthTime = System.currentTimeMillis();

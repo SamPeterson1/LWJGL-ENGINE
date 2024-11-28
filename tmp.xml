@@ -1,0 +1,38 @@
+<display>
+	<text size="0.05" text="0" tag="fps">
+		<color r="1.0" g="1.0" b="0.0"></color>
+		<constraints>
+			<x type="relative" value="1" reference="corner"></x>
+			<y type="pixel" value="0" reference="corner"></y></constraints></text>
+	<rectangle tag="healthBar">
+		<color r="0" g="1" b="0"></color>
+		<constraints>
+			<x reference="corner" value="0.015" type="relative"></x>
+			<y reference="corner" type="relative" value="0.98"></y>
+			<width type="aspect" value="4.5"></width>
+			<height type="relative" value="0.035"></height></constraints></rectangle>
+	<rectangle tag="oxygenBar">
+		<color r="0.2" g="0.898" b="0.8" a="1"></color>
+		<constraints>
+			<x reference="corner" value="0.015" type="relative"></x>
+			<y reference="corner" type="relative" value="0.93"></y>
+			<width type="aspect" value="6.5"></width>
+			<height type="relative" value="0.035"></height>
+		</constraints>
+	</rectangle>
+	<rectangle>
+		<color r="0" g="0.4" b="0"></color>
+		<constraints>
+			<x reference="corner" value="0.015" type="relative"></x>
+			<y reference="corner" type="relative" value="0.98"></y>
+			<width type="aspect" value="8.5"></width>
+			<height type="relative" value="0.035"></height></constraints></rectangle>
+	<rectangle>
+		<color r="0.08" g="0.3592" b="0.32" a="1"></color>
+		<constraints>
+			<x reference="corner" value="0.015" type="relative"></x>
+			<y reference="corner" type="relative" value="0.93"></y>
+			<width type="aspect" value="8.5"></width>
+			<height type="relative" value="0.035"></height></constraints></rectangle>
+			</display>
+		

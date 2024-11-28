@@ -5,8 +5,8 @@ import particles.ParticleAnimation;
 
 public class ParticleShader extends Shader {
 
-	private static final String VERTEX_FILE = "/shaders/ParticleVertShader.glsl";
-	private static final String FRAGMENT_FILE = "/shaders/ParticleFragShader.glsl";
+	private static final String VERTEX_FILE = "shaders/ParticleVertShader.glsl";
+	private static final String FRAGMENT_FILE = "shaders/ParticleFragShader.glsl";
 	
 	public ParticleShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);

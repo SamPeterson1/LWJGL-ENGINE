@@ -15,7 +15,7 @@ public class Skybox extends Mesh {
 		String[] fileNames = new String[6];
 		int index = 0;
 		for(String direction: TEXTURE_FILES) {
-			String fileName = "/assets/" + name + "_" + direction + ".png";
+			String fileName = name + "_" + direction + ".png";
 			fileNames[index++] = fileName;
 		}
 		

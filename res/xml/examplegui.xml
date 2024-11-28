@@ -1,0 +1,56 @@
+<display>
+	<button depth="0.9" tag="button1">
+		<color  r="1.0"  b="0.0"  g="1.0"></color>
+		<text size="0.5" text="foot">
+			<color r="0.0" b="0.0" g="1.0"></color>
+		</text>
+		<constraints>
+			<x type="pixel" value="200"></x>
+			<y type="pixel" value="200"></y>
+			<width type="pixel" value="200"></width>
+			<height type="pixel" value="200"></height>
+		</constraints>
+	</button>
+	<button depth="0.9" tag="button1">
+		<color  r="1.0"  b="0.0"  g="1.0"></color>
+		<text size="0.5" text="foot">
+			<color r="0.0" b="0.0" g="1.0"></color>
+		</text>
+		<constraints>
+			<x type="pixel" value="400"></x>
+			<y type="pixel" value="400"></y>
+			<width type="pixel" value="200"></width>
+			<height type="pixel" value="200"></height>
+		</constraints>
+	</button>
+	<button depth="0.9" tag="button1">
+		<color  r="1.0"  b="0.0"  g="1.0"></color>
+		<text size="0.5" text="foot">
+			<color r="0.0" b="0.0" g="1.0"></color>
+		</text>
+		<constraints>
+			<x type="pixel" value="200"></x>
+			<y type="pixel" value="200"></y>
+			<width type="pixel" value="200"></width>
+			<height type="pixel" value="200"></height>
+		</constraints>
+	</button>
+	<button depth="0.9" tag="button1">
+		<color  r="1.0"  b="0.0"  g="1.0"></color>
+		<text size="0.5" text="foot">
+			<color r="0.0" b="0.0" g="1.0"></color>
+		</text>
+		<constraints>
+			<x type="pixel" value="200"></x>
+			<y type="pixel" value="200"></y>
+			<width type="pixel" value="200"></width>
+			<height type="pixel" value="200"></height>
+		</constraints>
+	</button>
+	<rectangle tag="container">
+		<color r="" g="" b=""></color>
+		<constraints>
+			<width></width>
+			<height></height>
+			<x></x>
+			<y></y></constraints></rectangle></display>

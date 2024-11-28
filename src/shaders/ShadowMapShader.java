@@ -6,8 +6,8 @@ import math.Matrix4f;
 
 public class ShadowMapShader extends Shader {
 
-	private static final String VERTEX_FILE = "/shaders/ShadowVertShader.glsl";
-	private static final String FRAGMENT_FILE = "/shaders/ShadowFragShader.glsl";
+	private static final String VERTEX_FILE = "shaders/ShadowVertShader.glsl";
+	private static final String FRAGMENT_FILE = "shaders/ShadowFragShader.glsl";
 	
 	public ShadowMapShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);

@@ -26,7 +26,7 @@ public class Text extends GUIComponent {
 			this.text = xml.getAttribute("text").getString();
 		}
 		
-		String fontFile = "/assets/TestFont.fnt";
+		String fontFile = "TestFont.fnt";
 		if(xml.hasAttribute("font")) {
 			fontFile = xml.getAttribute("font").getString();
 		}
@@ -53,7 +53,7 @@ public class Text extends GUIComponent {
 		
 		Material material = new Material();
 		material.setColor(color);
-		material.setTexture(new Texture("/assets/TestFont.png"));
+		material.setTexture(new Texture("TestFont.png"));
 		super.setMaterial(material);
 		this.relativeSize = 1f;
 		super.setConstraint(new RelativeConstraint(size, Constraint.HEIGHT));

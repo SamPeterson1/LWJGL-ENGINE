@@ -59,14 +59,8 @@ public class KeyboardCamController {
 		Vector3f newRotation = new Vector3f();
 		newRotation.setY((float)EventHandler.getCursorX() * this.xSense);
 		newRotation.setX((float)EventHandler.getCursorY() * this.ySense);
-		double theta = Math.asin(camera.getPos().getY()/200f);
-		//newRotation.setX(foot);
 		foot += 10*Time.deltaTime;
 		camera.setRotation(newRotation);
-		//camera.setRotationZ(foot);
-		Vector3f camPos = camera.getPos();
-		camPos.normalize();
-		camPos.multiplyScalar(210);
 	}
 	
 	private float strafeZ(float dist, Transform camera) {

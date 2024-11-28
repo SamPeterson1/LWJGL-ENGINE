@@ -42,7 +42,7 @@ public class Game {
 		
 		GLFWWindow.init(1920, 1080, "Test");
 		CameraSpecs specs = new CameraSpecs();
-		new GUIXMLLoader("src/xml/fpsCount.xml");
+		new GUIXMLLoader("xml/fpsCount.xml");
 		this.player = new Player();
 		specs.setAspect(1920/1080f);
 		specs.setFov(70f);
@@ -54,10 +54,10 @@ public class Game {
 		Noise noise = new Noise(130);
 		
 		Time.setCap(100);
-		ColoredMesh coloredMesh = new ColoredMesh("/assets/dragon.obj", new Vector3f(1f, 0f, 0f));
+		ColoredMesh coloredMesh = new ColoredMesh("dragon.obj", new Vector3f(1f, 0f, 0f));
 		coloredMesh.setReflectivity(0.5f);
 		coloredMesh.setShineDamping(10f);
-		Mesh texturedMesh = new TexturedMesh("/assets/stall.obj", "/assets/stallTexture.png");
+		Mesh texturedMesh = new TexturedMesh("stall.obj", "stallTexture.png");
 		Entity element2 = new Entity(texturedMesh);
 		element2.getMesh().getMaterial().setReflectivity(0.5f);
 		element2.getMesh().getMaterial().setShineDamping(10);
@@ -70,17 +70,20 @@ public class Game {
 		element3.getTransform().setScale(new Vector3f(0.5f, 0.5f, 0.5f));
 		element3.getTransform().setTranslationZ(3);
 		
-		Terrain terrain = new Terrain("/assets/grassTexture.png", noise);
+		Terrain terrain = new Terrain("grassTexture.png", noise);
+		terrain.enable();
 		cam.setTerrain(terrain);
 		cam.getTransform().setRotation(new Vector3f(-90f, 90f, 0f));
 		cam.getPosition().setZ(20);
 		
-		ModelBatch.addEntity(new Entity(new TerrainSphere(25)));
+		//ModelBatch.addEntity(new Entity(new TerrainSphere(25)));
 		
 		//terrain.getTransform().setTranslationX(10f);
-		//ModelBatch.addEntity(terrain);
+		ModelBatch.addEntity(terrain);
+		ModelBatch.addEntity(element2);
+		ModelBatch.addEntity(element3);
 		renderer = new MasterRenderer(cam);
-		this.particles = new ParticleSystem(new CircularEmission(100f, 10f), 200, 1, 0f, 5000, "/assets/fireAtlas.png", 16, 4);
+		this.particles = new ParticleSystem(new CircularEmission(100f, 10f), 200, 1, 0f, 5000, "fireAtlas.png", 16, 4);
 		ParticleMaster.addParticleSystem(particles);
 		EventHandler.enableCursor();
 		

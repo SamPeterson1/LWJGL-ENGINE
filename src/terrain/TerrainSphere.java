@@ -25,7 +25,7 @@ public class TerrainSphere extends Mesh {
 		super(Mesh.PLANET);
 
 		super.material = new Material();
-		super.material.setTexture(new Texture("/assets/grassTexture.png"));
+		super.material.setTexture(new Texture("grassTexture.png"));
 		this.res = res;
 		for(Vector3f direction: directions) {
 			this.faces.add(new TerrainFace(direction, res));

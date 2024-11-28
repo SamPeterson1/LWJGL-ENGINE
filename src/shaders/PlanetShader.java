@@ -9,8 +9,8 @@ import rendering.Environment;
 
 public class PlanetShader extends Shader{
 
-	private static final String VERTEX_FILE = "/shaders/PlanetVertShader.glsl";
-	private static final String FRAGMENT_FILE = "/shaders/PlanetFragShader.glsl";
+	private static final String VERTEX_FILE = "shaders/PlanetVertShader.glsl";
+	private static final String FRAGMENT_FILE = "shaders/PlanetFragShader.glsl";
 	
 	public PlanetShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);	

@@ -5,8 +5,8 @@ import math.Vector3f;
 
 public class SkyboxShader extends Shader {
 
-	private static final String VERTEX_FILE = "/shaders/SkyboxVertShader.glsl";
-	private static final String FRAGMENT_FILE = "/shaders/SkyboxFragShader.glsl";
+	private static final String VERTEX_FILE = "shaders/SkyboxVertShader.glsl";
+	private static final String FRAGMENT_FILE = "shaders/SkyboxFragShader.glsl";
 	
 	public SkyboxShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
